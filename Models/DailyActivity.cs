@@ -15,6 +15,10 @@ namespace NikeFarms.v2._0.Models
 
         public int MedicationId { get; set; }
 
+        public Feed Feed { get; set; }
+
+        public int FeedId { get; set; }
+
         public Flock Flock { get; set; }
 
         public int FlockId { get; set; }

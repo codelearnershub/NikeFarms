@@ -8,5 +8,7 @@ namespace NikeFarms.v2._0.Models
     public class FlockType : BaseEntity
     {
         public string Name { get; set; }
+
+        public string Description { get; set; }
     }
 }

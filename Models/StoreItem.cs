@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace NikeFarms.v2._0.Models
 {
-    public class Feed : BaseEntity
+    public class StoreItem : BaseEntity
     {
         public string Name { get; set; }
 
-        public decimal PricePerKg { get; set; }
+        public string ItemType { get; set; }
 
-        public double StockedFeed { get; set; }
+        public double NoOfItem { get; set; }
 
-        public double AvailableFeed { get; set; }
+        public double ItemPerKg { get; set; }
     }
 }

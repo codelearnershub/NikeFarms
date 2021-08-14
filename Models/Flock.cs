@@ -12,16 +12,12 @@ namespace NikeFarms.v2._0.Models
 
         public int FlockTypeId { get; set; }
 
-        public Guid BatchNo { get; set; }
+        public string BatchNo { get; set; }
 
-        public int FlockQty { get; set; }
+        public int TotalNo { get; set; }
 
         public int Age { get; set; }
 
         public double AverageWeight { get; set; }
-
-        public bool Status { get; set; }
-
-
     }
 }

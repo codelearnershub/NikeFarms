@@ -8,5 +8,9 @@ namespace NikeFarms.v2._0.Models
     public class WeeklyReport : BaseEntity
     {
         public double AverageWeight { get; set; }
+
+        public Flock Flock { get; set; }
+
+        public int FlockId { get; set; }
     }
 }

@@ -10,5 +10,7 @@ namespace NikeFarms.v2._0.Models
         public string Name { get; set; }
 
         public string Description { get; set; }
+
+        List<Flock> Flocks { get; set; }
     }
 }

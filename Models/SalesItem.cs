@@ -9,7 +9,7 @@ namespace NikeFarms.v2._0.Models
     {
         public string Item { get; set; }
 
-        public int ItemQty { get; set; }
+        public int NoOfItem { get; set; }
 
         public Stock Stock { get; set; }
 

@@ -20,5 +20,9 @@ namespace NikeFarms.v2._0.Models
         public string PhoneNo { get; set; }
 
         public string Address { get; set; }
+
+        List<UserRole> UserRoles { get; set; }
+
+        List<Message> Messages { get; set; }
     }
 }

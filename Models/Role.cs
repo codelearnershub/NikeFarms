@@ -8,5 +8,7 @@ namespace NikeFarms.v2._0.Models
     public class Role : BaseEntity
     {
         public string Name { get; set; }
+
+        List<UserRole> UserRoles { get; set; }
     }
 }

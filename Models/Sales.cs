@@ -14,5 +14,7 @@ namespace NikeFarms.v2._0.Models
         public Customer Customer { get; set; }
 
         public int CustomerId { get; set; }
+
+        List<SalesItem> SalesItems { get; set; }
     }
 }

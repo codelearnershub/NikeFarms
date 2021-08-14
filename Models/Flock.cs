@@ -19,5 +19,9 @@ namespace NikeFarms.v2._0.Models
         public int Age { get; set; }
 
         public double AverageWeight { get; set; }
+
+        List<DailyActivity> DailyActivities { get; set; }
+
+        List<Stock> Stocks { get; set; }
     }
 }

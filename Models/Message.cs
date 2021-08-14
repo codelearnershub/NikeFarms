@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace NikeFarms.v2._0.Models
 {
-    public class Message
+    public class Message : BaseEntity
     {
         public string Title { get; set; }
 

@@ -14,5 +14,7 @@ namespace NikeFarms.v2._0.Models
         public double NoOfItem { get; set; }
 
         public double ItemPerKg { get; set; }
+
+        List<StoreAllocation> StoreAllocations { get; set; }
     }
 }

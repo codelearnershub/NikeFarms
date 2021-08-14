@@ -16,5 +16,7 @@ namespace NikeFarms.v2._0.Models
         public string PhoneNo { get; set; }
 
         public string Address { get; set; }
+
+        List<Sales> Sales { get; set; }
     }
 }

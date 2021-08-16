@@ -13,7 +13,8 @@ namespace NikeFarms.Context
         public DbSet<Role> Roles { get; set; }
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<Expenses> Expenses { get; set; }
-        public DbSet<Message> Message { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Customer> Customers { get; set; }
         public DbSet<DailyActivity> DailyActivities { get; set; }
         public DbSet<FlockType> FlockTypes { get; set; }
         public DbSet<Flock> Flocks { get; set; }

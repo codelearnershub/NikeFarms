@@ -9,13 +9,13 @@ namespace NikeFarms.v2._0.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Customer",
+                name: "Customers",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
@@ -25,7 +25,7 @@ namespace NikeFarms.v2._0.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customer", x => x.Id);
+                    table.PrimaryKey("PK_Customers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -35,7 +35,7 @@ namespace NikeFarms.v2._0.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: true),
                     Description = table.Column<string>(nullable: false),
                     Price = table.Column<decimal>(nullable: false)
@@ -52,7 +52,7 @@ namespace NikeFarms.v2._0.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: true),
                     Name = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: false)
@@ -69,7 +69,7 @@ namespace NikeFarms.v2._0.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: true),
                     Name = table.Column<string>(nullable: false)
                 },
@@ -85,7 +85,7 @@ namespace NikeFarms.v2._0.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: true),
                     Name = table.Column<string>(nullable: false),
                     ItemType = table.Column<string>(nullable: false),
@@ -104,7 +104,7 @@ namespace NikeFarms.v2._0.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: true),
                     Email = table.Column<string>(maxLength: 40, nullable: false),
                     PasswordHash = table.Column<string>(nullable: false),
@@ -126,7 +126,7 @@ namespace NikeFarms.v2._0.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: true),
                     Item = table.Column<string>(nullable: false),
                     TotalPrice = table.Column<decimal>(nullable: false),
@@ -136,9 +136,9 @@ namespace NikeFarms.v2._0.Migrations
                 {
                     table.PrimaryKey("PK_Sales", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Sales_Customer_CustomerId",
+                        name: "FK_Sales_Customers_CustomerId",
                         column: x => x.CustomerId,
-                        principalTable: "Customer",
+                        principalTable: "Customers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -150,7 +150,7 @@ namespace NikeFarms.v2._0.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: true),
                     FlockTypeId = table.Column<int>(nullable: false),
                     BatchNo = table.Column<string>(nullable: false),
@@ -170,13 +170,66 @@ namespace NikeFarms.v2._0.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: false),
+                    UpdatedAt = table.Column<DateTime>(nullable: true),
+                    Title = table.Column<string>(nullable: false),
+                    Content = table.Column<string>(nullable: false),
+                    ReceiverId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_Roles_ReceiverId",
+                        column: x => x.ReceiverId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRoles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: false),
+                    UpdatedAt = table.Column<DateTime>(nullable: true),
+                    UserId = table.Column<int>(nullable: false),
+                    RoleId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRoles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Roles_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "StoreAllocations",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: true),
                     StoreItemId = table.Column<int>(nullable: false),
                     NoOfItem = table.Column<double>(nullable: false),
@@ -194,67 +247,13 @@ namespace NikeFarms.v2._0.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Message",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
-                    UpdatedAt = table.Column<DateTime>(nullable: true),
-                    Title = table.Column<string>(nullable: false),
-                    Content = table.Column<string>(nullable: false),
-                    ReceiverId = table.Column<int>(nullable: true),
-                    RecieverId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Message", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Message_Users_ReceiverId",
-                        column: x => x.ReceiverId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserRoles",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
-                    UpdatedAt = table.Column<DateTime>(nullable: true),
-                    UserId = table.Column<int>(nullable: false),
-                    RoleId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserRoles", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserRoles_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserRoles_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Stocks",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: true),
                     Item = table.Column<string>(nullable: false),
                     NoOfItem = table.Column<double>(nullable: false),
@@ -281,7 +280,7 @@ namespace NikeFarms.v2._0.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: true),
                     AverageWeight = table.Column<double>(nullable: false),
                     FlockId = table.Column<int>(nullable: false)
@@ -304,7 +303,7 @@ namespace NikeFarms.v2._0.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: true),
                     FeedConsumedPerKg = table.Column<double>(nullable: false),
                     Mortality = table.Column<int>(nullable: false),
@@ -343,7 +342,7 @@ namespace NikeFarms.v2._0.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: true),
                     Item = table.Column<string>(nullable: false),
                     NoOfItem = table.Column<int>(nullable: false),
@@ -389,8 +388,8 @@ namespace NikeFarms.v2._0.Migrations
                 column: "FlockTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Message_ReceiverId",
-                table: "Message",
+                name: "IX_Messages_ReceiverId",
+                table: "Messages",
                 column: "ReceiverId");
 
             migrationBuilder.CreateIndex(
@@ -450,13 +449,16 @@ namespace NikeFarms.v2._0.Migrations
                 name: "Expenses");
 
             migrationBuilder.DropTable(
-                name: "Message");
+                name: "Messages");
 
             migrationBuilder.DropTable(
                 name: "SalesItems");
 
             migrationBuilder.DropTable(
                 name: "UserRoles");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "WeeklyReports");
@@ -474,13 +476,10 @@ namespace NikeFarms.v2._0.Migrations
                 name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
                 name: "StoreItems");
 
             migrationBuilder.DropTable(
-                name: "Customer");
+                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "Flocks");

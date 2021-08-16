@@ -9,7 +9,7 @@ using NikeFarms.Context;
 namespace NikeFarms.v2._0.Migrations
 {
     [DbContext(typeof(NikeDbContext))]
-    [Migration("20210814164718_init")]
+    [Migration("20210816131051_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,7 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
@@ -51,7 +52,7 @@ namespace NikeFarms.v2._0.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customer");
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("NikeFarms.v2._0.Models.DailyActivity", b =>
@@ -64,6 +65,7 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<double>("FeedConsumedPerKg")
@@ -108,6 +110,7 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
@@ -145,6 +148,7 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("FlockTypeId")
@@ -173,6 +177,7 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
@@ -205,12 +210,10 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("ReceiverId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RecieverId")
+                    b.Property<int>("ReceiverId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -224,7 +227,7 @@ namespace NikeFarms.v2._0.Migrations
 
                     b.HasIndex("ReceiverId");
 
-                    b.ToTable("Message");
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("NikeFarms.v2._0.Models.Role", b =>
@@ -237,6 +240,7 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -261,6 +265,7 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("CustomerId")
@@ -293,6 +298,7 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Item")
@@ -336,6 +342,7 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("FlockId")
@@ -374,6 +381,7 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<double>("ItemPerKg")
@@ -405,6 +413,7 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<double>("ItemPerKg")
@@ -443,6 +452,7 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
@@ -491,6 +501,7 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("RoleId")
@@ -525,6 +536,7 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("FlockId")
@@ -572,9 +584,11 @@ namespace NikeFarms.v2._0.Migrations
 
             modelBuilder.Entity("NikeFarms.v2._0.Models.Message", b =>
                 {
-                    b.HasOne("NikeFarms.v2._0.Models.User", "Receiver")
+                    b.HasOne("NikeFarms.v2._0.Models.Role", "Receiver")
                         .WithMany()
-                        .HasForeignKey("ReceiverId");
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("NikeFarms.v2._0.Models.Sales", b =>
@@ -627,7 +641,7 @@ namespace NikeFarms.v2._0.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NikeFarms.v2._0.Models.User", "User")
+                    b.HasOne("NikeFarms.v2._0.Models.Role", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

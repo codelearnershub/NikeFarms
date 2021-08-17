@@ -18,15 +18,15 @@ namespace NikeFarms.v2._0.Services
             _userService = userService;
         }
 
-        public Sales Add(int userId, string item, decimal totalPrice, int customerId)
+        public Sales Add(int userId, string item, int customerId)
         {
             var sales = new Sales
             {
                 CreatedBy = _userService.FindById(userId).Email,
                 CreatedAt = DateTime.Now,
                 Item = item,
-                TotalPrice = totalPrice,
                 CustomerId = customerId,
+                Voucher = (Guid.NewGuid()).ToString("0000000000"),
             };
 
             return _salesRepository.Add(sales);

@@ -13,7 +13,11 @@ namespace NikeFarms.v2._0.Models
 
         public double NoOfItem { get; set; }
 
-        public double ItemPerKg { get; set; }
+        public double? ItemPerKg { get; set; }
+
+        public User Manager { get; set; }
+
+        public int ManagerId { get; set; }
 
         List<DailyActivity> DailyActivities { get; set; }
     }

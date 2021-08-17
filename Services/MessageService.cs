@@ -24,7 +24,7 @@ namespace NikeFarms.v2._0.Services
             {
                 CreatedBy = _userService.FindById(userId).Email,
                 CreatedAt = DateTime.Now,
-                Title = title,
+                Title = title.ToUpper(),
                 Content = content,
                 RecieverId = recieverId,
             };
@@ -45,7 +45,7 @@ namespace NikeFarms.v2._0.Services
                 return null;
             }
 
-            message.Title = title;
+            message.Title = title.ToUpper();
             message.Content = content;
             message.RecieverId = recieverId;
             message.UpdatedAt = DateTime.Now;

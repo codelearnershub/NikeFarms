@@ -18,13 +18,14 @@ namespace NikeFarms.v2._0.Services
             _userService = userService;
         }
 
-        public StoreItem Add(int userId, string name, string itemType, double noOfItem, double itemPerKg)
+        public StoreItem Add(int userId, string name, string description, string itemType, double noOfItem, double itemPerKg)
         {
             var storeItem = new StoreItem
             {
                 CreatedBy = _userService.FindById(userId).Email,
                 CreatedAt = DateTime.Now,
                 Name = name,
+                Description = description,
                 ItemType = itemType,
                 NoOfItem = noOfItem,
                 ItemPerKg = itemPerKg,
@@ -38,7 +39,7 @@ namespace NikeFarms.v2._0.Services
             return _storeItemRepository.FindById(id);
         }
 
-        public StoreItem Update(int storeItemId, string Name, string itemType, double noOfItem, double itemPerKg)
+        public StoreItem Update(int storeItemId, string Name, string description, string itemType, double noOfItem, double itemPerKg)
         {
             var storeItem = _storeItemRepository.FindById(storeItemId);
             if (storeItem == null)
@@ -47,6 +48,7 @@ namespace NikeFarms.v2._0.Services
             }
 
             storeItem.Name = Name;
+            storeItem.Description = description;
             storeItem.ItemType = itemType;
             storeItem.NoOfItem = noOfItem;
             storeItem.ItemPerKg = itemPerKg;

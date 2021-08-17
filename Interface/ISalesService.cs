@@ -8,7 +8,7 @@ namespace NikeFarms.v2._0.Interface
 {
     public interface ISalesService
     {
-        public Sales Add(int userId, string item, decimal totalPrice, int customerId);
+        public Sales Add(int userId, string item, int customerId);
 
         public Sales FindById(int id);
 

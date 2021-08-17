@@ -6,6 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NikeFarms.Context;
+using NikeFarms.v2._0.Interface;
+using NikeFarms.v2._0.Repositories;
+using NikeFarms.v2._0.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +30,66 @@ namespace NikeFarms.v2._0
         {
             services.AddControllersWithViews();
             services.AddDbContext<NikeDbContext>(option => option.UseMySQL(Configuration.GetConnectionString("NikeConnectionString")));
+
+            services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddScoped<IUserService, UserService>();
+
+            services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+
+            services.AddScoped<IUserRoleService, UserRoleService>();
+
+            services.AddScoped<IRoleRepository, RoleRepository>();
+
+            services.AddScoped<IRoleService, RoleService>();
+
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+
+            services.AddScoped<ICustomerService, CustomerService>();
+
+            services.AddScoped<IDailyActivityRepository, DailyActivityRepository>();
+
+            services.AddScoped<IDailyActivityService, DailyActivityService>();
+
+            services.AddScoped<IExpensesRepository, ExpensesRepository>();
+
+            services.AddScoped<IExpensesService, ExpensesService>();
+
+            services.AddScoped<IFlockRepository, FlockRepository>();
+
+            services.AddScoped<IFlockService, FlockService>();
+
+            services.AddScoped<IFlockTypeRepository, FlockTypeRepository>();
+
+            services.AddScoped<IFlockTypeService, FlockTypeService>();
+
+            services.AddScoped<IMessageRepository, MessageRepository>();
+
+            services.AddScoped<IMessageService, MessageService>();
+
+            services.AddScoped<ISalesItemRepository, SalesItemRepository>();
+
+            services.AddScoped<ISalesItemService, SalesItemService>();
+
+            services.AddScoped<ISalesRepository, SalesRepository>();
+
+            services.AddScoped<ISalesService, SalesService>();
+
+            services.AddScoped<IStockRepository, StockRepository>();
+
+            services.AddScoped<IStockService, StockService>();
+
+            services.AddScoped<IStoreAllocationRepository, StoreAllocationRepository>();
+
+            services.AddScoped<IStoreAllocationService, StoreAllocationService>();
+
+            services.AddScoped<IStoreItemRepository, StoreItemRepository>();
+
+            services.AddScoped<IStoreItemService, StoreItemService>();
+
+            services.AddScoped<IWeeklyReportRepository, WeeklyReportRepository>();
+
+            services.AddScoped<IWeeklyReportService, WeeklyReportService>();
 
         }
 

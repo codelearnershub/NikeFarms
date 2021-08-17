@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NikeFarms.v2._0.Services
 {
-    public class FlockService
+    public class FlockService : IFlockService
     {
         private readonly IFlockRepository _flockRepository;
         private readonly IUserService _userService;

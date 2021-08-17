@@ -11,8 +11,8 @@ namespace NikeFarms.v2._0.Models
 
         public string Content { get; set; }
 
-        public Role Receiver { get; set; }
+        public User Reciever { get; set; }
 
-        public int ReceiverId { get; set; }
+        public int RecieverId { get; set; }
     }
 }

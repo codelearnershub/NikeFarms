@@ -91,6 +91,8 @@ namespace NikeFarms.Context
 
             modelBuilder.Entity<Flock>().Property(u => u.CreatedBy).IsRequired();
 
+            modelBuilder.Entity<Flock>().HasIndex(u => u.BatchNo).IsUnique();
+
 
 
 

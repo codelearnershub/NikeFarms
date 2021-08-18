@@ -10,9 +10,9 @@ namespace NikeFarms.v2._0.Repositories
 {
     public class MessageRepository : IMessageRepository
     {
-        private readonly NikeDbContext2 _dbContext;
+        private readonly NikeDbContext _dbContext;
 
-        public MessageRepository(NikeDbContext2 dbContext)
+        public MessageRepository(NikeDbContext dbContext)
         {
             _dbContext = dbContext;
         }

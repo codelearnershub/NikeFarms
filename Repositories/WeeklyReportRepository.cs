@@ -10,9 +10,9 @@ namespace NikeFarms.v2._0.Repositories
 {
     public class WeeklyReportRepository : IWeeklyReportRepository
     {
-        private readonly NikeDbContext2 _dbContext;
+        private readonly NikeDbContext _dbContext;
 
-        public WeeklyReportRepository(NikeDbContext2 dbContext)
+        public WeeklyReportRepository(NikeDbContext dbContext)
         {
             _dbContext = dbContext;
         }

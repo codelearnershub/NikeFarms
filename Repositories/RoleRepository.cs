@@ -10,9 +10,9 @@ namespace NikeFarms.v2._0.Repositories
 {
     public class RoleRepository : IRoleRepository
     {
-        private readonly NikeDbContext2 _dbContext;
+        private readonly NikeDbContext _dbContext;
 
-        public RoleRepository(NikeDbContext2 dbContext)
+        public RoleRepository(NikeDbContext dbContext)
         {
             _dbContext = dbContext;
         }

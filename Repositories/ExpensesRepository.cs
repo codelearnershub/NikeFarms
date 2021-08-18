@@ -10,9 +10,9 @@ namespace NikeFarms.v2._0.Repositories
 {
     public class ExpensesRepository : IExpensesRepository
     {
-        private readonly NikeDbContext2 _dbContext;
+        private readonly NikeDbContext _dbContext;
 
-        public ExpensesRepository(NikeDbContext2 dbContext)
+        public ExpensesRepository(NikeDbContext dbContext)
         {
             _dbContext = dbContext;
         }

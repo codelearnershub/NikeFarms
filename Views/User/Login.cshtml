@@ -1,0 +1,55 @@
+﻿@model NikeFarms.v2._0.Models.ViewModels.LoginVM
+
+@{ ViewBag.Title = "Login"; }
+
+<body>
+    @if (ViewBag.Message == "error")
+    {
+        <p style="color:red; background-color: black; margin-left:450px; margin-right:450px" class="text-center font-weight-bolder  mb-2">*Invalid Username/Password</p>
+    }
+    <div class="row justify-content-center" style="margin-bottom:140px">
+
+        <div class="card" id="login-card">
+
+            <div class="card-header">
+                <img class="nikesmall" src="~/Images/Nikesmall.jpg" alt="NikeFarms" /> <span class="font-weight-bolder big-text">Sign In</span>
+            </div>
+
+            <div class="card-body">
+
+                <form method="post" class=" validate-form">
+
+                    <div class="wrap-input100 validate-input">
+                        <input asp-for="Email" class="input100" placeholder="Email Address" />
+                        <span asp-validation-for="Email" style="color:yellowgreen; margin-left:2%"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </span>
+
+                    </div>
+                    <div class=" wrap-input100 validate-input">
+                        <input type="password" asp-for="Password" class="input100" placeholder="Password" />
+                        <span asp-validation-for="Password" style="color:yellowgreen; margin-left:2%"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-lock" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+
+                    <div class="container-login100-form-btn">
+                        <input type="submit" class="login100-form-btn" value="Login" />
+
+                    </div>
+                </form>
+            </div>
+
+
+
+        </div>
+    </div>
+
+</body>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

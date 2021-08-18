@@ -7,7 +7,7 @@ using NikeFarms.Context;
 
 namespace NikeFarms.v2._0.Migrations
 {
-    [DbContext(typeof(NikeDbContext2))]
+    [DbContext(typeof(NikeDbContext))]
     partial class NikeDbContext2ModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -252,7 +252,7 @@ namespace NikeFarms.v2._0.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2021, 8, 18, 12, 38, 39, 998, DateTimeKind.Local).AddTicks(4102),
+                            CreatedAt = new DateTime(2021, 8, 18, 18, 50, 28, 338, DateTimeKind.Local).AddTicks(8969),
                             Name = "SuperAdmin"
                         });
                 });
@@ -502,7 +502,7 @@ namespace NikeFarms.v2._0.Migrations
                         {
                             Id = 1,
                             Address = "lag",
-                            CreatedAt = new DateTime(2021, 8, 18, 12, 38, 39, 995, DateTimeKind.Local).AddTicks(6186),
+                            CreatedAt = new DateTime(2021, 8, 18, 18, 50, 28, 334, DateTimeKind.Local).AddTicks(9459),
                             Email = "mazeedahhamzat@gmail.com",
                             FirstName = "Mazstar",
                             HashSalt = "J5cdgq6p63lKwmVg3b7ltQ==",
@@ -546,7 +546,7 @@ namespace NikeFarms.v2._0.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2021, 8, 18, 12, 38, 40, 6, DateTimeKind.Local).AddTicks(9270),
+                            CreatedAt = new DateTime(2021, 8, 18, 18, 50, 28, 345, DateTimeKind.Local).AddTicks(3153),
                             RoleId = 1,
                             UserId = 1
                         });

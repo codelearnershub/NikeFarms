@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,7 +30,14 @@ namespace NikeFarms.v2._0
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<NikeDbContext>(option => option.UseMySQL(Configuration.GetConnectionString("NikeConnectionString")));
+            services.AddDbContext<NikeDbContext>(option => option.UseMySQL(Configuration.GetConnectionString("NikeConnectionString2")));
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(config =>
+            {
+                config.LoginPath = "/Nike/Login";
+                config.LogoutPath = "/Nike/Logout";
+                config.Cookie.Name = "NikeAuth2.0";
+            });
 
             services.AddScoped<IUserRepository, UserRepository>();
 
@@ -110,6 +118,8 @@ namespace NikeFarms.v2._0
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

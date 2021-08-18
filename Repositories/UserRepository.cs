@@ -10,9 +10,9 @@ namespace NikeFarms.v2._0.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly NikeDbContext _dbContext;
+        private readonly NikeDbContext2 _dbContext;
 
-        public UserRepository(NikeDbContext dbContext)
+        public UserRepository(NikeDbContext2 dbContext)
         {
             _dbContext = dbContext;
         }
@@ -39,6 +39,8 @@ namespace NikeFarms.v2._0.Repositories
         {
             return _dbContext.Users.FirstOrDefault(u => u.Id.Equals(userId));
         }
+
+        
 
         public User FindByEmail(string userEmail)
         {

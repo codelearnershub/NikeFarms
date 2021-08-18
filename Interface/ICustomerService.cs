@@ -1,4 +1,5 @@
 ﻿using NikeFarms.v2._0.Models;
+using NikeFarms.v2._0.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +9,11 @@ namespace NikeFarms.v2._0.Interface
 {
     public interface ICustomerService 
     {
-        public Customer Add(int userId, string lastName, string firstName, string email, string phoneNo, string address);
+        public Customer Add(CustomerDTO customerDTO);
 
         public Customer FindById(int id);
 
-        public Customer Update(int customerId, string lastName, string firstName, string email, string phoneNo, string address);
+        public Customer Update(int customerId, CustomerDTO customerDTO);
 
         public void Delete(int id);
         

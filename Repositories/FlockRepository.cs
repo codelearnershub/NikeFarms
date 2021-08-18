@@ -10,9 +10,9 @@ namespace NikeFarms.v2._0.Repositories
 {
     public class FlockRepository : IFlockRepository
     {
-        private readonly NikeDbContext _dbContext;
+        private readonly NikeDbContext2 _dbContext;
 
-        public FlockRepository(NikeDbContext dbContext)
+        public FlockRepository(NikeDbContext2 dbContext)
         {
             _dbContext = dbContext;
         }

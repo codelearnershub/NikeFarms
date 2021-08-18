@@ -1,5 +1,6 @@
 ﻿using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
+using NikeFarms.v2._0.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,17 +19,17 @@ namespace NikeFarms.v2._0.Services
             _userService = userService;
         }
 
-        public Flock Add(int userId, int flockTypeId, int totalNo, int age, double averageWeight)
+        public Flock Add(FlockDTO flockDTO)
         {
             var flock = new Flock
             {
-                CreatedBy = _userService.FindById(userId).Email,
+                CreatedBy = _userService.FindById(flockDTO.UserId).Email,
                 CreatedAt = DateTime.Now,
-                FlockTypeId = flockTypeId,
+                FlockTypeId = flockDTO.FlockTypeId,
                 BatchNo = (Guid.NewGuid()).ToString("000000"),
-                TotalNo = totalNo,
-                Age = age,
-                AverageWeight = averageWeight,
+                TotalNo = flockDTO.TotalNo,
+                Age = flockDTO.Age,
+                AverageWeight = flockDTO.AverageWeight,
             };
 
             return _flockRepository.Add(flock);
@@ -39,7 +40,7 @@ namespace NikeFarms.v2._0.Services
             return _flockRepository.FindById(id);
         }
 
-        public Flock Update(int flockId, int flockTypeId, int totalNo, int age, double averageWeight)
+        public Flock Update(int flockId, FlockDTO flockDTO)
         {
             var flock = _flockRepository.FindById(flockId);
             if (flock == null)
@@ -47,10 +48,10 @@ namespace NikeFarms.v2._0.Services
                 return null;
             }
 
-            flock.FlockTypeId = flockTypeId;
-            flock.TotalNo = totalNo;
-            flock.Age = age;
-            flock.AverageWeight = averageWeight;
+            flock.FlockTypeId = flockDTO.FlockTypeId;
+            flock.TotalNo = flockDTO.TotalNo;
+            flock.Age = flockDTO.Age;
+            flock.AverageWeight = flockDTO.AverageWeight;
             flock.UpdatedAt = DateTime.Now;
 
             return _flockRepository.Update(flock);

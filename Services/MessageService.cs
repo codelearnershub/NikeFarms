@@ -1,5 +1,6 @@
 ﻿using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
+using NikeFarms.v2._0.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,15 +19,15 @@ namespace NikeFarms.v2._0.Services
             _userService = userService;
         }
 
-        public Message Add(int userId, string title, string content, int recieverId)
+        public Message Add(MessageDTO messageDTO)
         {
             var message = new Message
             {
-                CreatedBy = _userService.FindById(userId).Email,
+                CreatedBy = _userService.FindById(messageDTO.UserId).Email,
                 CreatedAt = DateTime.Now,
-                Title = title.ToUpper(),
-                Content = content,
-                RecieverId = recieverId,
+                Title = messageDTO.Title.ToUpper(),
+                Content = messageDTO.Content,
+                RecieverId = messageDTO.RecieverId,
             };
 
             return _messageRepository.Add(message);
@@ -37,7 +38,7 @@ namespace NikeFarms.v2._0.Services
             return _messageRepository.FindById(id);
         }
 
-        public Message Update(int messageId, string title, string content, int recieverId)
+        public Message Update(int messageId, MessageDTO messageDTO)
         {
             var message = _messageRepository.FindById(messageId);
             if (message == null)
@@ -45,9 +46,9 @@ namespace NikeFarms.v2._0.Services
                 return null;
             }
 
-            message.Title = title.ToUpper();
-            message.Content = content;
-            message.RecieverId = recieverId;
+            message.Title = messageDTO.Title.ToUpper();
+            message.Content = messageDTO.Content;
+            message.RecieverId = messageDTO.RecieverId;
             message.UpdatedAt = DateTime.Now;
 
             return _messageRepository.Update(message);

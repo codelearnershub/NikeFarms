@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
+using NikeFarms.v2._0.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,16 +13,16 @@ namespace NikeFarms.v2._0.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IUserRoleService _userRoleService;
+        private readonly IUserRoleRepository _userRoleRepository;
 
-        public UserService(IUserRepository userRepository, IUserRoleService userRoleService)
+        public UserService(IUserRepository userRepository, IUserRoleRepository userRoleRepository)
         {
             _userRepository = userRepository;
-            _userRoleService = userRoleService;
+            _userRoleRepository = userRoleRepository;
         }
 
 
-        public void RegisterUser(int userId, string password, string lastName, string firstName, string email, string phoneNo, string address, int roleId)
+        public void RegisterUser(UserDTO userDTO)
         {
             byte[] salt = new byte[128 / 8];
 
@@ -32,24 +33,31 @@ namespace NikeFarms.v2._0.Services
 
             string saltString = Convert.ToBase64String(salt);
 
-            string hashedPassword = HashPassword(password, saltString);
+            string hashedPassword = HashPassword(userDTO.Password, saltString);
 
             User user = new User
             {
-                CreatedBy = _userRepository.FindById(userId).Email,
+                CreatedBy = _userRepository.FindById(userDTO.UserId).Email,
                 CreatedAt = DateTime.Now,
-                LastName = lastName,
-                FirstName = firstName,
-                Email = email,
-                PhoneNo = phoneNo,
-                Address = address,
+                LastName = userDTO.LastName,
+                FirstName = userDTO.FirstName,
+                Email = userDTO.Email,
+                PhoneNo = userDTO.PhoneNo,
+                Address = userDTO.Address,
                 HashSalt = saltString,
                 PasswordHash = hashedPassword,
             };
 
             _userRepository.Add(user);
 
-            _userRoleService.Add(user.Id, roleId);
+            UserRole userRole = new UserRole
+            {
+                UserId = user.Id,
+                RoleId = userDTO.RoleId,
+
+            };
+
+            _userRoleRepository.Add(userRole);
         }
 
         private string HashPassword(string password, string salt)
@@ -66,9 +74,9 @@ namespace NikeFarms.v2._0.Services
             return hashed;
         }
 
-        public User LoginUser(string email, string password)
+        public User LoginUser(UserDTO userDTO)
         {
-            User user = _userRepository.FindByEmail(email);
+            User user = _userRepository.FindByEmail(userDTO.Email);
 
             if (user == null)
             {
@@ -76,7 +84,7 @@ namespace NikeFarms.v2._0.Services
                 return null;
             }
 
-            string hashedPassword = HashPassword(password, user.HashSalt);
+            string hashedPassword = HashPassword(userDTO.Password, user.HashSalt);
 
             if (user.PasswordHash.Equals(hashedPassword))
             {
@@ -92,7 +100,7 @@ namespace NikeFarms.v2._0.Services
             return _userRepository.FindById(Id);
         }
 
-        public User Update(int id, string password, string lastName, string firstName, string email, string phoneNo, string address)
+        public User Update(int id, UserDTO userDTO)
         {
             User user = _userRepository.FindById(id);
 
@@ -110,13 +118,13 @@ namespace NikeFarms.v2._0.Services
 
             string saltString = Convert.ToBase64String(salt);
 
-            string hashedPassword = HashPassword(password, saltString);
+            string hashedPassword = HashPassword(userDTO.Password, saltString);
 
-            user.LastName = lastName;
-            user.FirstName = firstName;
-            user.Email = email;
-            user.PhoneNo = phoneNo;
-            user.Address = address;
+            user.LastName = userDTO.LastName;
+            user.FirstName = userDTO.FirstName;
+            user.Email = userDTO.Email;
+            user.PhoneNo = userDTO.PhoneNo;
+            user.Address = userDTO.Address;
             user.HashSalt = saltString;
             user.PasswordHash = hashedPassword;
             user.UpdatedAt = DateTime.Now;

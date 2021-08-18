@@ -1,5 +1,6 @@
 ﻿using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
+using NikeFarms.v2._0.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,17 +19,17 @@ namespace NikeFarms.v2._0.Services
             _userService = userService;
         }
 
-        public Customer Add(int userId, string lastName, string firstName, string email, string phoneNo, string address)
+        public Customer Add(CustomerDTO customerDTO)
         {
             var customer = new Customer
             {
-                CreatedBy = _userService.FindById(userId).Email,
+                CreatedBy = _userService.FindById(customerDTO.UserId).Email,
                 CreatedAt = DateTime.Now,
-                LastName  = lastName,
-                FirstName = firstName,
-                Email = email,
-                PhoneNo = phoneNo,
-                Address = address,
+                LastName  = customerDTO.LastName,
+                FirstName = customerDTO.FirstName,
+                Email = customerDTO.Email,
+                PhoneNo = customerDTO.PhoneNo,
+                Address = customerDTO.Address,
                 
             };
 
@@ -40,7 +41,7 @@ namespace NikeFarms.v2._0.Services
             return _customerRepository.FindById(id);
         }
 
-        public Customer Update(int customerId, string lastName, string firstName, string email, string phoneNo, string address)
+        public Customer Update(int customerId, CustomerDTO customerDTO)
         {
             var customer = _customerRepository.FindById(customerId);
             if(customer == null)
@@ -48,11 +49,11 @@ namespace NikeFarms.v2._0.Services
                 return null;
             }
 
-            customer.LastName = lastName;
-            customer.FirstName = firstName;
-            customer.Email = email;
-            customer.PhoneNo = phoneNo;
-            customer.Address = address;
+            customer.LastName = customerDTO.LastName;
+            customer.FirstName = customerDTO.FirstName;
+            customer.Email = customerDTO.Email;
+            customer.PhoneNo = customerDTO.PhoneNo;
+            customer.Address = customerDTO.Address;
             customer.UpdatedAt = DateTime.Now;
 
             return _customerRepository.Update(customer);

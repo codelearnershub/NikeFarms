@@ -1,5 +1,6 @@
 ﻿using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
+using NikeFarms.v2._0.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,14 +19,14 @@ namespace NikeFarms.v2._0.Services
             _userService = userService;
         }
 
-        public Expenses Add(int userId, string description, decimal price)
+        public Expenses Add(ExpensesDTO expensesDTO)
         {
             var expenses = new Expenses
             {
-                CreatedBy = _userService.FindById(userId).Email,
+                CreatedBy = _userService.FindById(expensesDTO.UserId).Email,
                 CreatedAt = DateTime.Now,
-                Description = description,
-                Price = price,
+                Description = expensesDTO.Description,
+                Price = expensesDTO.Price,
             };
 
             return _expensesRepository.Add(expenses);
@@ -36,7 +37,7 @@ namespace NikeFarms.v2._0.Services
             return _expensesRepository.FindById(id);
         }
 
-        public Expenses Update(int expensesId, string description, decimal price)
+        public Expenses Update(int expensesId, ExpensesDTO expensesDTO)
         {
             var expenses = _expensesRepository.FindById(expensesId);
             if (expenses == null)
@@ -44,8 +45,8 @@ namespace NikeFarms.v2._0.Services
                 return null;
             }
 
-            expenses.Description = description;
-            expenses.Price = price;
+            expenses.Description = expensesDTO.Description;
+            expenses.Price = expensesDTO.Price;
             expenses.UpdatedAt = DateTime.Now;
 
             return _expensesRepository.Update(expenses);

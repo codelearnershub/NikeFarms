@@ -1,5 +1,6 @@
 ﻿using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
+using NikeFarms.v2._0.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,14 +19,14 @@ namespace NikeFarms.v2._0.Services
             _userService = userService;
         }
 
-        public Sales Add(int userId, string item, int customerId)
+        public Sales Add(SalesDTO salesDTO)
         {
             var sales = new Sales
             {
-                CreatedBy = _userService.FindById(userId).Email,
+                CreatedBy = _userService.FindById(salesDTO.UserId).Email,
                 CreatedAt = DateTime.Now,
-                Item = item,
-                CustomerId = customerId,
+                Item = salesDTO.Item,
+                CustomerId = salesDTO.CustomerId,
                 Voucher = (Guid.NewGuid()).ToString("0000000000"),
             };
 
@@ -37,7 +38,7 @@ namespace NikeFarms.v2._0.Services
             return _salesRepository.FindById(id);
         }
 
-        public Sales Update(int salesId, string item, decimal totalPrice, int customerId)
+        public Sales Update(int salesId, SalesDTO salesDTO)
         {
             var sales = _salesRepository.FindById(salesId);
             if (sales == null)
@@ -45,9 +46,9 @@ namespace NikeFarms.v2._0.Services
                 return null;
             }
 
-            sales.Item = item;
-            sales.TotalPrice = totalPrice;
-            sales.CustomerId = customerId;
+            sales.Item = salesDTO.Item;
+            sales.TotalPrice = salesDTO.TotalPrice;
+            sales.CustomerId = salesDTO.CustomerId;
             sales.UpdatedAt = DateTime.Now;
 
             return _salesRepository.Update(sales);

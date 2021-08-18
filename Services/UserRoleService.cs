@@ -10,19 +10,16 @@ namespace NikeFarms.v2._0.Services
     public class UserRoleService : IUserRoleService
     {
         private readonly IUserRoleRepository _userRoleRepository;
-        private readonly IUserService _userService;
 
-        public UserRoleService(IUserRoleRepository userRoleRepository, IUserService userService)
+        public UserRoleService(IUserRoleRepository userRoleRepository)
         {
             _userRoleRepository = userRoleRepository;
-            _userService = userService;
         }
 
         public UserRole Add(int userId, int roleId)
         {
             var userRole = new UserRole
             {
-                CreatedBy = _userService.FindById(userId).Email,
                 CreatedAt = DateTime.Now,
                 UserId = userId,
                 RoleId = roleId,
@@ -34,6 +31,12 @@ namespace NikeFarms.v2._0.Services
         public UserRole FindById(int id)
         {
             return _userRoleRepository.FindById(id);
+        }
+
+        public string FindRole(int userId)
+        {
+           return _userRoleRepository.FindRole(userId);
+           
         }
 
         public void Delete(int id)

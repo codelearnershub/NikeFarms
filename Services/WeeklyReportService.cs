@@ -1,5 +1,6 @@
 ﻿using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
+using NikeFarms.v2._0.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,14 +19,14 @@ namespace NikeFarms.v2._0.Services
             _userService = userService;
         }
 
-        public WeeklyReport Add(int userId, double averageWeight, int flockId)
+        public WeeklyReport Add(WeeklyReportDTO weeklyReportDTO)
         {
             var weeklyReport = new WeeklyReport
             {
-                CreatedBy = _userService.FindById(userId).Email,
+                CreatedBy = _userService.FindById(weeklyReportDTO.UserId).Email,
                 CreatedAt = DateTime.Now,
-                AverageWeight = averageWeight,
-                FlockId = flockId,
+                AverageWeight = weeklyReportDTO.AverageWeight,
+                FlockId = weeklyReportDTO.FlockId,
             };
 
             return _weeklyReportRepository.Add(weeklyReport);
@@ -36,7 +37,7 @@ namespace NikeFarms.v2._0.Services
             return _weeklyReportRepository.FindById(id);
         }
 
-        public WeeklyReport Update(int weeklyReporteId, double averageWeight, int flockId)
+        public WeeklyReport Update(int weeklyReporteId, WeeklyReportDTO weeklyReportDTO)
         {
             var weeklyReport = _weeklyReportRepository.FindById(weeklyReporteId);
             if (weeklyReport == null)
@@ -44,8 +45,8 @@ namespace NikeFarms.v2._0.Services
                 return null;
             }
 
-            weeklyReport.AverageWeight = averageWeight;
-            weeklyReport.FlockId = flockId;
+            weeklyReport.AverageWeight = weeklyReportDTO.AverageWeight;
+            weeklyReport.FlockId = weeklyReportDTO.FlockId;
             weeklyReport.UpdatedAt = DateTime.Now;
 
             return _weeklyReportRepository.Update(weeklyReport);

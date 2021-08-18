@@ -1,4 +1,5 @@
-﻿using NikeFarms.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using NikeFarms.Context;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
 using System;
@@ -10,9 +11,9 @@ namespace NikeFarms.v2._0.Repositories
 {
     public class UserRoleRepository : IUserRoleRepository
     {
-        private readonly NikeDbContext _dbContext;
+        private readonly NikeDbContext2 _dbContext;
 
-        public UserRoleRepository(NikeDbContext dbContext)
+        public UserRoleRepository(NikeDbContext2 dbContext)
         {
             _dbContext = dbContext;
         }
@@ -33,6 +34,12 @@ namespace NikeFarms.v2._0.Repositories
                 _dbContext.UserRoles.Remove(userRole);
                 _dbContext.SaveChanges();
             }
+        }
+
+        public string FindRole(int userId)
+        {
+            return  _dbContext.UserRoles.Include(r=> r.Role).FirstOrDefault(u => u.UserId == userId).Role.Name;
+           
         }
 
         public UserRole FindById(int userRoleId)

@@ -1,5 +1,6 @@
 ﻿using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
+using NikeFarms.v2._0.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,14 +19,14 @@ namespace NikeFarms.v2._0.Services
             _userService = userService;
         }
 
-        public FlockType Add(int userId, string name, string description)
+        public FlockType Add(FlockTypeDTO flockTypeDTO)
         {
             var flockType = new FlockType
             {
-                CreatedBy = _userService.FindById(userId).Email,
+                CreatedBy = _userService.FindById(flockTypeDTO.UserId).Email,
                 CreatedAt = DateTime.Now,
-                Name = name,
-                Description = description,
+                Name = flockTypeDTO.Name,
+                Description = flockTypeDTO.Description,
             };
 
             return _flockTypeRepository.Add(flockType);
@@ -36,7 +37,7 @@ namespace NikeFarms.v2._0.Services
             return _flockTypeRepository.FindById(id);
         }
 
-        public FlockType Update(int flockTypeId, string Name, string description)
+        public FlockType Update(int flockTypeId, FlockTypeDTO flockTypeDTO)
         {
             var flockType = _flockTypeRepository.FindById(flockTypeId);
             if (flockType == null)
@@ -44,8 +45,8 @@ namespace NikeFarms.v2._0.Services
                 return null;
             }
 
-            flockType.Name = Name;
-            flockType.Description = description;
+            flockType.Name = flockTypeDTO.Name;
+            flockType.Description = flockTypeDTO.Description;
             flockType.UpdatedAt = DateTime.Now;
 
             return _flockTypeRepository.Update(flockType);

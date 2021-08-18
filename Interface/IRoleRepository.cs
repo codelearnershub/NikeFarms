@@ -14,6 +14,8 @@ namespace NikeFarms.v2._0.Interface
 
         public Role Update(Role role);
 
+        public List<Role> GetAllRoles();
+
         public void Delete(int roleId);
     }
 }

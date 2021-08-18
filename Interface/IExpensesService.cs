@@ -1,4 +1,5 @@
 ﻿using NikeFarms.v2._0.Models;
+using NikeFarms.v2._0.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,12 @@ namespace NikeFarms.v2._0.Interface
 {
     public interface IExpensesService
     {
-        public Expenses Add(int userId, string description, decimal price);
+        public Expenses Add(ExpensesDTO expensesDTO);
 
 
         public Expenses FindById(int id);
 
-        public Expenses Update(int expensesId, string description, decimal price);
+        public Expenses Update(int expensesId, ExpensesDTO expensesDTO);
 
         public void Delete(int id);
 

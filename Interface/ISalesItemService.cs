@@ -1,4 +1,5 @@
 ﻿using NikeFarms.v2._0.Models;
+using NikeFarms.v2._0.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +9,11 @@ namespace NikeFarms.v2._0.Interface
 {
     public interface ISalesItemService
     {
-        public SalesItem Add(int userId, string item, int noOfItem, int stockId, int salesId, decimal pricePerItem);
+        public SalesItem Add(SalesItemDTO salesItemDTO);
 
         public SalesItem FindById(int id);
 
-        public SalesItem Update(int salesItemId, string item, int noOfItem, int stockId, int salesId, decimal pricePerItem);
+        public SalesItem Update(int salesItemId, SalesItemDTO salesItemDTO);
 
         public void Delete(int id);
     }

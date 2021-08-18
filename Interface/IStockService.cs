@@ -1,4 +1,5 @@
 ﻿using NikeFarms.v2._0.Models;
+using NikeFarms.v2._0.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +9,11 @@ namespace NikeFarms.v2._0.Interface
 {
     public interface IStockService
     {
-        public Stock Add(int userId, string item, double noOfItem, double availableItem, decimal? pricePerCrate, decimal? pricePerKg, int flockId);
+        public Stock Add(StockDTO stockDTO);
 
         public Stock FindById(int id);
 
-        public Stock Update(int stockId, string item, double noOfItem, double availableItem, decimal? pricePerCrate, decimal? pricePerKg, int flockId);
+        public Stock Update(int stockId, StockDTO stockDTO);
 
         public void Delete(int id);
     }

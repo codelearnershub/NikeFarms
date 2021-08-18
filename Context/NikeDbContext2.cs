@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NikeFarms.v2._0.Models;
+using System;
 
 namespace NikeFarms.Context
 {
-    public class NikeDbContext : DbContext
+    public class NikeDbContext2 : DbContext
     {
-        public NikeDbContext(DbContextOptions options) : base(options)
+        public NikeDbContext2(DbContextOptions options) : base(options)
         {
         }
 
@@ -48,48 +49,50 @@ namespace NikeFarms.Context
 
             modelBuilder.Entity<User>().Property(u => u.Address).IsRequired();
 
-            modelBuilder.Entity<User>().Property(u => u.CreatedBy).IsRequired();
-
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = 1,
+                    FirstName = "Mazstar",
+                    LastName = "Hamzy",
+                    Address ="lag",
+                    PhoneNo = "09055220828",
+                    Email = "mazeedahhamzat@gmail.com",
+                    CreatedAt = DateTime.Now,
+                    PasswordHash = "EGSROdXOgd5YsDofKkZatVGf2Cnc/7O/RxhqQSmOF30=",
+                    HashSalt = "J5cdgq6p63lKwmVg3b7ltQ==",
+                }
+                );
 
 
             modelBuilder.Entity<Role>().Property(u => u.Name).IsRequired();
-            modelBuilder.Entity<Role>().Property(u => u.CreatedBy).IsRequired();
 
-
+            modelBuilder.Entity<Role>().HasData(
+                new Role
+                {
+                    Id = 1,
+                    Name = "SuperAdmin",
+                    CreatedAt = DateTime.Now,
+                }
+                );
 
             modelBuilder.Entity<Stock>().Property(u => u.Item).IsRequired();
 
-            modelBuilder.Entity<Stock>().Property(u => u.CreatedBy).IsRequired();
-
-
 
             modelBuilder.Entity<Expenses>().Property(u => u.Description).IsRequired();
-
-            modelBuilder.Entity<Expenses>().Property(u => u.CreatedBy).IsRequired();
-
 
 
             modelBuilder.Entity<Message>().Property(u => u.Title).IsRequired();
 
             modelBuilder.Entity<Message>().Property(u => u.Content).IsRequired();
 
-            modelBuilder.Entity<Message>().Property(u => u.CreatedBy).IsRequired();
-
-
-
-
+           
             modelBuilder.Entity<FlockType>().Property(u => u.Name).IsRequired();
 
             modelBuilder.Entity<FlockType>().Property(u => u.Description).IsRequired();
 
-            modelBuilder.Entity<FlockType>().Property(u => u.CreatedBy).IsRequired();
-
-
-
 
             modelBuilder.Entity<Flock>().Property(u => u.BatchNo).IsRequired();
-
-            modelBuilder.Entity<Flock>().Property(u => u.CreatedBy).IsRequired();
 
             modelBuilder.Entity<Flock>().HasIndex(u => u.BatchNo).IsUnique();
 
@@ -98,15 +101,8 @@ namespace NikeFarms.Context
 
             modelBuilder.Entity<Sales>().Property(u => u.Item).IsRequired();
 
-            modelBuilder.Entity<Sales>().Property(u => u.CreatedBy).IsRequired();
-
-
-
 
             modelBuilder.Entity<SalesItem>().Property(u => u.Item).IsRequired();
-
-            modelBuilder.Entity<SalesItem>().Property(u => u.CreatedBy).IsRequired();
-
 
 
 
@@ -114,30 +110,19 @@ namespace NikeFarms.Context
 
             modelBuilder.Entity<StoreItem>().Property(u => u.ItemType).IsRequired();
 
-            modelBuilder.Entity<StoreItem>().Property(u => u.CreatedBy).IsRequired();
-
-
-
-
-
             modelBuilder.Entity<UserRole>().HasIndex(u => new { u.UserId, u.RoleId }).IsUnique();
-            modelBuilder.Entity<UserRole>().Property(u => u.CreatedBy).IsRequired();
+
+            modelBuilder.Entity<UserRole>().HasData(
+                new UserRole
+                {
+                    Id = 1,
+                    UserId = 1,
+                    RoleId = 1,
+                    CreatedAt = DateTime.Now,
+                }
+                );
 
 
-
-            modelBuilder.Entity<StoreAllocation>().Property(u => u.CreatedBy).IsRequired();
-
-
-
-            modelBuilder.Entity<WeeklyReport>().Property(u => u.CreatedBy).IsRequired();
-
-
-
-            modelBuilder.Entity<DailyActivity>().Property(u => u.CreatedBy).IsRequired();
-
-
-
-            modelBuilder.Entity<Customer>().Property(u => u.CreatedBy).IsRequired();
         }
     }
 }

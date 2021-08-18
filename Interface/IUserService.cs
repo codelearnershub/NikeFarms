@@ -1,4 +1,5 @@
 ﻿using NikeFarms.v2._0.Models;
+using NikeFarms.v2._0.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,14 +9,14 @@ namespace NikeFarms.v2._0.Interface
 {
     public interface IUserService
     {
-        public void RegisterUser(int userId, string password, string lastName, string firstName, string email, string phoneNo, string address, int roleId);
+        public void RegisterUser(UserDTO userDTO);
       
-        public User LoginUser(string email, string password);
+        public User LoginUser(UserDTO userDTO);
 
         public User FindById(int Id);
         
 
-        public User Update(int id, string password, string lastName, string firstName, string email, string phoneNo, string address);
+        public User Update(int id, UserDTO userDTO);
 
 
         public void Delete(int id);

@@ -1,5 +1,6 @@
 ﻿using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
+using NikeFarms.v2._0.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,15 +19,15 @@ namespace NikeFarms.v2._0.Services
             _userService = userService;
         }
 
-        public StoreAllocation Add(int userId, int storeItemId, double noOfItem, double itemPerKg)
+        public StoreAllocation Add(StoreAllocationDTO storeAllocationDTO)
         {
             var storeAllocation = new StoreAllocation
             {
-                CreatedBy = _userService.FindById(userId).Email,
+                CreatedBy = _userService.FindById(storeAllocationDTO.UserId).Email,
                 CreatedAt = DateTime.Now,
-                StoreItemId = storeItemId,
-                NoOfItem = noOfItem,
-                ItemPerKg = itemPerKg,
+                StoreItemId = storeAllocationDTO.StoreItemId,
+                NoOfItem = storeAllocationDTO.NoOfItem,
+                ItemPerKg = storeAllocationDTO.ItemPerKg,
             };
 
             return _storeAllocationRepository.Add(storeAllocation);
@@ -37,7 +38,7 @@ namespace NikeFarms.v2._0.Services
             return _storeAllocationRepository.FindById(id);
         }
 
-        public StoreAllocation Update(int storeAllocationId, int storeItemId, double noOfItem, double itemPerKg)
+        public StoreAllocation Update(int storeAllocationId, StoreAllocationDTO storeAllocationDTO)
         {
             var storeAllocation = _storeAllocationRepository.FindById(storeAllocationId);
             if (storeAllocation == null)
@@ -45,9 +46,9 @@ namespace NikeFarms.v2._0.Services
                 return null;
             }
 
-            storeAllocation.StoreItemId = storeItemId;
-            storeAllocation.NoOfItem = noOfItem;
-            storeAllocation.ItemPerKg = itemPerKg;
+            storeAllocation.StoreItemId = storeAllocationDTO.StoreItemId;
+            storeAllocation.NoOfItem = storeAllocationDTO.NoOfItem;
+            storeAllocation.ItemPerKg = storeAllocationDTO.ItemPerKg;
             storeAllocation.UpdatedAt = DateTime.Now;
 
             return _storeAllocationRepository.Update(storeAllocation);

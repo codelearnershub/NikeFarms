@@ -1,5 +1,6 @@
 ﻿using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
+using NikeFarms.v2._0.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,18 +19,18 @@ namespace NikeFarms.v2._0.Services
             _userService = userService;
         }
 
-        public DailyActivity Add(int userId, double feedPerKg, int mortality, int medUsed, int flockId, int storeAllocationFeedId, int storeAllocationMedId)
+        public DailyActivity Add(DailyActivityDTO dailyActivityDTO)
         {
             var dailyActivity = new DailyActivity
             {
-                CreatedBy = _userService.FindById(userId).Email,
+                CreatedBy = _userService.FindById(dailyActivityDTO.UserId).Email,
                 CreatedAt = DateTime.Now,
-                FeedConsumedPerKg = feedPerKg,
-                Mortality = mortality,
-                NoOfMedUsed = medUsed,
-                FlockId = flockId,
-                StoreAllocationFeedId = storeAllocationFeedId,
-                StoreAllocationMedId = storeAllocationMedId,
+                FeedConsumedPerKg = dailyActivityDTO.FeedConsumedPerKg,
+                Mortality = dailyActivityDTO.Mortality,
+                NoOfMedUsed = dailyActivityDTO.NoOfMedUsed,
+                FlockId = dailyActivityDTO.FlockId,
+                StoreAllocationFeedId = dailyActivityDTO.StoreAllocationFeedId,
+                StoreAllocationMedId = dailyActivityDTO.StoreAllocationMedId,
 
             };
 
@@ -41,7 +42,7 @@ namespace NikeFarms.v2._0.Services
             return _dailyActivityRepository.FindById(id);
         }
 
-        public DailyActivity Update(int dailyId, double feedPerKg, int mortality, int medUsed, int flockId, int storeAllocationFeedId, int storeAllocationMedId)
+        public DailyActivity Update(int dailyId, DailyActivityDTO dailyActivityDTO)
         {
             var dailyActivity = _dailyActivityRepository.FindById(dailyId);
             if (dailyActivity == null)
@@ -49,12 +50,12 @@ namespace NikeFarms.v2._0.Services
                 return null;
             }
 
-            dailyActivity.FeedConsumedPerKg = feedPerKg;
-            dailyActivity.Mortality = mortality;
-            dailyActivity.NoOfMedUsed = medUsed;
-            dailyActivity.FlockId = flockId;
-            dailyActivity.StoreAllocationFeedId = storeAllocationFeedId;
-            dailyActivity.StoreAllocationMedId = storeAllocationMedId;
+            dailyActivity.FeedConsumedPerKg = dailyActivityDTO.FeedConsumedPerKg;
+            dailyActivity.Mortality = dailyActivityDTO.Mortality;
+            dailyActivity.NoOfMedUsed = dailyActivityDTO.NoOfMedUsed;
+            dailyActivity.FlockId = dailyActivityDTO.FlockId;
+            dailyActivity.StoreAllocationFeedId = dailyActivityDTO.StoreAllocationFeedId;
+            dailyActivity.StoreAllocationMedId = dailyActivityDTO.StoreAllocationMedId;
             dailyActivity.UpdatedAt = DateTime.Now;
 
             return _dailyActivityRepository.Update(dailyActivity);

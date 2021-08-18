@@ -1,4 +1,5 @@
 ﻿using NikeFarms.v2._0.Models;
+using NikeFarms.v2._0.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +9,11 @@ namespace NikeFarms.v2._0.Interface
 {
     public interface IFlockService
     {
-        public Flock Add(int userId, int flockTypeId, int totalNo, int age, double averageWeight);
+        public Flock Add(FlockDTO flockDTO);
 
         public Flock FindById(int id);
 
-        public Flock Update(int flockId, int flockTypeId, int totalNo, int age, double averageWeight);
+        public Flock Update(int flockId, FlockDTO flockDTO);
 
         public void Delete(int id);
 

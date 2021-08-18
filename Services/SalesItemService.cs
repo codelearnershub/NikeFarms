@@ -1,5 +1,6 @@
 ﻿using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
+using NikeFarms.v2._0.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,17 +19,17 @@ namespace NikeFarms.v2._0.Services
             _userService = userService;
         }
 
-        public SalesItem Add(int userId, string item, int noOfItem, int stockId, int salesId, decimal pricePerItem)
+        public SalesItem Add(SalesItemDTO salesItemDTO)
         {
             var salesItem = new SalesItem
             {
-                CreatedBy = _userService.FindById(userId).Email,
+                CreatedBy = _userService.FindById(salesItemDTO.UserId).Email,
                 CreatedAt = DateTime.Now,
-                Item = item,
-                NoOfItem = noOfItem,
-                StockId = stockId,
-                SalesId = salesId,
-                PricePerItem = pricePerItem,
+                Item = salesItemDTO.Item,
+                NoOfItem = salesItemDTO.NoOfItem,
+                StockId = salesItemDTO.StockId,
+                SalesId = salesItemDTO.SalesId,
+                PricePerItem = salesItemDTO.PricePerItem,
             };
 
             return _salesItemRepository.Add(salesItem);
@@ -39,7 +40,7 @@ namespace NikeFarms.v2._0.Services
             return _salesItemRepository.FindById(id);
         }
 
-        public SalesItem Update(int salesItemId, string item, int noOfItem, int stockId, int salesId, decimal pricePerItem)
+        public SalesItem Update(int salesItemId, SalesItemDTO salesItemDTO)
         {
             var salesItem = _salesItemRepository.FindById(salesItemId);
             if (salesItem == null)
@@ -47,11 +48,11 @@ namespace NikeFarms.v2._0.Services
                 return null;
             }
 
-            salesItem.Item = item;
-            salesItem.NoOfItem = noOfItem;
-            salesItem.StockId = stockId;
-            salesItem.SalesId = salesId;
-            salesItem.PricePerItem = pricePerItem;
+            salesItem.Item = salesItemDTO.Item;
+            salesItem.NoOfItem = salesItemDTO.NoOfItem;
+            salesItem.StockId = salesItemDTO.StockId;
+            salesItem.SalesId = salesItemDTO.SalesId;
+            salesItem.PricePerItem = salesItemDTO.PricePerItem;
             salesItem.UpdatedAt = DateTime.Now;
 
             return _salesItemRepository.Update(salesItem);

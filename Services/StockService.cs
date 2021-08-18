@@ -1,5 +1,6 @@
 ﻿using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
+using NikeFarms.v2._0.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,18 +19,18 @@ namespace NikeFarms.v2._0.Services
             _userService = userService;
         }
 
-        public Stock Add(int userId, string item, double noOfItem, double availableItem, decimal? pricePerCrate, decimal? pricePerKg, int flockId)
+        public Stock Add(StockDTO stockDTO)
         {
             var stock = new Stock
             {
-                CreatedBy = _userService.FindById(userId).Email,
+                CreatedBy = _userService.FindById(stockDTO.UserId).Email,
                 CreatedAt = DateTime.Now,
-                Item = item,
-                NoOfItem = noOfItem,
-                AvailableItem = availableItem,
-                PricePerCrate = pricePerCrate,
-                PricePerKg = pricePerKg,
-                FlockId = flockId,
+                Item = stockDTO.Item,
+                NoOfItem = stockDTO.NoOfItem,
+                AvailableItem = stockDTO.AvailableItem,
+                PricePerCrate = stockDTO.PricePerCrate,
+                PricePerKg = stockDTO.PricePerKg,
+                FlockId = stockDTO.FlockId,
             };
 
             return _stockRepository.Add(stock);
@@ -40,7 +41,7 @@ namespace NikeFarms.v2._0.Services
             return _stockRepository.FindById(id);
         }
 
-        public Stock Update(int stockId, string item, double noOfItem, double availableItem, decimal? pricePerCrate, decimal? pricePerKg, int flockId)
+        public Stock Update(int stockId, StockDTO stockDTO)
         {
             var stock = _stockRepository.FindById(stockId);
             if (stock == null)
@@ -48,12 +49,12 @@ namespace NikeFarms.v2._0.Services
                 return null;
             }
 
-            stock.Item = item;
-            stock.NoOfItem = noOfItem;
-            stock.AvailableItem = availableItem;
-            stock.PricePerCrate = pricePerCrate;
-            stock.PricePerKg = pricePerKg;
-            stock.FlockId = flockId;
+            stock.Item = stockDTO.Item;
+            stock.NoOfItem = stockDTO.NoOfItem;
+            stock.AvailableItem = stockDTO.AvailableItem;
+            stock.PricePerCrate = stockDTO.PricePerCrate;
+            stock.PricePerKg = stockDTO.PricePerKg;
+            stock.FlockId = stockDTO.FlockId;
             stock.UpdatedAt = DateTime.Now;
 
             return _stockRepository.Update(stock);

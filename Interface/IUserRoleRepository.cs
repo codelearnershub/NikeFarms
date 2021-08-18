@@ -12,6 +12,8 @@ namespace NikeFarms.v2._0.Interface
 
         public UserRole FindById(int userRoleId);
 
+        public string FindRole(int userId);
+
         public UserRole Update(UserRole userRole);
 
         public void Delete(int userRoleId);

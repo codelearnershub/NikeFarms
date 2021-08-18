@@ -1,5 +1,6 @@
 ﻿using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
+using NikeFarms.v2._0.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,13 +19,13 @@ namespace NikeFarms.v2._0.Services
             _userService = userService;
         }
 
-        public Role Add(int userId, string name)
+        public Role Add(RoleDTO roleDTO)
         {
             var role = new Role
             {
-                CreatedBy = _userService.FindById(userId).Email,
+                CreatedBy = _userService.FindById(roleDTO.UserId).Email,
                 CreatedAt = DateTime.Now,
-                Name = name,
+                Name = roleDTO.Name,
             };
 
             return _roleRepository.Add(role);
@@ -35,7 +36,7 @@ namespace NikeFarms.v2._0.Services
             return _roleRepository.FindById(id);
         }
 
-        public Role Update(int roleId, string Name)
+        public Role Update(int roleId, RoleDTO roleDTO)
         {
             var role = _roleRepository.FindById(roleId);
             if (role == null)
@@ -43,10 +44,15 @@ namespace NikeFarms.v2._0.Services
                 return null;
             }
 
-            role.Name = Name;
+            role.Name = roleDTO.Name;
             role.UpdatedAt = DateTime.Now;
 
             return _roleRepository.Update(role);
+        }
+
+        public IEnumerable<Role> GetAllRoles()
+        {
+            return _roleRepository.GetAllRoles();
         }
 
         public void Delete(int id)

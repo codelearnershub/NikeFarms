@@ -1,4 +1,5 @@
 ﻿using NikeFarms.v2._0.Models;
+using NikeFarms.v2._0.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,12 @@ namespace NikeFarms.v2._0.Interface
 {
     public interface IDailyActivityService
     {
-        public DailyActivity Add(int userId, double feedPerKg, int mortality, int medUsed, int flockId, int storeAllocationFeedId, int storeAllocationMedId);
+        public DailyActivity Add(DailyActivityDTO dailyActivityDTO);
 
 
         public DailyActivity FindById(int id);
 
-        public DailyActivity Update(int dailyId, double feedPerKg, int mortality, int medUsed, int flockId, int storeAllocationFeedId, int storeAllocationMedId);
+        public DailyActivity Update(int dailyId, DailyActivityDTO dailyActivityDTO);
 
 
         public void Delete(int id);

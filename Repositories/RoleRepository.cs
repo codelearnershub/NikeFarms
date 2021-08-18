@@ -10,9 +10,9 @@ namespace NikeFarms.v2._0.Repositories
 {
     public class RoleRepository : IRoleRepository
     {
-        private readonly NikeDbContext _dbContext;
+        private readonly NikeDbContext2 _dbContext;
 
-        public RoleRepository(NikeDbContext dbContext)
+        public RoleRepository(NikeDbContext2 dbContext)
         {
             _dbContext = dbContext;
         }
@@ -38,6 +38,11 @@ namespace NikeFarms.v2._0.Repositories
         public Role FindById(int roleId)
         {
             return _dbContext.Roles.FirstOrDefault(u => u.Id.Equals(roleId));
+        }
+
+        public List<Role> GetAllRoles()
+        {
+            return _dbContext.Roles.ToList();
         }
 
         public Role Update(Role role)

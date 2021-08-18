@@ -1,5 +1,6 @@
 ﻿using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
+using NikeFarms.v2._0.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,17 +19,17 @@ namespace NikeFarms.v2._0.Services
             _userService = userService;
         }
 
-        public StoreItem Add(int userId, string name, string description, string itemType, double noOfItem, double itemPerKg)
+        public StoreItem Add(StoreItemDTO storeItemDTO)
         {
             var storeItem = new StoreItem
             {
-                CreatedBy = _userService.FindById(userId).Email,
+                CreatedBy = _userService.FindById(storeItemDTO.UserId).Email,
                 CreatedAt = DateTime.Now,
-                Name = name,
-                Description = description,
-                ItemType = itemType,
-                NoOfItem = noOfItem,
-                ItemPerKg = itemPerKg,
+                Name = storeItemDTO.Name,
+                Description = storeItemDTO.Description,
+                ItemType = storeItemDTO.ItemType,
+                NoOfItem = storeItemDTO.NoOfItem,
+                ItemPerKg = storeItemDTO.ItemPerKg,
             };
 
             return _storeItemRepository.Add(storeItem);
@@ -39,7 +40,7 @@ namespace NikeFarms.v2._0.Services
             return _storeItemRepository.FindById(id);
         }
 
-        public StoreItem Update(int storeItemId, string Name, string description, string itemType, double noOfItem, double itemPerKg)
+        public StoreItem Update(int storeItemId, StoreItemDTO storeItemDTO)
         {
             var storeItem = _storeItemRepository.FindById(storeItemId);
             if (storeItem == null)
@@ -47,11 +48,11 @@ namespace NikeFarms.v2._0.Services
                 return null;
             }
 
-            storeItem.Name = Name;
-            storeItem.Description = description;
-            storeItem.ItemType = itemType;
-            storeItem.NoOfItem = noOfItem;
-            storeItem.ItemPerKg = itemPerKg;
+            storeItem.Name = storeItemDTO.Name;
+            storeItem.Description = storeItemDTO.Description;
+            storeItem.ItemType = storeItemDTO.ItemType;
+            storeItem.NoOfItem = storeItemDTO.NoOfItem;
+            storeItem.ItemPerKg = storeItemDTO.ItemPerKg;
             storeItem.UpdatedAt = DateTime.Now;
 
             return _storeItemRepository.Update(storeItem);

@@ -56,7 +56,8 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
 
         [Required(ErrorMessage = "Choose Role!")]
-        public IEnumerable<SelectListItem> Role { get; set; }
+        public IEnumerable<SelectListItem> RoleList { get; set; }
+
     }
 
     public class UpdateUserVM : LoginVM

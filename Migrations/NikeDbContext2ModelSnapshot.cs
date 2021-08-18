@@ -2,17 +2,15 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NikeFarms.Context;
 
 namespace NikeFarms.v2._0.Migrations
 {
-    [DbContext(typeof(NikeDbContext))]
-    [Migration("20210816131051_init")]
-    partial class init
+    [DbContext(typeof(NikeDbContext2))]
+    partial class NikeDbContext2ModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,7 +30,6 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
@@ -65,7 +62,6 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<double>("FeedConsumedPerKg")
@@ -110,7 +106,6 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
@@ -142,13 +137,12 @@ namespace NikeFarms.v2._0.Migrations
 
                     b.Property<string>("BatchNo")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(767)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("FlockTypeId")
@@ -161,6 +155,9 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BatchNo")
+                        .IsUnique();
 
                     b.HasIndex("FlockTypeId");
 
@@ -177,7 +174,6 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
@@ -210,10 +206,9 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("ReceiverId")
+                    b.Property<int>("RecieverId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -225,7 +220,7 @@ namespace NikeFarms.v2._0.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ReceiverId");
+                    b.HasIndex("RecieverId");
 
                     b.ToTable("Messages");
                 });
@@ -240,7 +235,6 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -253,6 +247,14 @@ namespace NikeFarms.v2._0.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2021, 8, 18, 12, 38, 39, 998, DateTimeKind.Local).AddTicks(4102),
+                            Name = "SuperAdmin"
+                        });
                 });
 
             modelBuilder.Entity("NikeFarms.v2._0.Models.Sales", b =>
@@ -265,7 +267,6 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("CustomerId")
@@ -275,11 +276,14 @@ namespace NikeFarms.v2._0.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<decimal>("TotalPrice")
+                    b.Property<decimal?>("TotalPrice")
                         .HasColumnType("decimal(18, 2)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
+
+                    b.Property<string>("Voucher")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -298,7 +302,6 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Item")
@@ -342,7 +345,6 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("FlockId")
@@ -381,11 +383,13 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double>("ItemPerKg")
+                    b.Property<double?>("ItemPerKg")
                         .HasColumnType("double");
+
+                    b.Property<int>("ManagerId")
+                        .HasColumnType("int");
 
                     b.Property<double>("NoOfItem")
                         .HasColumnType("double");
@@ -397,6 +401,8 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ManagerId");
 
                     b.HasIndex("StoreItemId");
 
@@ -413,10 +419,12 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double>("ItemPerKg")
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<double?>("ItemPerKg")
                         .HasColumnType("double");
 
                     b.Property<string>("ItemType")
@@ -452,7 +460,6 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
@@ -489,6 +496,20 @@ namespace NikeFarms.v2._0.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "lag",
+                            CreatedAt = new DateTime(2021, 8, 18, 12, 38, 39, 995, DateTimeKind.Local).AddTicks(6186),
+                            Email = "mazeedahhamzat@gmail.com",
+                            FirstName = "Mazstar",
+                            HashSalt = "J5cdgq6p63lKwmVg3b7ltQ==",
+                            LastName = "Hamzy",
+                            PasswordHash = "EGSROdXOgd5YsDofKkZatVGf2Cnc/7O/RxhqQSmOF30=",
+                            PhoneNo = "09055220828"
+                        });
                 });
 
             modelBuilder.Entity("NikeFarms.v2._0.Models.UserRole", b =>
@@ -501,7 +522,6 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("RoleId")
@@ -521,6 +541,15 @@ namespace NikeFarms.v2._0.Migrations
                         .IsUnique();
 
                     b.ToTable("UserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2021, 8, 18, 12, 38, 40, 6, DateTimeKind.Local).AddTicks(9270),
+                            RoleId = 1,
+                            UserId = 1
+                        });
                 });
 
             modelBuilder.Entity("NikeFarms.v2._0.Models.WeeklyReport", b =>
@@ -536,7 +565,6 @@ namespace NikeFarms.v2._0.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("FlockId")
@@ -584,9 +612,9 @@ namespace NikeFarms.v2._0.Migrations
 
             modelBuilder.Entity("NikeFarms.v2._0.Models.Message", b =>
                 {
-                    b.HasOne("NikeFarms.v2._0.Models.Role", "Receiver")
+                    b.HasOne("NikeFarms.v2._0.Models.User", "Reciever")
                         .WithMany()
-                        .HasForeignKey("ReceiverId")
+                        .HasForeignKey("RecieverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -626,6 +654,12 @@ namespace NikeFarms.v2._0.Migrations
 
             modelBuilder.Entity("NikeFarms.v2._0.Models.StoreAllocation", b =>
                 {
+                    b.HasOne("NikeFarms.v2._0.Models.User", "Manager")
+                        .WithMany()
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("NikeFarms.v2._0.Models.StoreItem", "StoreItem")
                         .WithMany()
                         .HasForeignKey("StoreItemId")

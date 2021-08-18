@@ -8,7 +8,7 @@ using NikeFarms.Context;
 
 namespace NikeFarms.v2._0.Migrations
 {
-    [DbContext(typeof(NikeDbContext2))]
+    [DbContext(typeof(NikeDbContext))]
     [Migration("20210818113841_seedData")]
     partial class seedData
     {

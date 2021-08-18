@@ -30,7 +30,7 @@ namespace NikeFarms.v2._0
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<NikeDbContext2>(option => option.UseMySQL(Configuration.GetConnectionString("NikeConnectionString2")));
+            services.AddDbContext<NikeDbContext>(option => option.UseMySQL(Configuration.GetConnectionString("NikeConnectionString2")));
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(config =>
             {

@@ -10,9 +10,9 @@ namespace NikeFarms.v2._0.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly NikeDbContext2 _dbContext;
+        private readonly NikeDbContext _dbContext;
 
-        public UserRepository(NikeDbContext2 dbContext)
+        public UserRepository(NikeDbContext dbContext)
         {
             _dbContext = dbContext;
         }

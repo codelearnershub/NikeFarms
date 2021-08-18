@@ -4,9 +4,9 @@ using System;
 
 namespace NikeFarms.Context
 {
-    public class NikeDbContext2 : DbContext
+    public class NikeDbContext : DbContext
     {
-        public NikeDbContext2(DbContextOptions options) : base(options)
+        public NikeDbContext(DbContextOptions options) : base(options)
         {
         }
 

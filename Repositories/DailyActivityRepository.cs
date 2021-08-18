@@ -10,9 +10,9 @@ namespace NikeFarms.v2._0.Repositories
 {
     public class DailyActivityRepository : IDailyActivityRepository
     {
-        private readonly NikeDbContext2 _dbContext;
+        private readonly NikeDbContext _dbContext;
 
-        public DailyActivityRepository(NikeDbContext2 dbContext)
+        public DailyActivityRepository(NikeDbContext dbContext)
         {
             _dbContext = dbContext;
         }

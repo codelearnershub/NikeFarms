@@ -10,9 +10,9 @@ namespace NikeFarms.v2._0.Repositories
 {
     public class StoreItemRepository : IStoreItemRepository
     {
-        private readonly NikeDbContext2 _dbContext;
+        private readonly NikeDbContext _dbContext;
 
-        public StoreItemRepository(NikeDbContext2 dbContext)
+        public StoreItemRepository(NikeDbContext dbContext)
         {
             _dbContext = dbContext;
         }

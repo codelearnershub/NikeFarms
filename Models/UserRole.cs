@@ -7,7 +7,7 @@ namespace NikeFarms.v2._0.Models
 {
     public class UserRole : BaseEntity
     {
-        public Role User { get; set; }
+        public User User { get; set; }
 
         public int UserId { get; set; }
 

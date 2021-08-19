@@ -13,7 +13,7 @@ namespace NikeFarms.v2._0.Interface
 
         public Role FindById(int id);
 
-        public Role Update(int roleId, RoleDTO roleDTO);
+        public Role Update(RoleDTO roleDTO);
 
         public IEnumerable<Role> GetAllRoles();
 

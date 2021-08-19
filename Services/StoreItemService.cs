@@ -30,6 +30,7 @@ namespace NikeFarms.v2._0.Services
                 ItemType = storeItemDTO.ItemType,
                 NoOfItem = storeItemDTO.NoOfItem,
                 ItemPerKg = storeItemDTO.ItemPerKg,
+                TotalPricePurchased = storeItemDTO.TotalPricePurchased,
             };
 
             return _storeItemRepository.Add(storeItem);
@@ -53,6 +54,7 @@ namespace NikeFarms.v2._0.Services
             storeItem.ItemType = storeItemDTO.ItemType;
             storeItem.NoOfItem = storeItemDTO.NoOfItem;
             storeItem.ItemPerKg = storeItemDTO.ItemPerKg;
+            storeItem.TotalPricePurchased = storeItemDTO.TotalPricePurchased;
             storeItem.UpdatedAt = DateTime.Now;
 
             return _storeItemRepository.Update(storeItem);

@@ -36,9 +36,9 @@ namespace NikeFarms.v2._0.Services
             return _roleRepository.FindById(id);
         }
 
-        public Role Update(int roleId, RoleDTO roleDTO)
+        public Role Update(RoleDTO roleDTO)
         {
-            var role = _roleRepository.FindById(roleId);
+            var role = _roleRepository.FindById(roleDTO.Id);
             if (role == null)
             {
                 return null;

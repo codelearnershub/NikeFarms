@@ -2,6 +2,7 @@
 using NikeFarms.Context;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NikeFarms.v2._0.Repositories
@@ -36,6 +37,11 @@ namespace NikeFarms.v2._0.Repositories
         public FlockType FindById(int flockTypeId)
         {
             return _dbContext.FlockTypes.FirstOrDefault(u => u.Id.Equals(flockTypeId));
+        }
+
+        public List<FlockType> GetAllFlockTypes()
+        {
+            return _dbContext.FlockTypes.ToList();
         }
 
         public FlockType Update(FlockType flockType)

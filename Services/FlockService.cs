@@ -26,7 +26,7 @@ namespace NikeFarms.v2._0.Services
                 CreatedBy = _userService.FindById(flockDTO.UserId).Email,
                 CreatedAt = DateTime.Now,
                 FlockTypeId = flockDTO.FlockTypeId,
-                BatchNo = (Guid.NewGuid()).ToString("000000"),
+                BatchNo = Guid.NewGuid().ToString().Substring(0, 6).ToUpper(),
                 TotalNo = flockDTO.TotalNo,
                 Age = flockDTO.Age,
                 AverageWeight = flockDTO.AverageWeight,
@@ -35,14 +35,19 @@ namespace NikeFarms.v2._0.Services
             return _flockRepository.Add(flock);
         }
 
+        public IEnumerable<Flock> GetAllFlocks()
+        {
+            return _flockRepository.GetAllFlocks();
+        }
+
         public Flock FindById(int id)
         {
             return _flockRepository.FindById(id);
         }
 
-        public Flock Update(int flockId, FlockDTO flockDTO)
+        public Flock Update(FlockDTO flockDTO)
         {
-            var flock = _flockRepository.FindById(flockId);
+            var flock = _flockRepository.FindById(flockDTO.Id);
             if (flock == null)
             {
                 return null;

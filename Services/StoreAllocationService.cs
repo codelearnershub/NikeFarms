@@ -28,6 +28,7 @@ namespace NikeFarms.v2._0.Services
                 StoreItemId = storeAllocationDTO.StoreItemId,
                 NoOfItem = storeAllocationDTO.NoOfItem,
                 ItemPerKg = storeAllocationDTO.ItemPerKg,
+                ItemType = storeAllocationDTO.ItemType,
             };
 
             return _storeAllocationRepository.Add(storeAllocation);
@@ -50,6 +51,7 @@ namespace NikeFarms.v2._0.Services
             storeAllocation.NoOfItem = storeAllocationDTO.NoOfItem;
             storeAllocation.ItemPerKg = storeAllocationDTO.ItemPerKg;
             storeAllocation.UpdatedAt = DateTime.Now;
+            storeAllocation.ItemType = storeAllocationDTO.ItemType;
 
             return _storeAllocationRepository.Update(storeAllocation);
         }
@@ -57,6 +59,16 @@ namespace NikeFarms.v2._0.Services
         public void Delete(int id)
         {
             _storeAllocationRepository.Delete(id);
+        }
+
+        public IEnumerable<StoreAllocation> FeedAllocation(int userId)
+        {
+            return _storeAllocationRepository.FeedAllocation(userId);
+        }
+
+        public IEnumerable<StoreAllocation> MedAllocation(int userId)
+        {
+            return _storeAllocationRepository.MedAllocation(userId);
         }
     }
 }

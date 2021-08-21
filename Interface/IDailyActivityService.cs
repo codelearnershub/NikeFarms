@@ -14,7 +14,7 @@ namespace NikeFarms.v2._0.Interface
 
         public DailyActivity FindById(int id);
 
-        public DailyActivity Update(int dailyId, DailyActivityDTO dailyActivityDTO);
+        public DailyActivity Update(DailyActivityDTO dailyActivityDTO);
 
 
         public void Delete(int id);

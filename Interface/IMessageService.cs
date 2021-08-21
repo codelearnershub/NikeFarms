@@ -13,7 +13,9 @@ namespace NikeFarms.v2._0.Interface
 
         public Message FindById(int id);
 
-        public Message Update(int messageId, MessageDTO messageDTO);
+        public Message Update(MessageDTO messageDTO);
+
+        public IEnumerable<Message> GetMessages(string senderEmail);
 
         public void Delete(int id);
     }

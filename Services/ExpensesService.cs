@@ -37,9 +37,9 @@ namespace NikeFarms.v2._0.Services
             return _expensesRepository.FindById(id);
         }
 
-        public Expenses Update(int expensesId, ExpensesDTO expensesDTO)
+        public Expenses Update(ExpensesDTO expensesDTO)
         {
-            var expenses = _expensesRepository.FindById(expensesId);
+            var expenses = _expensesRepository.FindById(expensesDTO.Id);
             if (expenses == null)
             {
                 return null;
@@ -55,6 +55,11 @@ namespace NikeFarms.v2._0.Services
         public void Delete(int id)
         {
             _expensesRepository.Delete(id);
+        }
+
+        public IEnumerable<Expenses> GetAllExpenses()
+        {
+            return _expensesRepository.GetAllExpenses();
         }
     }
 }

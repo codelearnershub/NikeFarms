@@ -13,7 +13,9 @@ namespace NikeFarms.v2._0.Interface
 
         public Customer FindById(int id);
 
-        public Customer Update(int customerId, CustomerDTO customerDTO);
+        public IEnumerable<Customer> GetAllCustomers();
+
+        public Customer Update(CustomerDTO customerDTO);
 
         public void Delete(int id);
         

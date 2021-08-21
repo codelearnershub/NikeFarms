@@ -252,7 +252,8 @@ namespace NikeFarms.v2._0.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2021, 8, 19, 21, 2, 4, 339, DateTimeKind.Local).AddTicks(2046),
+                            CreatedAt = new DateTime(2021, 8, 19, 21, 10, 9, 329, DateTimeKind.Local).AddTicks(7759),
+                            CreatedBy = "mazeedahhamzat@gmail.com",
                             Name = "SuperAdmin"
                         });
                 });
@@ -505,7 +506,8 @@ namespace NikeFarms.v2._0.Migrations
                         {
                             Id = 1,
                             Address = "lag",
-                            CreatedAt = new DateTime(2021, 8, 19, 21, 2, 4, 330, DateTimeKind.Local).AddTicks(9261),
+                            CreatedAt = new DateTime(2021, 8, 19, 21, 10, 9, 224, DateTimeKind.Local).AddTicks(2522),
+                            CreatedBy = "mazeedahhamzat@gmail.com",
                             Email = "mazeedahhamzat@gmail.com",
                             FirstName = "Mazstar",
                             HashSalt = "J5cdgq6p63lKwmVg3b7ltQ==",
@@ -549,7 +551,8 @@ namespace NikeFarms.v2._0.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2021, 8, 19, 21, 2, 4, 357, DateTimeKind.Local).AddTicks(7959),
+                            CreatedAt = new DateTime(2021, 8, 19, 21, 10, 9, 336, DateTimeKind.Local).AddTicks(3002),
+                            CreatedBy = "mazeedahhamzat@gmail.com",
                             RoleId = 1,
                             UserId = 1
                         });

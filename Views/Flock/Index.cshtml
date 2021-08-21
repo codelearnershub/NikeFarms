@@ -1,0 +1,124 @@
+﻿@model List<NikeFarms.v2._0.Models.ViewModels.ListFlockVM>
+@{ ViewBag.Title = "Flocks"; }
+@{
+    Layout = "_StoreManagerDashboard";
+}
+<br />
+<h1 class="text-center"><i class="fab fa-twitter"></i>  Flocks</h1>
+
+<div class="card">
+    <div>
+        <br />
+        <a class="btn font-weight-bold ml-4" asp-controller="Flock" asp-action="AddFlock" style="background-color:darkgoldenrod"><i class="fas fa-plus"></i> Add Flocks</a>
+        @if (Model.Count() > 0)
+        {
+            <div class="card-body">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+
+                            <th> Batch No.</th>
+                            <th> Flock Type </th>
+                            <th> Current Age </th>
+                            <th> Current Weight (KG)</th>
+                            <th> Available Bird(s) </th>
+                            <th>Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var flock in Model)
+                        {
+                            string modalId = $"exampleModalCenter{flock.Id}";
+                            string modalIdHash = $"#exampleModalCenter{flock.Id}";
+                        <tr>
+
+                            <td class="font-weight-bolder"><span style="color:darkred">*</span> @flock.BatchNo</td>
+                            <td>@flock.FlockType</td>
+                            @if (flock.currentAge < 31)
+                            {
+                                <td>@flock.currentAge <span class="font-weight-bolder">Day(s)</span></td>
+                            }
+                            else if (flock.currentAge > 31 && flock.currentAge < 356)
+                            {
+                                int remainder = flock.currentAge % 31;
+                                int month = flock.currentAge / 31;
+                                if (remainder == 0)
+                                {
+                                    <td>@month <span class="font-weight-bolder">Month(s)</span> </td>
+                                }
+                                else
+                                {
+                                    <td>@month <span class="font-weight-bolder">Month(s)</span> @remainder <span class="font-weight-bolder">Day(s)</span></td>
+                                }
+
+                            }
+                            else
+                            {
+                                if (flock.currentAge >= 365)
+                                {
+                                    int rmonth = (flock.currentAge % 365) / 12;
+                                    int year = flock.currentAge / 365;
+                                    int rday = (flock.currentAge % 365) % 12;
+                                    if (rmonth == 0)
+                                    {
+                                        <td>@year <span class="font-weight-bolder">Year(s)</span></td>
+                                    }
+                                    else if (rday == 0)
+                                    {
+                                        <td>@year <span class="font-weight-bolder">Year(s)</span> @rmonth <span class="font-weight-bolder">Month(s)</span></td>
+                                    }
+                                    else
+                                    {
+                                        <td>@year <span class="font-weight-bolder">Year(s)</span> @rmonth <span class="font-weight-bolder">Month(s)</span> @rday <span class="font-weight-bolder">Day(s)</span></td>
+                                    }
+
+                                }
+
+                            }
+                            <td>@flock.CurrentAverageWeight <span class="font-weight-bolder">Kg</span></td>
+                            <td>@flock.TotalAvailable (not working)</td>
+                            <td>
+                                <a class="btn font-weight-bold" asp-action="UpdateFlock" asp-route-id="@flock.Id" style="background-color:greenyellow; color:white">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a class="btn font-weight-bold" style="background-color:red; color:white" data-toggle="modal" data-target=@modalIdHash>
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+
+
+                                <div class="modal fade" id=@modalId tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title font-weight-bolder" style="color:red" id="exampleModalLongTitle">Delete User <i class="fas fa-trash-alt"></i> </h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <span class="font-italic">Are you sure you want to delete </span> <br /><br /> <span class="font-weight-bolder text-center">Are you Sure you want to delete Flock with Bath No: <span style="color:darkred">@flock.BatchNo (@flock.FlockType) ??</span></span>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a class="btn font-weight-bold" style="background-color:red; color:white" asp-action="Delete" asp-route-id="@flock.Id">Yes</a>
+                                                <a class="btn font-weight-bold" style="background-color:greenyellow; color:white" data-dismiss="modal">No</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <br /><br />
+            <h4 class="text-center font-weight-bolder" style="color:red">No Flock has been Added! </h4>
+        }
+    </div>
+</div>

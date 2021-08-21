@@ -122,6 +122,7 @@ namespace NikeFarms.v2._0.Controllers
                     Email = user.Email,
                     PhoneNo = user.PhoneNo,
                     Address = user.Address,
+                    RoleId = _userRoleService.FindUserRole(user.Id).RoleId,
                     RoleList = _roleService.GetAllRoles().Select(m => new SelectListItem
                     {
                         Text = m.Name,

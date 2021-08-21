@@ -40,6 +40,11 @@ namespace NikeFarms.v2._0.Repositories
             return _dbContext.Expenses.FirstOrDefault(u => u.Id.Equals(expensesId));
         }
 
+        public List<Expenses> GetAllExpenses()
+        {
+            return _dbContext.Expenses.ToList();
+        }
+
         public Expenses Update(Expenses expenses)
         {
             _dbContext.Expenses.Update(expenses);

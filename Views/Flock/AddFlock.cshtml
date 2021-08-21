@@ -1,0 +1,60 @@
+﻿@model NikeFarms.v2._0.Models.ViewModels.AddFlockVM
+
+@{ ViewBag.Title = "Add Flocks"; }
+@{
+    Layout = "_StoreManagerDashboard";
+}
+
+
+<div class="container">
+    <div class="">
+        <div class="">
+            <div class="">
+                <div class="">
+                    <br /><br /><h2 class="text-center font-weight-bolder" style="color:darkred"><i class="fab fa-twitter"></i> Add Flocks</h2><br /><br />
+                </div>
+                <form method="post">
+                    <div class="">
+                        <div class="form-row">
+                            <div class="form-group col-md-5">
+                                <label asp-for="TotalNo" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Total Number of Incoming Flock </label>
+                                <input  style="margin-right: 20px" asp-for="TotalNo" class="form-control " placeholder="Input Total No." type="number" min="1"/>
+                                <span asp-validation-for="TotalNo" style="color:darkred"></span>
+                            </div>
+                            <div class="form-group col-md-2">
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label asp-for="Age" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Age of Incoming Flock (In Days)</label>
+                                <input style="margin-right: 20px" asp-for="Age" class="form-control" placeholder="Enter Flock Age (In Days)" />
+                                <span asp-validation-for="Age" style="color:darkred"></span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-5">
+                                <label asp-for="AverageWeight" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Enter Average Weight of Incoming Flock (Kg) </label>
+                                <input asp-for="AverageWeight" class="form-control" placeholder="Average Weight (Kg)" />
+                                <span asp-validation-for="AverageWeight" style="color:darkred"></span>
+                            </div>
+                            <div class="form-group col-md-2">
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label class="form-check-label font-weight-bold" asp-for="FlockTypeId"><span style="color: darkred">*</span> Select Flock Type</label>
+                                <select asp-for="FlockTypeId" asp-items="@Model.FlockTypeList" class="form-control">
+                                    <option disabled selected>--Select Flock Type--</option>
+                                </select>
+                                <span asp-validation-for="FlockTypeId" style="color:darkred"></span><br>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <input type="submit" value="Add Flock" class="btn font-weight-bolder" style="background-color:darkgoldenrod" />
+                        <a style="margin-left: 5%; color: darkred" asp-action="Index">Back Home</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

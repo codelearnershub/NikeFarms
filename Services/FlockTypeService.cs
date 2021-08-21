@@ -32,14 +32,19 @@ namespace NikeFarms.v2._0.Services
             return _flockTypeRepository.Add(flockType);
         }
 
+        public IEnumerable<FlockType> GetAllFlockTypes()
+        {
+            return _flockTypeRepository.GetAllFlockTypes();
+        }
+
         public FlockType FindById(int id)
         {
             return _flockTypeRepository.FindById(id);
         }
 
-        public FlockType Update(int flockTypeId, FlockTypeDTO flockTypeDTO)
+        public FlockType Update(FlockTypeDTO flockTypeDTO)
         {
-            var flockType = _flockTypeRepository.FindById(flockTypeId);
+            var flockType = _flockTypeRepository.FindById(flockTypeDTO.Id);
             if (flockType == null)
             {
                 return null;

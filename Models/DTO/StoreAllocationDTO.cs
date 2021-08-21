@@ -15,6 +15,8 @@ namespace NikeFarms.v2._0.Models.DTO
 
         public double? ItemPerKg { get; set; }
 
+        public string ItemType { get; set; }
+
         public int ManagerId { get; set; }
     }
 }

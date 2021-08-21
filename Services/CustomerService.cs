@@ -41,9 +41,14 @@ namespace NikeFarms.v2._0.Services
             return _customerRepository.FindById(id);
         }
 
-        public Customer Update(int customerId, CustomerDTO customerDTO)
+        public IEnumerable<Customer> GetAllCustomers()
         {
-            var customer = _customerRepository.FindById(customerId);
+            return _customerRepository.GetAllCustomers();
+        }
+
+        public Customer Update(CustomerDTO customerDTO)
+        {
+            var customer = _customerRepository.FindById(customerDTO.Id);
             if(customer == null)
             {
                 return null;

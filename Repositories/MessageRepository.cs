@@ -40,6 +40,12 @@ namespace NikeFarms.v2._0.Repositories
             return _dbContext.Messages.FirstOrDefault(u => u.Id.Equals(messageId));
         }
 
+        public List<Message> GetMessages(string senderEmail)
+        {
+            return _dbContext.Messages.Where(m=> m.CreatedBy == senderEmail).ToList();
+        }
+
+
         public Message Update(Message message)
         {
             _dbContext.Messages.Update(message);

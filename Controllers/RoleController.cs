@@ -24,11 +24,19 @@ namespace NikeFarms.v2._0.Controllers
 
         public IActionResult Index()
         {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            User userlogin = _userService.FindById(userId);
+            ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
+
             return View();
         }
 
         public IActionResult AddRole()
         {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            User userlogin = _userService.FindById(userId);
+            ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
+
             return View();
         }
 
@@ -36,8 +44,6 @@ namespace NikeFarms.v2._0.Controllers
         public IActionResult AddRole(AddRoleVM addRole)
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            User userlogin = _userService.FindById(userId);
-            ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
 
             RoleDTO role = new RoleDTO
             {
@@ -59,7 +65,7 @@ namespace NikeFarms.v2._0.Controllers
                 ListRoleVM listRoleVM = new ListRoleVM
                 {
 
-                    UserId = role.Id,
+                    Id = role.Id,
                     Name = role.Name,
                     CreatedBy = $"{_userService.FindByEmail(role.CreatedBy).FirstName} .{_userService.FindByEmail(role.CreatedBy).LastName[0]}",
                 };

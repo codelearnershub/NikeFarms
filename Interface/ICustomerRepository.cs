@@ -12,6 +12,8 @@ namespace NikeFarms.v2._0.Interface
 
         public Customer FindById(int customerId);
 
+        public List<Customer> GetAllCustomers();
+
         public Customer Update(Customer customer);
 
         public void Delete(int customerId);

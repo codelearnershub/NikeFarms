@@ -123,7 +123,7 @@ namespace NikeFarms.v2._0.Controllers
             }
             else if (role == "Store Manager")
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Flock");
             }
             else {
                 return NotFound();

@@ -12,10 +12,20 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
     public class AddRoleVM
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Enter Role!!")]
         public string Name { get; set; }
     }
 
+    public class ListRoleVM
+    {
+        public string CreatedBy { get; set; }
+
+        public int UserId { get; set; }
+
+        public string Name { get; set; }
+    }
 
     public class UpdateRoleVM : AddRoleVM
     {

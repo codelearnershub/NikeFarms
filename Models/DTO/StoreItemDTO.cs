@@ -18,5 +18,7 @@ namespace NikeFarms.v2._0.Models.DTO
         public double NoOfItem { get; set; }
 
         public double? ItemPerKg { get; set; }
+
+        public decimal TotalPricePurchased { get; set; }
     }
 }

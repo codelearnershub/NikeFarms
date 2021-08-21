@@ -25,6 +25,9 @@ namespace NikeFarms.v2._0.Models.ViewModels
         public double NoOfItem { get; set; }
 
         public double? ItemPerKg { get; set; }
+
+        [Required(ErrorMessage = "Input Total Price of Items Purchased!")]
+        public decimal TotalPricePurchased { get; set; }
     }
 
     public class UpdateStoreItem : AddStoreItem

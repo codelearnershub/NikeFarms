@@ -9,6 +9,8 @@ namespace NikeFarms.v2._0.Models.DTO
     {
         public int UserId { get; set; }
 
+        public int Id { get; set; }
+
         public string Name { get; set; }
     }
 }

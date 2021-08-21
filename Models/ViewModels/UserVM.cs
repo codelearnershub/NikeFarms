@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -28,6 +28,8 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
     public class RegisterVM : LoginVM
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Last Name is Required")]
         [MaxLength(20, ErrorMessage = "Last Name must not be more than 20 Characters")]
         public string LastName { get; set; }
@@ -58,30 +60,48 @@ namespace NikeFarms.v2._0.Models.ViewModels
         [Required(ErrorMessage = "Choose Role!")]
         public IEnumerable<SelectListItem> RoleList { get; set; }
 
+       
     }
 
-    public class UpdateUserVM : LoginVM
+    public class UpdateUserVM : RegisterVM
     {
-        [Required(ErrorMessage = "Last Name is Required")]
-        [MaxLength(20, ErrorMessage = "Last Name must not be more than 20 Characters")]
-        public string LastName { get; set; }
+        //[Required(ErrorMessage = "Last Name is Required")]
+        //[MaxLength(20, ErrorMessage = "Last Name must not be more than 20 Characters")]
+        //public string LastName { get; set; }
 
-        [Required(ErrorMessage = "First Name is Required")]
-        [MaxLength(20, ErrorMessage = "First Name must not be more than 20 Characters")]
-        public string FirstName { get; set; }
-
-
-        [Required(ErrorMessage = "Confirm Password!!")]
-        [Compare(nameof(Password), ErrorMessage = "Passwords do not match")]
-        public string ConfirmPassword { get; set; }
+        //[Required(ErrorMessage = "First Name is Required")]
+        //[MaxLength(20, ErrorMessage = "First Name must not be more than 20 Characters")]
+        //public string FirstName { get; set; }
 
 
-        [Required(ErrorMessage = "Enter Phone Number!!")]
-        [MaxLength(11, ErrorMessage = "Invalid Phone Number!")]
-        [MinLength(11, ErrorMessage = "Invalid Phone Number!")]
+        //[Required(ErrorMessage = "Confirm Password!!")]
+        //[Compare(nameof(Password), ErrorMessage = "Passwords do not match")]
+        //public string ConfirmPassword { get; set; }
+
+
+        //[Required(ErrorMessage = "Enter Phone Number!!")]
+        //[MaxLength(11, ErrorMessage = "Invalid Phone Number!")]
+        //[MinLength(11, ErrorMessage = "Invalid Phone Number!")]
+        //public string PhoneNo { get; set; }
+
+        //[Required(ErrorMessage = "Enter Resident Address!!")]
+        //public string Address { get; set; }
+    }
+
+    public class ListUserVM
+    {
+        public int UserId { get; set; }
+        
+        public string FullName { get; set; }
+
+        public string Email { get; set; }
+
         public string PhoneNo { get; set; }
 
-        [Required(ErrorMessage = "Enter Resident Address!!")]
-        public string Address { get; set; }
+        public string RoleName { get; set; }
+
+        public string CreatedBy { get; set; }
+
+       
     }
 }

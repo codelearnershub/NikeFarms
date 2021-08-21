@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NikeFarms.Context;
 
 namespace NikeFarms.v2._0.Migrations
 {
     [DbContext(typeof(NikeDbContext))]
-    partial class NikeDbContext2ModelSnapshot : ModelSnapshot
+    [Migration("20210819093737_errorRoleUser")]
+    partial class errorRoleUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -252,7 +254,7 @@ namespace NikeFarms.v2._0.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2021, 8, 19, 21, 2, 4, 339, DateTimeKind.Local).AddTicks(2046),
+                            CreatedAt = new DateTime(2021, 8, 19, 10, 37, 36, 164, DateTimeKind.Local).AddTicks(4989),
                             Name = "SuperAdmin"
                         });
                 });
@@ -438,9 +440,6 @@ namespace NikeFarms.v2._0.Migrations
                     b.Property<double>("NoOfItem")
                         .HasColumnType("double");
 
-                    b.Property<decimal>("TotalPricePurchased")
-                        .HasColumnType("decimal(18, 2)");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
@@ -505,7 +504,7 @@ namespace NikeFarms.v2._0.Migrations
                         {
                             Id = 1,
                             Address = "lag",
-                            CreatedAt = new DateTime(2021, 8, 19, 21, 2, 4, 330, DateTimeKind.Local).AddTicks(9261),
+                            CreatedAt = new DateTime(2021, 8, 19, 10, 37, 36, 161, DateTimeKind.Local).AddTicks(8532),
                             Email = "mazeedahhamzat@gmail.com",
                             FirstName = "Mazstar",
                             HashSalt = "J5cdgq6p63lKwmVg3b7ltQ==",
@@ -549,7 +548,7 @@ namespace NikeFarms.v2._0.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2021, 8, 19, 21, 2, 4, 357, DateTimeKind.Local).AddTicks(7959),
+                            CreatedAt = new DateTime(2021, 8, 19, 10, 37, 36, 171, DateTimeKind.Local).AddTicks(2327),
                             RoleId = 1,
                             UserId = 1
                         });

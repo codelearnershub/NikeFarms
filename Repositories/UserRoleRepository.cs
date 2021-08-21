@@ -42,6 +42,12 @@ namespace NikeFarms.v2._0.Repositories
            
         }
 
+        public UserRole FindUserRole(int userId)
+        {
+            return _dbContext.UserRoles.Include(r => r.Role).FirstOrDefault(u => u.UserId == userId);
+
+        }
+
         public UserRole FindById(int userRoleId)
         {
             return _dbContext.UserRoles.FirstOrDefault(u => u.Id.Equals(userRoleId));

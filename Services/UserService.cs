@@ -49,10 +49,12 @@ namespace NikeFarms.v2._0.Services
             };
 
             _userRepository.Add(user);
-
+            int id = _userRepository.FindByEmail(userDTO.Email).Id;
             UserRole userRole = new UserRole
             {
-                UserId = user.Id,
+                CreatedBy = _userRepository.FindById(userDTO.UserId).Email,
+                CreatedAt = DateTime.Now,
+                UserId = id,
                 RoleId = userDTO.RoleId,
 
             };
@@ -100,9 +102,9 @@ namespace NikeFarms.v2._0.Services
             return _userRepository.FindById(Id);
         }
 
-        public User Update(int id, UserDTO userDTO)
+        public User Update(UserDTO userDTO)
         {
-            User user = _userRepository.FindById(id);
+            User user = _userRepository.FindById(userDTO.Id);
 
             if (user == null)
             {
@@ -129,12 +131,37 @@ namespace NikeFarms.v2._0.Services
             user.PasswordHash = hashedPassword;
             user.UpdatedAt = DateTime.Now;
 
+
+            
+            var userRole = _userRoleRepository.FindUserRole(userDTO.Id);
+            if(userRole != null)
+            {
+                userRole.UserId = userDTO.Id;
+                userRole.RoleId = userDTO.RoleId;
+
+                _userRoleRepository.Update(userRole);
+            }
             return _userRepository.Update(user);
+        }
+
+        public IEnumerable<User> GetAllUser()
+        {
+            return _userRepository.GetAllUser();
+        }
+
+        public User FindByEmail(string userEmail)
+        {
+            return _userRepository.FindByEmail(userEmail);
         }
 
         public void Delete(int id)
         {
+           
+
+            var userRole = _userRoleRepository.FindUserRole(id);
             _userRepository.Delete(id);
+            _userRoleRepository.Delete(userRole.Id);
+
         }
 
     }

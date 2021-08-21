@@ -1,11 +1,10 @@
 ﻿
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - NikeFarms SuperAdminDashboard</title>
+    <title>@ViewData["Title"] - NikeFarms AdminDashboard</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/mycss.css" />
@@ -34,7 +33,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <span style="color: darkred" class="font-weight-bolder ml-5">@ViewBag.UserName </span>are you sure you want to Logout?
+                                <span style="color: darkred" class="font-weight-bolder ml-5">Nike </span>are you sure you want to Logout?
                             </div>
                             <div class="modal-footer">
                                 <a class="btn font-weight-bold" style="background-color:red; color:white" asp-controller="Auth" asp-action="Logout">Yes</a>
@@ -54,16 +53,36 @@
     </div>
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a><br />
-        <i class="fas fa-user-circle ml-3" style="font-size: 60px; color: grey"></i><span class="font-weight-bolder" style="color: grey; margin-left:20px; font-size: 20px">@ViewBag.UserName <great></great><br /><span style="margin-left: 110px; color: darkred; font-size: 15px">(Super Admin)</span> </span><br /><span style="color: greenyellow"><i class="fas fa-circle onlinedot"></i>  Online</span><br /><br />
+        <i class="fas fa-user-circle ml-3" style="font-size: 60px; color: grey"></i><span class="font-weight-bolder" style="color: grey; margin-left:20px; font-size: 20px">@ViewBag.UserName <great></great><br /><span style="margin-left: 110px; color: darkred; font-size: 15px">(Store Manager)</span> </span><br /><span style="color: greenyellow"><i class="fas fa-circle onlinedot"></i>  Online</span><br /><br />
         <div class="ml-3 font-weight-bolder">
+            <a asp-controller="Calculation" asp-action="AdminDashboard"><i class="fas fa-tachometer-alt"></i>  Dashboard</a>
+            <hr />
+            <a asp-controller="AdminDashboard" asp-action="Notification"><i class="fas fa-bell"></i>  Notifications @*<input type="button" class="btn btn-sm btn-round font-weight-bolder" value="@Model.NotificationCount" style="color:white; margin-top: -10%; background-color:darkgoldenrod; border-radius:50%; font-size:10px" />*@ </a>
+            <hr />
+            <a href="#"><i class="fas fa-book"></i>  Records</a>
+            <div class="ml-3" style="font-size: 10px;">
+                <a style="color: darkgoldenrod" asp-controller="AdminDashboard" asp-action="LayerRecord"> <img class="iconsmall" src="~/Images/layericon.svg" /> Layers</a>
+                <a style="color: darkgoldenrod" asp-controller="AdminDashboard" asp-action="BroilerRecord"> <img class="iconsmall" src="~/Images/broilericon.svg" /> Broilers</a>
+                <a style="color: darkgoldenrod" asp-controller="AdminDashboard" asp-action="CockrelRecord"> <img class="iconsmall" src="~/Images/cockrelicon.svg" /> Cockrels</a>
+                <a style="color: darkgoldenrod" asp-controller="AdminDashboard" asp-action="NoilerRecord"> <img class="iconsmall" src="~/Images/noilericon.svg" /> Noilers</a>
+                <a style="color: darkgoldenrod" asp-controller="AdminDashboard" asp-action="TurkeyRecord"> <img class="iconsmall" src="~/Images/turkeyicon.png" /> Turkeys</a>
+                <a style="color: darkgoldenrod" asp-controller="AdminDashboard" asp-action="EggRecord"> <i class="fas fa-egg"></i>  Eggs</a>
 
-            <br />
+            </div>
             <hr />
-            <a  asp-controller="SuperAdmin" asp-action="ListUser"> <i class="fas fa-users"></i>   Manage <great style="color:red">D</great> Users</a>
+            <a asp-controller="AdminDashboard" asp-action="ExpenseRecord"> <i class="fas fa-wallet"></i>   Expenses</a>
             <hr />
-            <a  asp-controller="Role" asp-action="ListRole"> <i class="fas fa-screwdriver"></i>   Roles</a>
+            <a asp-controller="Stock" asp-action="Index"> <i class="fas fa-layer-group"></i>  Stock</a>
             <hr />
-
+            <a asp-controller="Calculation" asp-action="Profits"> <i class="fas fa-money-bill-wave"></i>   Profits</a>
+            <hr />
+            <a asp-controller="Calculation" asp-action="Sales"> <i class="far fa-clipboard"></i>   Sales</a>
+            <hr />
+            <a asp-controller="AdminDashboard" asp-action="ListManager"> <i class="fas fa-users"></i>   Manage <great style="color:red">D</great> Managers</a>
+            <hr />
+            <a asp-controller="Message" asp-action="IndexAdmin"> <i class="far fa-comments"></i>   Messages</a>
+            <hr />
+            
             <a class="bottom-sivenav" style="font-size: 23px; color:darkred" data-toggle="modal" data-target="#exampleModalCenter">
                 Logout <i class="fas fa-sign-out-alt"></i>
             </a>
@@ -77,7 +96,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <span style="color: darkred" class="font-weight-bolder ml-5">@ViewBag.UserName </span>are you sure you want to Logout?
+                            <span style="color: darkred" class="font-weight-bolder ml-5">Nike </span>are you sure you want to Logout?
                         </div>
                         <div class="modal-footer">
                             <a class="btn font-weight-bold" style="background-color:red; color:white" asp-controller="Auth" asp-action="Logout">Yes</a>
@@ -96,7 +115,11 @@
 
     </div>
 
-
+    @*<footer class="border-top footer text-muted" style="position:relative">
+            <div class="container">
+                &copy; 2021 - NikeFarms <span class="nike-footer"><em>...<great><span style="color:darkred">N</span><span style="color:red">i</span><span style="color:darkred">ke</span><span style="color:darkgoldenrod">Farms </span>Got You Covered</em></span>
+            </div>
+        </footer>*@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

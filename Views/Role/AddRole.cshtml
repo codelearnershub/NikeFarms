@@ -1,0 +1,37 @@
+﻿@model NikeFarms.v2._0.Models.ViewModels.AddRoleVM
+
+@{ ViewBag.Title = "Add Roles"; }
+@{
+    Layout = "_SuperAdminDashboard";
+}
+
+
+<div class="container">
+    <div class="">
+        <div class="">
+            <div class="">
+                <div class="">
+                    <br /><br /><h2 class="text-center font-weight-bolder" style="color:darkred"><i class="fas fa-plus"></i> Add Role</h2><br /><br />
+                </div>
+                <form method="post">
+                        <div class="form-row">
+                            <div class="form-group col-md-5">
+                                <label asp-for="Name" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Role Name</label>
+                                <input style="margin-right: 20px" asp-for="Name" class="form-control " placeholder="Enter Role" />
+                                <span asp-validation-for="Name" style="color:darkred"></span>
+                            </div>
+                           
+                        </div>
+                        
+                    <div class="mt-3">
+                        <input type="submit" value="Add Role" class="btn font-weight-bolder" style="background-color:darkgoldenrod" />
+                        <a style="margin-left: 5%; color: darkred" asp-action="ListRole">Back Home</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

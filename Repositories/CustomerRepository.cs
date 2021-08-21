@@ -40,6 +40,11 @@ namespace NikeFarms.v2._0.Repositories
             return _dbContext.Customers.FirstOrDefault(u => u.Id.Equals(customerId));
         }
 
+        public List<Customer> GetAllCustomers()
+        {
+            return _dbContext.Customers.ToList();
+        }
+
         public Customer Update(Customer customer)
         {
             _dbContext.Customers.Update(customer);

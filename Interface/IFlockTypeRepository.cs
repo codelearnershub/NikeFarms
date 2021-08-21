@@ -12,6 +12,8 @@ namespace NikeFarms.v2._0.Interface
 
         public FlockType FindById(int flockTypeId);
 
+        public List<FlockType> GetAllFlockTypes();
+
         public FlockType Update(FlockType flockType);
 
         public void Delete(int flockTypeId);

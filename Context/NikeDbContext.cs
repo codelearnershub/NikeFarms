@@ -59,6 +59,7 @@ namespace NikeFarms.Context
                     PhoneNo = "09055220828",
                     Email = "mazeedahhamzat@gmail.com",
                     CreatedAt = DateTime.Now,
+                    CreatedBy = "mazeedahhamzat@gmail.com",
                     PasswordHash = "EGSROdXOgd5YsDofKkZatVGf2Cnc/7O/RxhqQSmOF30=",
                     HashSalt = "J5cdgq6p63lKwmVg3b7ltQ==",
                 }
@@ -73,6 +74,7 @@ namespace NikeFarms.Context
                     Id = 1,
                     Name = "SuperAdmin",
                     CreatedAt = DateTime.Now,
+                    CreatedBy = "mazeedahhamzat@gmail.com",
                 }
                 );
 
@@ -119,6 +121,7 @@ namespace NikeFarms.Context
                     UserId = 1,
                     RoleId = 1,
                     CreatedAt = DateTime.Now,
+                    CreatedBy = "mazeedahhamzat@gmail.com",
                 }
                 );
 

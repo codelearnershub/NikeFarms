@@ -40,6 +40,16 @@ namespace NikeFarms.v2._0.Repositories
             return _dbContext.StoreAllocations.FirstOrDefault(u => u.Id.Equals(storeAllocationId));
         }
 
+        public List<StoreAllocation> FeedAllocation(int userId)
+        {
+            return _dbContext.StoreAllocations.Where(s=> s.ItemType == "Feed" && s.ManagerId == userId).ToList();
+        }
+
+        public List<StoreAllocation> MedAllocation(int userId)
+        {
+            return _dbContext.StoreAllocations.Where(s => s.ItemType == "Medication" && s.ManagerId == userId).ToList();
+        }
+
         public StoreAllocation Update(StoreAllocation storeAllocation)
         {
             _dbContext.StoreAllocations.Update(storeAllocation);

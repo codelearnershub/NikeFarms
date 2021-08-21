@@ -38,9 +38,9 @@ namespace NikeFarms.v2._0.Services
             return _messageRepository.FindById(id);
         }
 
-        public Message Update(int messageId, MessageDTO messageDTO)
+        public Message Update(MessageDTO messageDTO)
         {
-            var message = _messageRepository.FindById(messageId);
+            var message = _messageRepository.FindById(messageDTO.Id);
             if (message == null)
             {
                 return null;
@@ -57,6 +57,11 @@ namespace NikeFarms.v2._0.Services
         public void Delete(int id)
         {
             _messageRepository.Delete(id);
+        }
+
+        public IEnumerable<Message> GetMessages(string senderEmail)
+        {
+           return _messageRepository.GetMessages(senderEmail);
         }
     }
 }

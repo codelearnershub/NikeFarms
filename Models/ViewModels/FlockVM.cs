@@ -13,8 +13,10 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
     public class AddFlockVM
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Choose Flock Type!")]
-        public IEnumerable<SelectListItem> FlockType { get; set; }
+        public IEnumerable<SelectListItem> FlockTypeList { get; set; }
 
 
         [Required(ErrorMessage = "Choose Flock Type!")]
@@ -33,6 +35,24 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
     public class UpdateFlockVM : AddFlockVM
     {
+
+    }
+
+    public class ListFlockVM
+    {
+        public int Id { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public string BatchNo { get; set; }
+
+        public int TotalAvailable { get; set; }
+
+        public string FlockType { get; set; }
+
+        public int currentAge { get; set; }
+
+        public double CurrentAverageWeight { get; set; }
 
     }
 }

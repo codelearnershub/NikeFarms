@@ -13,6 +13,8 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
     public class AddMessageVM
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Message Title!")]
         public string Title { get; set; }
 
@@ -22,7 +24,7 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
 
         [Required(ErrorMessage = "Choose Recipient!")]
-        public IEnumerable<SelectListItem> Reciever { get; set; }
+        public IEnumerable<SelectListItem> RecieverList { get; set; }
 
 
         [Required(ErrorMessage = "Choose Recipient!")]

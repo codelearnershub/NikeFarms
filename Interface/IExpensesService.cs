@@ -14,7 +14,9 @@ namespace NikeFarms.v2._0.Interface
 
         public Expenses FindById(int id);
 
-        public Expenses Update(int expensesId, ExpensesDTO expensesDTO);
+        public Expenses Update(ExpensesDTO expensesDTO);
+
+        public IEnumerable<Expenses> GetAllExpenses();
 
         public void Delete(int id);
 

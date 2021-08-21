@@ -14,6 +14,10 @@ namespace NikeFarms.v2._0.Interface
 
         public StoreAllocation Update(StoreAllocation storeAllocation);
 
+        public List<StoreAllocation> FeedAllocation(int userId);
+
+        public List<StoreAllocation> MedAllocation(int userId);
+
         public void Delete(int storeAllocationId);
     }
 }

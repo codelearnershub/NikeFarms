@@ -39,6 +39,12 @@ namespace NikeFarms.v2._0.Services
            
         }
 
+        public UserRole FindUserRole(int userId)
+        {
+            return _userRoleRepository.FindUserRole(userId);
+
+        }
+
         public void Delete(int id)
         {
             _userRoleRepository.Delete(id);

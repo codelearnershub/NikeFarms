@@ -13,7 +13,9 @@ namespace NikeFarms.v2._0.Interface
 
         public Flock FindById(int id);
 
-        public Flock Update(int flockId, FlockDTO flockDTO);
+        public IEnumerable<Flock> GetAllFlocks();
+
+        public Flock Update(FlockDTO flockDTO);
 
         public void Delete(int id);
 

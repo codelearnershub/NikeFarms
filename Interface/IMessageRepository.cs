@@ -14,6 +14,8 @@ namespace NikeFarms.v2._0.Interface
 
         public Message Update(Message message);
 
+        public List<Message> GetMessages(string senderEmail);
+
         public void Delete(int messageId);
     }
 }

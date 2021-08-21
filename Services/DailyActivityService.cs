@@ -42,9 +42,9 @@ namespace NikeFarms.v2._0.Services
             return _dailyActivityRepository.FindById(id);
         }
 
-        public DailyActivity Update(int dailyId, DailyActivityDTO dailyActivityDTO)
+        public DailyActivity Update(DailyActivityDTO dailyActivityDTO)
         {
-            var dailyActivity = _dailyActivityRepository.FindById(dailyId);
+            var dailyActivity = _dailyActivityRepository.FindById(dailyActivityDTO.Id);
             if (dailyActivity == null)
             {
                 return null;

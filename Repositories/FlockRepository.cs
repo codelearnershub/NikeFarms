@@ -35,6 +35,11 @@ namespace NikeFarms.v2._0.Repositories
             }
         }
 
+        public List<Flock> GetAllFlocks()
+        {
+            return _dbContext.Flocks.ToList();
+        }
+
         public Flock FindById(int flockId)
         {
             return _dbContext.Flocks.FirstOrDefault(u => u.Id.Equals(flockId));

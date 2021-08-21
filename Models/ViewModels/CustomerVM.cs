@@ -12,6 +12,8 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
     public class AddCustomerVM
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Customer Last Name is Required")]
         [MaxLength(20, ErrorMessage = "Last Name must not be more than 20 Characters")]
         public string LastName { get; set; }
@@ -39,5 +41,18 @@ namespace NikeFarms.v2._0.Models.ViewModels
     public class UpdateCustomerVM : AddCustomerVM
     {
 
+    }
+
+    public class ListCustomerVM
+    {
+        public int Id { get; set; }
+
+        public string FullName { get; set; }
+
+        public string Email { get; set; }
+
+        public string PhoneNo { get; set; }
+
+        public string Address { get; set; }
     }
 }

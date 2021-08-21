@@ -19,6 +19,8 @@ namespace NikeFarms.v2._0.Models
 
         public int ManagerId { get; set; }
 
+        public string ItemType { get; set; }
+
         List<DailyActivity> DailyActivities { get; set; }
     }
 }

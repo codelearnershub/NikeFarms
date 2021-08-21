@@ -13,6 +13,9 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
     public class AddDailyActivityVM
     {
+        public int Id { get; set; }
+
+
         [Required(ErrorMessage = "This Field is Required!!")]
         public double FeedConsumedPerKg { get; set; }
 
@@ -26,7 +29,7 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
 
         [Required(ErrorMessage = "Select Flock!!")]
-        public IEnumerable<SelectListItem> Flock { get; set; }
+        public IEnumerable<SelectListItem> FlockList { get; set; }
 
 
         [Required(ErrorMessage = "Select Flock!!")]
@@ -34,7 +37,7 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
 
         [Required(ErrorMessage = "Select Feed Allocated!!")]
-        public IEnumerable<SelectListItem> FeedAllocation { get; set; }
+        public IEnumerable<SelectListItem> FeedAllocationList { get; set; }
 
 
         [Required(ErrorMessage = "Select Feed Allocated!!")]
@@ -42,7 +45,7 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
 
         [Required(ErrorMessage = "Select Medication Allocated!!")]
-        public IEnumerable<SelectListItem> MedAllocation { get; set; }
+        public IEnumerable<SelectListItem> MedAllocationList { get; set; }
 
 
         [Required(ErrorMessage = "Select Medication Allocated!!")]
@@ -51,5 +54,10 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
     public class UpdateDailyActivityVM : AddDailyActivityVM
     {
+    }
+
+    public class ListDailyActivityVM
+    {
+        public int Id { get; set; }
     }
 }

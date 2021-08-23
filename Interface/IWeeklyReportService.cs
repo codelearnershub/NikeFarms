@@ -13,7 +13,7 @@ namespace NikeFarms.v2._0.Interface
 
         public WeeklyReport FindById(int id);
 
-        public WeeklyReport Update(int weeklyReporteId, WeeklyReportDTO weeklyReportDTO);
+        public WeeklyReport Update(WeeklyReportDTO weeklyReportDTO);
 
         public void Delete(int id);
     }

@@ -82,6 +82,7 @@ namespace NikeFarms.v2._0.Controllers
                 Age = addFlock.Age,
                 AverageWeight = addFlock.AverageWeight,
                 FlockTypeId = addFlock.FlockTypeId,
+                IsApproved = false,
             };
 
             _flockService.Add(flockDTO);
@@ -131,6 +132,7 @@ namespace NikeFarms.v2._0.Controllers
                 AverageWeight = updateFlock.AverageWeight,
                 Age = updateFlock.Age,
                 FlockTypeId = updateFlock.FlockTypeId,
+                IsApproved = false,
             };
             _flockService.Update(flock);
             return RedirectToAction("Index");

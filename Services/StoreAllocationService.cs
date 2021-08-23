@@ -26,9 +26,12 @@ namespace NikeFarms.v2._0.Services
                 CreatedBy = _userService.FindById(storeAllocationDTO.UserId).Email,
                 CreatedAt = DateTime.Now,
                 StoreItemId = storeAllocationDTO.StoreItemId,
+                ManagerId = storeAllocationDTO.ManagerId,
                 NoOfItem = storeAllocationDTO.NoOfItem,
                 ItemPerKg = storeAllocationDTO.ItemPerKg,
                 ItemType = storeAllocationDTO.ItemType,
+                ItemRemaining = storeAllocationDTO.ItemRemaining,
+                IsApproved = storeAllocationDTO.IsApproved,
             };
 
             return _storeAllocationRepository.Add(storeAllocation);
@@ -39,9 +42,9 @@ namespace NikeFarms.v2._0.Services
             return _storeAllocationRepository.FindById(id);
         }
 
-        public StoreAllocation Update(int storeAllocationId, StoreAllocationDTO storeAllocationDTO)
+        public StoreAllocation Update(StoreAllocationDTO storeAllocationDTO)
         {
-            var storeAllocation = _storeAllocationRepository.FindById(storeAllocationId);
+            var storeAllocation = _storeAllocationRepository.FindById(storeAllocationDTO.Id);
             if (storeAllocation == null)
             {
                 return null;
@@ -50,8 +53,12 @@ namespace NikeFarms.v2._0.Services
             storeAllocation.StoreItemId = storeAllocationDTO.StoreItemId;
             storeAllocation.NoOfItem = storeAllocationDTO.NoOfItem;
             storeAllocation.ItemPerKg = storeAllocationDTO.ItemPerKg;
-            storeAllocation.UpdatedAt = DateTime.Now;
             storeAllocation.ItemType = storeAllocationDTO.ItemType;
+            storeAllocation.ItemRemaining = storeAllocation.ItemRemaining;
+            storeAllocation.IsApproved = storeAllocationDTO.IsApproved;
+            storeAllocation.ManagerId = storeAllocationDTO.ManagerId;
+            storeAllocation.UpdatedAt = DateTime.Now;
+            
 
             return _storeAllocationRepository.Update(storeAllocation);
         }
@@ -69,6 +76,21 @@ namespace NikeFarms.v2._0.Services
         public IEnumerable<StoreAllocation> MedAllocation(int userId)
         {
             return _storeAllocationRepository.MedAllocation(userId);
+        }
+
+        public IEnumerable<StoreAllocation> GetAllStoreAllocations()
+        {
+            return _storeAllocationRepository.GetAllStoreAllocations();
+        }
+
+        public IEnumerable<StoreAllocation> GetStoreAllocationsByManagerEmail(string managerEmail)
+        {
+            return _storeAllocationRepository.GetStoreAllocationsByManagerEmail(managerEmail);
+        }
+
+        public IEnumerable<StoreAllocation> GetStoreAllocationsByRecieverId(int receiverId)
+        {
+            return _storeAllocationRepository.GetStoreAllocationsByRecieverId(receiverId);
         }
     }
 }

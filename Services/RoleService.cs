@@ -60,5 +60,9 @@ namespace NikeFarms.v2._0.Services
             _roleRepository.Delete(id);
         }
 
+        public Role FindByName(string roleName)
+        {
+          return  _roleRepository.FindByName(roleName);
+        }
     }
 }

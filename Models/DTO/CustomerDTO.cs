@@ -15,6 +15,8 @@ namespace NikeFarms.v2._0.Models.DTO
 
         public string FirstName { get; set; }
 
+        public string Gender { get; set; }
+
         public string Email { get; set; }
 
         public string PhoneNo { get; set; }

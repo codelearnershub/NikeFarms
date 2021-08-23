@@ -27,6 +27,8 @@ namespace NikeFarms.v2._0.Models.ViewModels
         [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "Invalid E-Mail!")]
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "Select Customer Gender")]
+        public string Gender { get; set; }
 
         [Required(ErrorMessage = "Enter Customer Phone Number!!")]
         [MaxLength(11, ErrorMessage = "Invalid Phone Number!")]
@@ -54,5 +56,7 @@ namespace NikeFarms.v2._0.Models.ViewModels
         public string PhoneNo { get; set; }
 
         public string Address { get; set; }
+
+        public string Gender { get; set; }
     }
 }

@@ -20,6 +20,9 @@ namespace NikeFarms.v2._0.Models
 
         public double AverageWeight { get; set; }
 
+        public bool IsApproved { get; set; }
+
+
         List<DailyActivity> DailyActivities { get; set; }
 
         List<Stock> Stocks { get; set; }

@@ -40,6 +40,17 @@ namespace NikeFarms.v2._0.Repositories
             return _dbContext.SalesItems.FirstOrDefault(u => u.Id.Equals(salesItemId));
         }
 
+        public List<SalesItem> GetAllSalesItem()
+        {
+            return _dbContext.SalesItems.ToList();
+        }
+
+        public List<SalesItem> GetSalesItemBySalesId(int salesId)
+        {
+            return _dbContext.SalesItems.Where(s => s.SalesId == salesId).ToList();
+        }
+
+
         public SalesItem Update(SalesItem salesItem)
         {
             _dbContext.SalesItems.Update(salesItem);

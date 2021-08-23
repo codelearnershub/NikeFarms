@@ -20,5 +20,8 @@ namespace NikeFarms.v2._0.Models.DTO
         public int Age { get; set; }
 
         public double AverageWeight { get; set; }
+
+        public bool IsApproved { get; set; }
+
     }
 }

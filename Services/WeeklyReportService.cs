@@ -37,9 +37,9 @@ namespace NikeFarms.v2._0.Services
             return _weeklyReportRepository.FindById(id);
         }
 
-        public WeeklyReport Update(int weeklyReporteId, WeeklyReportDTO weeklyReportDTO)
+        public WeeklyReport Update(WeeklyReportDTO weeklyReportDTO)
         {
-            var weeklyReport = _weeklyReportRepository.FindById(weeklyReporteId);
+            var weeklyReport = _weeklyReportRepository.FindById(weeklyReportDTO.Id);
             if (weeklyReport == null)
             {
                 return null;

@@ -30,6 +30,7 @@ namespace NikeFarms.v2._0.Services
                 TotalNo = flockDTO.TotalNo,
                 Age = flockDTO.Age,
                 AverageWeight = flockDTO.AverageWeight,
+                IsApproved = flockDTO.IsApproved,
             };
 
             return _flockRepository.Add(flock);
@@ -57,6 +58,7 @@ namespace NikeFarms.v2._0.Services
             flock.TotalNo = flockDTO.TotalNo;
             flock.Age = flockDTO.Age;
             flock.AverageWeight = flockDTO.AverageWeight;
+            flock.IsApproved = flockDTO.IsApproved;
             flock.UpdatedAt = DateTime.Now;
 
             return _flockRepository.Update(flock);

@@ -21,6 +21,10 @@ namespace NikeFarms.v2._0.Models
 
         public string ItemType { get; set; }
 
+        public double ItemRemaining { get; set; }
+
+        public bool IsApproved { get; set; }
+
         List<DailyActivity> DailyActivities { get; set; }
     }
 }

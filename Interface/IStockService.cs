@@ -13,7 +13,11 @@ namespace NikeFarms.v2._0.Interface
 
         public Stock FindById(int id);
 
-        public Stock Update(int stockId, StockDTO stockDTO);
+        public Stock Update(StockDTO stockDTO);
+
+        public IEnumerable<Stock> GetAllStocks();
+
+        public IEnumerable<Stock> GetStocksByManagerEmail(string managerEmail);
 
         public void Delete(int id);
     }

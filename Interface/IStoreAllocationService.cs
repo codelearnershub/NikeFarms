@@ -17,7 +17,13 @@ namespace NikeFarms.v2._0.Interface
 
         public IEnumerable<StoreAllocation> MedAllocation(int userId);
 
-        public StoreAllocation Update(int storeAllocationId, StoreAllocationDTO storeAllocationDTO);
+        public StoreAllocation Update(StoreAllocationDTO storeAllocationDTO);
+
+        public IEnumerable<StoreAllocation> GetAllStoreAllocations();
+
+        public IEnumerable<StoreAllocation> GetStoreAllocationsByManagerEmail(string managerEmail);
+
+        public IEnumerable<StoreAllocation> GetStoreAllocationsByRecieverId(int receiverId);
 
         public void Delete(int id);
     }

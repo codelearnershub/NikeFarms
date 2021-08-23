@@ -56,5 +56,20 @@ namespace NikeFarms.v2._0.Repositories
             _dbContext.SaveChanges();
             return storeAllocation;
         }
+
+        public List<StoreAllocation> GetAllStoreAllocations()
+        {
+            return _dbContext.StoreAllocations.ToList();
+        }
+
+        public List<StoreAllocation> GetStoreAllocationsByManagerEmail(string managerEmail)
+        {
+            return _dbContext.StoreAllocations.Where(s => s.CreatedBy == managerEmail).ToList();
+        }
+
+        public List<StoreAllocation> GetStoreAllocationsByRecieverId(int receiverId)
+        {
+            return _dbContext.StoreAllocations.Where(s => s.ManagerId == receiverId).ToList();
+        }
     }
 }

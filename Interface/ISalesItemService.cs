@@ -13,7 +13,11 @@ namespace NikeFarms.v2._0.Interface
 
         public SalesItem FindById(int id);
 
-        public SalesItem Update(int salesItemId, SalesItemDTO salesItemDTO);
+        public SalesItem Update(SalesItemDTO salesItemDTO);
+
+        public IEnumerable<SalesItem> GetAllSalesItem();
+
+        public IEnumerable<SalesItem> GetSalesItemBySalesId(int salesId);
 
         public void Delete(int id);
     }

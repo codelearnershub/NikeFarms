@@ -15,6 +15,8 @@ namespace NikeFarms.v2._0.Interface
 
         public Role Update(RoleDTO roleDTO);
 
+        public Role FindByName(string roleName);
+
         public IEnumerable<Role> GetAllRoles();
 
         public void Delete(int id);

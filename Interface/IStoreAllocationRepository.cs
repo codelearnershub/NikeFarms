@@ -18,6 +18,12 @@ namespace NikeFarms.v2._0.Interface
 
         public List<StoreAllocation> MedAllocation(int userId);
 
+        public List<StoreAllocation> GetAllStoreAllocations();
+
+        public List<StoreAllocation> GetStoreAllocationsByManagerEmail(string managerEmail);
+
+        public List<StoreAllocation> GetStoreAllocationsByRecieverId(int receiverId);
+
         public void Delete(int storeAllocationId);
     }
 }

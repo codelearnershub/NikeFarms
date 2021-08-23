@@ -40,6 +40,11 @@ namespace NikeFarms.v2._0.Repositories
             return _dbContext.Roles.FirstOrDefault(u => u.Id.Equals(roleId));
         }
 
+        public Role FindByName(string roleName)
+        {
+            return _dbContext.Roles.FirstOrDefault(u => u.Name.Equals(roleName));
+        }
+
         public List<Role> GetAllRoles()
         {
             return _dbContext.Roles.ToList();

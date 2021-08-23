@@ -10,8 +10,10 @@ namespace NikeFarms.v2._0.Models.ViewModels
     {
     }
 
-    public class AddStoreItem
+    public class AddStoreItemVM
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "You must Fill out this Field!")]
         public string Name { get; set; }
 
@@ -30,7 +32,28 @@ namespace NikeFarms.v2._0.Models.ViewModels
         public decimal TotalPricePurchased { get; set; }
     }
 
-    public class UpdateStoreItem : AddStoreItem
+    public class UpdateStoreItemVM : AddStoreItemVM
     {
+    }
+
+    public class ListStoreItemVM
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public string ItemType { get; set; }
+
+        public double NoOfItem { get; set; }
+
+        public double? ItemPerKg { get; set; }
+
+        public double ItemRemaining { get; set; }
+
+        public decimal TotalPricePurchased { get; set; }
+
+        public string CreatedBy { get; set; }
     }
 }

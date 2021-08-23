@@ -40,6 +40,17 @@ namespace NikeFarms.v2._0.Repositories
             return _dbContext.Sales.FirstOrDefault(u => u.Id.Equals(salesId));
         }
 
+        public List<Sales> GetAllSales()
+        {
+            return _dbContext.Sales.ToList();
+        }
+
+        public List<Sales> GetSalesByManagerEmail(string managerEmail)
+        {
+            return _dbContext.Sales.Where(s=>s.CreatedBy == managerEmail).ToList();
+        }
+
+
         public Sales Update(Sales sales)
         {
             _dbContext.Sales.Update(sales);

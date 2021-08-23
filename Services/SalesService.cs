@@ -27,7 +27,8 @@ namespace NikeFarms.v2._0.Services
                 CreatedAt = DateTime.Now,
                 Item = salesDTO.Item,
                 CustomerId = salesDTO.CustomerId,
-                Voucher = (Guid.NewGuid()).ToString("0000000000"),
+                Voucher = Guid.NewGuid().ToString().Substring(0, 10).ToUpper(),
+                IsSold = salesDTO.IsSold,
             };
 
             return _salesRepository.Add(sales);
@@ -38,9 +39,9 @@ namespace NikeFarms.v2._0.Services
             return _salesRepository.FindById(id);
         }
 
-        public Sales Update(int salesId, SalesDTO salesDTO)
+        public Sales Update(SalesDTO salesDTO)
         {
-            var sales = _salesRepository.FindById(salesId);
+            var sales = _salesRepository.FindById(salesDTO.Id);
             if (sales == null)
             {
                 return null;
@@ -49,6 +50,7 @@ namespace NikeFarms.v2._0.Services
             sales.Item = salesDTO.Item;
             sales.TotalPrice = salesDTO.TotalPrice;
             sales.CustomerId = salesDTO.CustomerId;
+            sales.IsSold = salesDTO.IsSold;
             sales.UpdatedAt = DateTime.Now;
 
             return _salesRepository.Update(sales);
@@ -57,6 +59,16 @@ namespace NikeFarms.v2._0.Services
         public void Delete(int id)
         {
             _salesRepository.Delete(id);
+        }
+
+        public IEnumerable<Sales> GetAllSales()
+        {
+            return _salesRepository.GetAllSales();
+        }
+
+        public IEnumerable<Sales> GetSalesByManagerEmail(string managerEmail)
+        {
+            return _salesRepository.GetSalesByManagerEmail(managerEmail);
         }
     }
 }

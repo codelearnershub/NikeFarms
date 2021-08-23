@@ -10,22 +10,26 @@ namespace NikeFarms.v2._0.Models.ViewModels
     public class WeeklyReportVM
     {
     }
+    public class AddWeeklyReportVM
 
-    public class AddWeeklyReport
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Input Average Weight of Birds!")]
         public double AverageWeight { get; set; }
 
 
         [Required(ErrorMessage = "Select Flock!")]
-        public IEnumerable<SelectListItem> StoreItem { get; set; }
+        public IEnumerable<SelectListItem> FlockList { get; set; }
 
 
         [Required(ErrorMessage = "Select Flock!")]
         public int FlockId { get; set; }
     }
 
-    public class UpdateWeeklyReport : AddWeeklyReport
+    public class UpdateWeeklyReportVM : AddWeeklyReportVM
     {
     }
+
+
 }

@@ -50,6 +50,7 @@ namespace NikeFarms.v2._0.Repositories
             return _dbContext.Users.FirstOrDefault(u => u.Email.Equals(userEmail));
         }
 
+
         public User Update(User user)
         {
             _dbContext.Users.Update(user);

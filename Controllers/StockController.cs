@@ -34,6 +34,8 @@ namespace NikeFarms.v2._0.Controllers
 
             foreach (var stock in stocks)
             {
+                var Created = _userService.FindByEmail(stock.CreatedBy);
+
                 ListStockVM listStockVM = new ListStockVM
                 {
 
@@ -44,7 +46,7 @@ namespace NikeFarms.v2._0.Controllers
                     PricePerKg = stock.PricePerKg,
                     FlockBatchNo = _flockService.FindById(stock.FlockId).BatchNo,
                     AvailableItem = stock.NoOfItem,
-                    CreatedBy = $"{_userService.FindByEmail(stock.CreatedBy).FirstName} .{_userService.FindByEmail(stock.CreatedBy).LastName[0]}",
+                    CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
                 };
 
                 ListStocks.Add(listStockVM);

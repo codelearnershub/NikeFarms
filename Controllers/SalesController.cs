@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
 using NikeFarms.v2._0.Models.DTO;
@@ -17,20 +18,27 @@ namespace NikeFarms.v2._0.Controllers
         private readonly ISalesService _salesService;
         private readonly ICustomerService _customerService;
 
-       
+        public SalesController(IUserService userService, ISalesService salesService, ICustomerService customerService)
+        {
+            _userService = userService;
+            _salesService = salesService;
+            _customerService = customerService;
+        }
+
         public IActionResult Index()
         {
             var sales = _salesService.GetAllSales();
             List<ListSalesVM> ListFlock = new List<ListSalesVM>();
             foreach (var sale in sales)
             {
+                var Created = _userService.FindByEmail(sale.CreatedBy);
                 ListSalesVM listSalesVM = new ListSalesVM
                 {
                     Id = sale.Id,
                     Item = sale.Item,
                     TotalPrice = sale.TotalPrice,
                     CustomerFullName = $"{_customerService.FindById(sale.CustomerId).LastName} {_customerService.FindById(sale.CustomerId).FirstName}",
-                    CreatedBy = $"{_userService.FindByEmail(sale.CreatedBy).FirstName} .{_userService.FindByEmail(sale.CreatedBy).LastName[0]}",
+                    CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
                 };
 
                 ListFlock.Add(listSalesVM);
@@ -45,7 +53,15 @@ namespace NikeFarms.v2._0.Controllers
 
         public IActionResult AddSales()
         {
-            
+            AddSalesVM stockVM = new AddSalesVM
+            {
+                CustomerList = _customerService.GetAllCustomers().Select(m => new SelectListItem
+                {
+                    Text = $"{_customerService.FindById(m.Id).LastName} {_customerService.FindById(m.Id).FirstName} Email: @{m.Email}",
+                    Value = m.Id.ToString()
+                })
+            };
+
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
@@ -58,26 +74,20 @@ namespace NikeFarms.v2._0.Controllers
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            var customer = _customerService.FindByEmail(addSales.CustomerEmail);
-            if (customer == null)
+
+            SalesDTO SalesDTO = new SalesDTO
             {
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                SalesDTO SalesDTO = new SalesDTO
-                {
-                    UserId = userId,
-                    Item = addSales.Item,
-                    CustomerId = customer.Id,
-                    IsSold = false,
-                };
+                UserId = userId,
+                Item = addSales.Item,
+                CustomerId = addSales.CustomerId,
+                IsSold = false,
+            };
 
 
-                _salesService.Add(SalesDTO);
-                return RedirectToAction("Index");
-            }
-            
+            _salesService.Add(SalesDTO);
+            return RedirectToAction("Index");
+
+
         }
 
 
@@ -98,8 +108,12 @@ namespace NikeFarms.v2._0.Controllers
                 {
                     Id = sale.Id,
                     Item = sale.Item,
-                    CustomerEmail = _customerService.FindById(sale.CustomerId).Email,
-                    
+                    CustomerList = _customerService.GetAllCustomers().Select(m => new SelectListItem
+                    {
+                        Text = $"{_customerService.FindById(m.Id).LastName} {_customerService.FindById(m.Id).FirstName} Email: @{m.Email}",
+                        Value = m.Id.ToString()
+                    }),
+
                 };
 
                 return View(updateSales);
@@ -114,7 +128,7 @@ namespace NikeFarms.v2._0.Controllers
             {
                 Id = updateSales.Id,
                 Item = updateSales.Item,
-                CustomerId = _customerService.FindByEmail(updateSales.CustomerEmail).Id,
+                CustomerId = updateSales.CustomerId,
                 IsSold = false,
             };
             _salesService.Update(sale);

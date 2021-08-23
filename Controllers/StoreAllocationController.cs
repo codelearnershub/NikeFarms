@@ -32,21 +32,24 @@ namespace NikeFarms.v2._0.Controllers
         public IActionResult Index()
         {
 
-            var toreAllocations = _storeAllocationService.GetAllStoreAllocations();
+            var StoreAllocations = _storeAllocationService.GetAllStoreAllocations();
             List<ListStoreAllocationVM> ListStoreAllocations = new List<ListStoreAllocationVM>();
 
-            foreach (var storeAllocation in toreAllocations)
+            foreach (var storeAllocation in StoreAllocations)
             {
+                var Created = _userService.FindByEmail(storeAllocation.CreatedBy);
+                var Allocated = _userService.FindById(storeAllocation.ManagerId);
+
                 ListStoreAllocationVM listStoreAllocationVM = new ListStoreAllocationVM
                 {
 
                     NoOfItem = storeAllocation.NoOfItem,
                     StoreItemName = _storeItemService.FindById(storeAllocation.StoreItemId).Name,
-                    AllocatedTo = $"{_userService.FindById(storeAllocation.Id).LastName } {_userService.FindById(storeAllocation.Id).FirstName }",
+                    AllocatedTo = $"{Allocated.LastName } {Allocated.FirstName }",
                     ItemRemaining = storeAllocation.ItemRemaining,
                     ItemType = storeAllocation.ItemType,
                     ItemPerKg = storeAllocation.ItemPerKg,
-                    CreatedBy = $"{_userService.FindByEmail(storeAllocation.CreatedBy).FirstName} .{_userService.FindByEmail(storeAllocation.CreatedBy).LastName[0]}",
+                    CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
 
                 };
 

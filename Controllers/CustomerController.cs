@@ -29,6 +29,7 @@ namespace NikeFarms.v2._0.Controllers
 
             foreach (var customer in customers)
             {
+
                 ListCustomerVM listCustomerVM = new ListCustomerVM
                 {
                     Id = customer.Id,

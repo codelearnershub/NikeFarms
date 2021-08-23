@@ -30,6 +30,8 @@ namespace NikeFarms.v2._0.Controllers
 
             foreach (var storeItem in storeItems)
             {
+                var Created = _userService.FindByEmail(storeItem.CreatedBy);
+
                 ListStoreItemVM listStoreItemVM = new ListStoreItemVM
                 {
 
@@ -39,7 +41,7 @@ namespace NikeFarms.v2._0.Controllers
                     NoOfItem = storeItem.NoOfItem,
                     ItemPerKg = storeItem.ItemPerKg,
                     ItemRemaining = storeItem.ItemRemaining,
-                    CreatedBy = $"{_userService.FindByEmail(storeItem.CreatedBy).FirstName} .{_userService.FindByEmail(storeItem.CreatedBy).LastName[0]}",
+                    CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
                 };
 
                 ListStoreItem.Add(listStoreItemVM);

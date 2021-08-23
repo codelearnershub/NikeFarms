@@ -29,12 +29,14 @@ namespace NikeFarms.v2._0.Controllers
 
             foreach (var flockType in flockTypes)
             {
+                var Created = _userService.FindByEmail(flockType.CreatedBy);
+
                 ListFlockTypeVM listFlockTypeVM = new ListFlockTypeVM
                 {
                     Id = flockType.Id,
                     Name = flockType.Name,
                     Description = flockType.Description,
-                    CreatedBy = $"{_userService.FindByEmail(flockType.CreatedBy).FirstName} .{_userService.FindByEmail(flockType.CreatedBy).LastName[0]}",
+                    CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
                 };
 
                 ListFlockType.Add(listFlockTypeVM);

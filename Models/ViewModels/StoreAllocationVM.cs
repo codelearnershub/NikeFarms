@@ -13,12 +13,16 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
     public class AddStoreAllocationVM
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Choose Store Item!")]
-        public IEnumerable<SelectListItem> StoreItem { get; set; }
+        public IEnumerable<SelectListItem> StoreItemList { get; set; }
 
 
         [Required(ErrorMessage = "Choose Store Item!")]
         public int StoreItemId { get; set; }
+
+        public string ItemType { get; set; }
 
 
         [Required(ErrorMessage = "No. of Item Allocated!")]
@@ -27,7 +31,7 @@ namespace NikeFarms.v2._0.Models.ViewModels
         public double? ItemPerKg { get; set; }
 
         [Required(ErrorMessage = "Select Manager Allocated To!")]
-        public User Manager { get; set; }
+        public IEnumerable<SelectListItem> ManagerList { get; set; }
 
 
         [Required(ErrorMessage = "Select Manager Allocated To!")]
@@ -36,5 +40,24 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
     public class UpdateStoreAllocationVM : AddStoreAllocationVM
     {
+    }
+
+    public class ListStoreAllocationVM
+    {
+        public int Id { get; set; }
+
+        public string StoreItemName { get; set; }
+
+        public double NoOfItem { get; set; }
+
+        public double? ItemPerKg { get; set; }
+
+        public double ItemRemaining { get; set; }
+
+        public string AllocatedTo { get; set; }
+
+        public string ItemType { get; set; }
+
+        public string CreatedBy { get; set; }
     }
 }

@@ -13,6 +13,8 @@ namespace NikeFarms.v2._0.Interface
 
         public Customer FindById(int id);
 
+        public Customer FindByEmail(string customerEmail);
+
         public IEnumerable<Customer> GetAllCustomers();
 
         public Customer Update(CustomerDTO customerDTO);

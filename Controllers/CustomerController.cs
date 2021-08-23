@@ -29,6 +29,7 @@ namespace NikeFarms.v2._0.Controllers
 
             foreach (var customer in customers)
             {
+
                 ListCustomerVM listCustomerVM = new ListCustomerVM
                 {
                     Id = customer.Id,
@@ -36,6 +37,7 @@ namespace NikeFarms.v2._0.Controllers
                     Email = customer.Email,
                     PhoneNo = customer.PhoneNo,
                     Address = customer.Address,
+                    Gender = customer.Gender,
                 };
 
                 ListCustomer.Add(listCustomerVM);
@@ -69,6 +71,7 @@ namespace NikeFarms.v2._0.Controllers
                 FirstName = addCustomer.FirstName,
                 LastName = addCustomer.LastName,
                 Email = addCustomer.Email,
+                Gender = addCustomer.Gender,
                 PhoneNo = addCustomer.PhoneNo,
                 Address = addCustomer.Address,
             };
@@ -115,6 +118,7 @@ namespace NikeFarms.v2._0.Controllers
                 FirstName = updateCustomer.FirstName,
                 LastName = updateCustomer.LastName,
                 PhoneNo = updateCustomer.PhoneNo,
+                Gender = updateCustomer.Gender,
                 Email = updateCustomer.Email,
                 Address = updateCustomer.Address,
                 

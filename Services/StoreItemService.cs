@@ -31,6 +31,8 @@ namespace NikeFarms.v2._0.Services
                 NoOfItem = storeItemDTO.NoOfItem,
                 ItemPerKg = storeItemDTO.ItemPerKg,
                 TotalPricePurchased = storeItemDTO.TotalPricePurchased,
+                ItemRemaining = storeItemDTO.ItemRemaining,
+                IsApproved = storeItemDTO.IsApproved
             };
 
             return _storeItemRepository.Add(storeItem);
@@ -41,9 +43,9 @@ namespace NikeFarms.v2._0.Services
             return _storeItemRepository.FindById(id);
         }
 
-        public StoreItem Update(int storeItemId, StoreItemDTO storeItemDTO)
+        public StoreItem Update(StoreItemDTO storeItemDTO)
         {
-            var storeItem = _storeItemRepository.FindById(storeItemId);
+            var storeItem = _storeItemRepository.FindById(storeItemDTO.Id);
             if (storeItem == null)
             {
                 return null;
@@ -55,7 +57,10 @@ namespace NikeFarms.v2._0.Services
             storeItem.NoOfItem = storeItemDTO.NoOfItem;
             storeItem.ItemPerKg = storeItemDTO.ItemPerKg;
             storeItem.TotalPricePurchased = storeItemDTO.TotalPricePurchased;
+            storeItem.ItemRemaining = storeItemDTO.ItemRemaining;
+            storeItem.IsApproved = storeItemDTO.IsApproved;
             storeItem.UpdatedAt = DateTime.Now;
+
 
             return _storeItemRepository.Update(storeItem);
         }
@@ -63,6 +68,16 @@ namespace NikeFarms.v2._0.Services
         public void Delete(int id)
         {
             _storeItemRepository.Delete(id);
+        }
+
+        public IEnumerable<StoreItem> GetAllStoreItems()
+        {
+            return _storeItemRepository.GetAllStoreItems();
+        }
+
+        public IEnumerable<StoreItem> GetStoreItemsByManagerEmail(string managerEmail)
+        {
+            return _storeItemRepository.GetStoreItemsByManagerEmail(managerEmail);
         }
     }
 }

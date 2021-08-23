@@ -7,6 +7,8 @@ namespace NikeFarms.v2._0.Models.DTO
 {
     public class StoreAllocationDTO
     {
+        public int Id { get; set; }
+
         public int UserId { get; set; }
 
         public int StoreItemId { get; set; }
@@ -15,8 +17,13 @@ namespace NikeFarms.v2._0.Models.DTO
 
         public double? ItemPerKg { get; set; }
 
+        public double ItemRemaining { get; set; }
+
         public string ItemType { get; set; }
 
         public int ManagerId { get; set; }
+
+        public bool IsApproved { get; set; }
+
     }
 }

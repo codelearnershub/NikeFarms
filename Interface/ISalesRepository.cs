@@ -14,6 +14,10 @@ namespace NikeFarms.v2._0.Interface
 
         public Sales Update(Sales sales);
 
+        public List<Sales> GetAllSales();
+
+        public List<Sales> GetSalesByManagerEmail(string managerEmail);
+
         public void Delete(int salesId);
     }
 }

@@ -29,13 +29,15 @@ namespace NikeFarms.v2._0.Controllers
 
             foreach (var expense in expenses)
             {
+                var Created = _userService.FindByEmail(expense.CreatedBy);
+
                 ListExpensesVM listExpensesVM = new ListExpensesVM
                 {
 
                     Id = expense.Id,
                     Description = expense.Description,
                     Price = expense.Price,
-                    CreatedBy = $"{_userService.FindByEmail(expense.CreatedBy).FirstName} .{_userService.FindByEmail(expense.CreatedBy).LastName[0]}",
+                    CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
                 };
 
                 ListExpenses.Add(listExpensesVM);

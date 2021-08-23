@@ -17,6 +17,8 @@ namespace NikeFarms.v2._0.Models
 
         public string Voucher { get; set; }
 
+        public bool IsSold { get; set; }
+
         List<SalesItem> SalesItems { get; set; }
     }
 }

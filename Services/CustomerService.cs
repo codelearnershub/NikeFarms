@@ -28,6 +28,7 @@ namespace NikeFarms.v2._0.Services
                 LastName  = customerDTO.LastName,
                 FirstName = customerDTO.FirstName,
                 Email = customerDTO.Email,
+                Gender = customerDTO.Gender,
                 PhoneNo = customerDTO.PhoneNo,
                 Address = customerDTO.Address,
                 
@@ -58,6 +59,7 @@ namespace NikeFarms.v2._0.Services
             customer.FirstName = customerDTO.FirstName;
             customer.Email = customerDTO.Email;
             customer.PhoneNo = customerDTO.PhoneNo;
+            customer.Gender = customerDTO.Gender;
             customer.Address = customerDTO.Address;
             customer.UpdatedAt = DateTime.Now;
 
@@ -67,6 +69,11 @@ namespace NikeFarms.v2._0.Services
         public void Delete(int id)
         {
             _customerRepository.Delete(id);
+        }
+
+        public Customer FindByEmail(string customerEmail)
+        {
+            return _customerRepository.FindByEmail(customerEmail);
         }
     }
 }

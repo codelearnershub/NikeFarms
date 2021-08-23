@@ -9,6 +9,8 @@ namespace NikeFarms.v2._0.Models.DTO
     {
         public int UserId { get; set; }
 
+        public int Id { get; set; }
+
         public string Item { get; set; }
 
         public decimal? TotalPrice { get; set; }
@@ -18,5 +20,7 @@ namespace NikeFarms.v2._0.Models.DTO
         public int CustomerId { get; set; }
 
         public string Voucher { get; set; }
+
+        public bool IsSold { get; set; }
     }
 }

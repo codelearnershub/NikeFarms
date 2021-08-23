@@ -40,6 +40,11 @@ namespace NikeFarms.v2._0.Repositories
             return _dbContext.Customers.FirstOrDefault(u => u.Id.Equals(customerId));
         }
 
+        public Customer FindByEmail(string customerEmail)
+        {
+            return _dbContext.Customers.FirstOrDefault(u => u.Id.Equals(customerEmail));
+        }
+
         public List<Customer> GetAllCustomers()
         {
             return _dbContext.Customers.ToList();

@@ -13,6 +13,8 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
     public class AddStockVM
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Input Stock Item!")]
         public string Item { get; set; }
 
@@ -27,7 +29,7 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
 
         [Required(ErrorMessage = "Choose Flock!")]
-        public IEnumerable<SelectListItem> Flock { get; set; }
+        public IEnumerable<SelectListItem> FlockList { get; set; }
 
 
         [Required(ErrorMessage = "Choose Flock!")]
@@ -36,5 +38,24 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
     public class UpdateStockVM : AddStockVM
     {
+    }
+
+    public class ListStockVM
+    {
+        public int Id { get; set; }
+
+        public string Item { get; set; }
+
+        public double NoOfItem { get; set; }
+
+        public double AvailableItem { get; set; }
+
+        public decimal? PricePerCrate { get; set; }
+
+        public decimal? PricePerKg { get; set; }
+
+        public string FlockBatchNo { get; set; }
+
+        public string CreatedBy { get; set; }
     }
 }

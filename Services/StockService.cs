@@ -41,9 +41,9 @@ namespace NikeFarms.v2._0.Services
             return _stockRepository.FindById(id);
         }
 
-        public Stock Update(int stockId, StockDTO stockDTO)
+        public Stock Update(StockDTO stockDTO)
         {
-            var stock = _stockRepository.FindById(stockId);
+            var stock = _stockRepository.FindById(stockDTO.Id);
             if (stock == null)
             {
                 return null;
@@ -63,6 +63,16 @@ namespace NikeFarms.v2._0.Services
         public void Delete(int id)
         {
             _stockRepository.Delete(id);
+        }
+
+        public IEnumerable<Stock> GetAllStocks()
+        {
+            return _stockRepository.GetAllStocks();
+        }
+
+        public IEnumerable<Stock> GetStocksByManagerEmail(string managerEmail)
+        {
+            return _stockRepository.GetStocksByManagerEmail(managerEmail);
         }
     }
 }

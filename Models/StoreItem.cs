@@ -19,6 +19,11 @@ namespace NikeFarms.v2._0.Models
         
         public decimal TotalPricePurchased { get; set; }
 
+        public double ItemRemaining { get; set; }
+
+        public bool IsApproved { get; set; }
+
+
         List<StoreAllocation> StoreAllocations { get; set; }
     }
 }

@@ -78,17 +78,19 @@ namespace NikeFarms.v2._0.Controllers
 
             foreach (var user in users)
             {
+                var Created = _userService.FindByEmail(user.CreatedBy);
+
                 ListUserVM listUserVM = new ListUserVM
                 {
-                    
+
                     UserId = user.Id,
                     FullName = $"{user.LastName} {user.FirstName}",
                     Email = user.Email,
                     PhoneNo = user.PhoneNo,
                     RoleName = _userRoleService.FindRole(user.Id),
-                    CreatedBy = $"{_userService.FindByEmail(user.CreatedBy).FirstName} .{_userService.FindByEmail(user.CreatedBy).LastName[0]}" ,
-                    
-            };
+                    CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
+
+                };
 
                 ListUser.Add(listUserVM);
             }

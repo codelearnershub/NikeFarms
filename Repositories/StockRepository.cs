@@ -40,6 +40,16 @@ namespace NikeFarms.v2._0.Repositories
             return _dbContext.Stocks.FirstOrDefault(u => u.Id.Equals(stockId));
         }
 
+        public List<Stock> GetAllStocks()
+        {
+            return _dbContext.Stocks.ToList();
+        }
+
+        public List<Stock> GetStocksByManagerEmail(string managerEmail)
+        {
+            return _dbContext.Stocks.Where(s => s.CreatedBy == managerEmail).ToList();
+        }
+
         public Stock Update(Stock stock)
         {
             _dbContext.Stocks.Update(stock);

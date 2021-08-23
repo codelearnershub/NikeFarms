@@ -7,6 +7,8 @@ namespace NikeFarms.v2._0.Models.DTO
 {
     public class WeeklyReportDTO
     {
+        public int Id { get; set; }
+
         public int UserId { get; set; }
 
         public double AverageWeight { get; set; }

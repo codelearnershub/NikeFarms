@@ -31,6 +31,8 @@ namespace NikeFarms.v2._0.Controllers
             List<ListFlockVM> ListFlock = new List<ListFlockVM>();
             foreach (var flock in flocks)
             {
+                var Created = _userService.FindByEmail(flock.CreatedBy);
+
                 ListFlockVM listFlockVM = new ListFlockVM
                 {
                     Id = flock.Id,
@@ -39,7 +41,7 @@ namespace NikeFarms.v2._0.Controllers
                     currentAge = (int)((DateTime.Now - flock.CreatedAt).TotalDays) + flock.Age,
                     TotalAvailable = flock.TotalNo,
                     CurrentAverageWeight = flock.AverageWeight,
-                    CreatedBy = $"{_userService.FindByEmail(flock.CreatedBy).FirstName} .{_userService.FindByEmail(flock.CreatedBy).LastName[0]}",
+                    CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
                 };
 
                 ListFlock.Add(listFlockVM);
@@ -82,6 +84,7 @@ namespace NikeFarms.v2._0.Controllers
                 Age = addFlock.Age,
                 AverageWeight = addFlock.AverageWeight,
                 FlockTypeId = addFlock.FlockTypeId,
+                IsApproved = false,
             };
 
             _flockService.Add(flockDTO);
@@ -131,6 +134,7 @@ namespace NikeFarms.v2._0.Controllers
                 AverageWeight = updateFlock.AverageWeight,
                 Age = updateFlock.Age,
                 FlockTypeId = updateFlock.FlockTypeId,
+                IsApproved = false,
             };
             _flockService.Update(flock);
             return RedirectToAction("Index");

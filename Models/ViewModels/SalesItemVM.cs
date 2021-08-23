@@ -13,6 +13,8 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
     public class AddSalesItemVM
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Enter Item Sold!")]
         public string Item { get; set; }
 
@@ -43,5 +45,21 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
     public class UpdateSalesItemVM : AddSalesItemVM
     {
+    }
+
+    public class ListSalesItemVM
+    {
+        public int Id { get; set; }
+
+        public string Item { get; set; }
+
+        public int NoOfItem { get; set; }
+
+        public int SalesId { get; set; }
+
+        public decimal PricePerItem { get; set; }
+
+        public decimal TotalPrice { get; set; }
+
     }
 }

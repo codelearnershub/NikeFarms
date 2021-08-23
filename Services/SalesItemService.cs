@@ -30,6 +30,7 @@ namespace NikeFarms.v2._0.Services
                 StockId = salesItemDTO.StockId,
                 SalesId = salesItemDTO.SalesId,
                 PricePerItem = salesItemDTO.PricePerItem,
+                
             };
 
             return _salesItemRepository.Add(salesItem);
@@ -40,9 +41,9 @@ namespace NikeFarms.v2._0.Services
             return _salesItemRepository.FindById(id);
         }
 
-        public SalesItem Update(int salesItemId, SalesItemDTO salesItemDTO)
+        public SalesItem Update(SalesItemDTO salesItemDTO)
         {
-            var salesItem = _salesItemRepository.FindById(salesItemId);
+            var salesItem = _salesItemRepository.FindById(salesItemDTO.Id);
             if (salesItem == null)
             {
                 return null;
@@ -61,6 +62,16 @@ namespace NikeFarms.v2._0.Services
         public void Delete(int id)
         {
             _salesItemRepository.Delete(id);
+        }
+
+        public IEnumerable<SalesItem> GetAllSalesItem()
+        {
+            return _salesItemRepository.GetAllSalesItem();
+        }
+
+        public IEnumerable<SalesItem> GetSalesItemBySalesId(int salesId)
+        {
+            return _salesItemRepository.GetSalesItemBySalesId(salesId);
         }
     }
 }

@@ -60,8 +60,8 @@ namespace NikeFarms.Context
                     Email = "mazeedahhamzat@gmail.com",
                     CreatedAt = DateTime.Now,
                     CreatedBy = "mazeedahhamzat@gmail.com",
-                    PasswordHash = "EGSROdXOgd5YsDofKkZatVGf2Cnc/7O/RxhqQSmOF30=",
-                    HashSalt = "J5cdgq6p63lKwmVg3b7ltQ==",
+                    PasswordHash = "ZIoFJMM2K8J24l9L3yXaVYnFKKca+dIlRaPO9OJVB0g=",
+                    HashSalt = "guDA4rCIrHxbmB2fm1lRCw==",
                 }
                 );
 

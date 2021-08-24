@@ -91,8 +91,6 @@ namespace NikeFarms.Context
            
             modelBuilder.Entity<FlockType>().Property(u => u.Name).IsRequired();
 
-            modelBuilder.Entity<FlockType>().Property(u => u.Description).IsRequired();
-
 
             modelBuilder.Entity<Flock>().Property(u => u.BatchNo).IsRequired();
 

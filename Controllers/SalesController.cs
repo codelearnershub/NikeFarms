@@ -32,12 +32,14 @@ namespace NikeFarms.v2._0.Controllers
             foreach (var sale in sales)
             {
                 var Created = _userService.FindByEmail(sale.CreatedBy);
+                var customer = _customerService.FindById(sale.CustomerId);
+
                 ListSalesVM listSalesVM = new ListSalesVM
                 {
                     Id = sale.Id,
                     Item = sale.Item,
                     TotalPrice = sale.TotalPrice,
-                    CustomerFullName = $"{_customerService.FindById(sale.CustomerId).LastName} {_customerService.FindById(sale.CustomerId).FirstName}",
+                    CustomerFullName = $"{customer.LastName} {customer.FirstName}",
                     CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
                 };
 

@@ -14,7 +14,7 @@ namespace NikeFarms.v2._0.Interface
 
         public string FindRole(int userId);
 
-        public int FindUsersWithParticularRole(int roleId);
+        public List<UserRole> FindUsersWithParticularRole(int roleId);
 
         public UserRole FindUserRole(int userId);
 

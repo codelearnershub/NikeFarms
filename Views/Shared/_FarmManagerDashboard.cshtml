@@ -1,5 +1,114 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - NikeFarms AdminDashboard</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/mycss.css" />
+    <link rel="stylesheet" href="~/css/slideShow.css" />
+    <link rel="stylesheet" href="~/fontawesome-free-5.13.0-web/css/all.css" />
+
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <span class="ml-3" onclick="openNav()"><i class="fas fa-sliders-h big-fontawesome"></i></span>
+            <div class="container">
+
+                <img class="nikesmall" src="~/Images/Nikesmall.jpg" />
+
+                <a class="nav-link text-dark btn btn-outline-danger btn-round" data-toggle="modal" data-target="#exampleModalCenter">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle"> <i class="fas fa-sign-out-alt"></i> Logout</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <span style="color: darkred" class="font-weight-bolder ml-5">@ViewBag.UserName </span>are you sure you want to Logout?
+                            </div>
+                            <div class="modal-footer">
+                                <a class="btn font-weight-bold" style="background-color:red; color:white" asp-controller="Auth" asp-action="Logout">Yes</a>
+                                <a class="btn font-weight-bold" style="background-color:greenyellow; color:white" data-dismiss="modal">No</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a><br />
+        <i class="fas fa-user-circle ml-3" style="font-size: 60px; color: grey"></i><span class="font-weight-bolder" style="color: grey; margin-left:20px; font-size: 20px">@ViewBag.UserName <great></great><br /><span style="margin-left: 110px; color: darkred; font-size: 15px">(Farm Manager)</span> </span><br /><span style="color: greenyellow"><i class="fas fa-circle onlinedot"></i>  Online</span><br /><br />
+        <div class="ml-3 font-weight-bolder">
+            <a asp-controller="Calculation" asp-action="AdminDashboard"><i class="fas fa-bell"></i>   Notifications</a>
+            <hr />
+            <a asp-controller="AdminDashboard" asp-action="Notification"><i class="fas fa-envelope-open-text"></i>   Inbox </a>
+            <hr />
+            <a asp-controller="Stock" asp-action="Index"> <i class="fas fa-calendar-day"></i>   Daily Activities</a>
+            <hr />
+            <a asp-controller="Calculation" asp-action="Sales"> <i class="far fa-envelope"></i>   Outbox</a>
+            <hr />
+            <a asp-controller="AdminDashboard" asp-action="ListManager"> <i class="far fa-calendar-alt"></i>  Weekly Report</a>
+            <hr />
+            <br /><br />
+            <a class="bottom-sivenav" style="font-size: 23px; color:darkred" data-toggle="modal" data-target="#exampleModalCenter">
+                Logout <i class="fas fa-sign-out-alt"></i>
+            </a>
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle"> <i class="fas fa-sign-out-alt"></i> Logout</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <span style="color: darkred" class="font-weight-bolder ml-5">@ViewBag.UserName </span>are you sure you want to Logout?
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn font-weight-bold" style="background-color:red; color:white" asp-controller="Auth" asp-action="Logout">Yes</a>
+                            <a class="btn font-weight-bold" style="background-color:greenyellow; color:white" data-dismiss="modal">No</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <div id="main">
+
+    </div>
+
+    @*<footer class="border-top footer text-muted" style="position:relative">
+            <div class="container">
+                &copy; 2021 - NikeFarms <span class="nike-footer"><em>...<great><span style="color:darkred">N</span><span style="color:red">i</span><span style="color:darkred">ke</span><span style="color:darkgoldenrod">Farms </span>Got You Covered</em></span>
+            </div>
+        </footer>*@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/myjs.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+

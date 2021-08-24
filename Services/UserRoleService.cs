@@ -50,7 +50,7 @@ namespace NikeFarms.v2._0.Services
             _userRoleRepository.Delete(id);
         }
 
-        public int FindUsersWithParticularRole(int roleId)
+        public List<UserRole> FindUsersWithParticularRole(int roleId)
         {
             return _userRoleRepository.FindUsersWithParticularRole(roleId);
         }

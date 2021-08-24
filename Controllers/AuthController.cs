@@ -115,18 +115,51 @@ namespace NikeFarms.v2._0.Controllers
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props);
             }
+            else if (role == "Admin")
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, "Admin")
+
+
+                };
+
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var principal = new ClaimsPrincipal(identity);
+
+                var props = new AuthenticationProperties();
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props);
+            }
 
 
             if (role == "Super Admin")
             {
                 return RedirectToAction("ListUser", "SuperAdmin");
             }
+            else if (role == "Admin")
+            {
+                return RedirectToAction("Index", "Flock");
+            }
             else if (role == "Store Manager")
             {
                 return RedirectToAction("Index", "Flock");
             }
-            else {
-                return NotFound();
+            else if (role == "Sales Manager")
+            {
+                return RedirectToAction("Index", "Flock");
+            }
+            else if (role == "Farm Manager")
+            {
+                return RedirectToAction("Index", "Flock");
+            }
+            else
+            {
+
+                return Unauthorized();
             }
 
 

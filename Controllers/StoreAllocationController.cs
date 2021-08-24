@@ -76,10 +76,10 @@ namespace NikeFarms.v2._0.Controllers
                 }),
 
                 
-                ManagerList = _userService.GetAllUser().Select(m => new SelectListItem
+                ManagerList = _userRoleService.FindUsersWithParticularRole(role.Id).Select(m => new SelectListItem
                 {
-                    Text = $"{_userService.FindById(_userRoleService.FindUsersWithParticularRole(role.Id)).LastName} {_userService.FindById(_userRoleService.FindUsersWithParticularRole(role.Id)).FirstName} (Farm Manager)",
-                    Value = m.Id.ToString()
+                    Text = $"{_userService.FindById(m.UserId).LastName} {_userService.FindById(m.UserId).FirstName} (Farm Manager)",
+                    Value =  m.UserId.ToString()
                 }),
 
             };
@@ -140,10 +140,10 @@ namespace NikeFarms.v2._0.Controllers
                         Text = m.Name,
                         Value = m.Id.ToString()
                     }),
-                    ManagerList = _userService.GetAllUser().Select(m => new SelectListItem
+                    ManagerList = _userRoleService.FindUsersWithParticularRole(role.Id).Select(m => new SelectListItem
                     {
-                        Text = $"{_userService.FindById(_userRoleService.FindUsersWithParticularRole(role.Id)).LastName} {_userService.FindById(_userRoleService.FindUsersWithParticularRole(role.Id)).FirstName} (Farm Manager)",
-                        Value = m.Id.ToString()
+                        Text = $"{_userService.FindById(m.UserId).LastName} {_userService.FindById(m.UserId).FirstName} (Farm Manager)",
+                        Value = m.UserId.ToString()
                     }),
                 };
 

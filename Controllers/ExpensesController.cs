@@ -37,7 +37,9 @@ namespace NikeFarms.v2._0.Controllers
                     Id = expense.Id,
                     Description = expense.Description,
                     Price = expense.Price,
+                    CreatedAt = expense.CreatedAt,
                     CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
+                    IsApproved = expense.IsApproved,
                 };
 
                 ListExpenses.Add(listExpensesVM);
@@ -59,7 +61,7 @@ namespace NikeFarms.v2._0.Controllers
 
             return View();
         }
-
+        
         [HttpPost]
         public IActionResult AddExpenses(AddExpensesVM addExpenses)
         {
@@ -70,10 +72,11 @@ namespace NikeFarms.v2._0.Controllers
                 UserId = userId,
                 Description = addExpenses.Description,
                 Price = addExpenses.Price,
+                IsApproved = false,
             };
 
             _expensesService.Add(expenses);
-            return RedirectToAction("ListRole");
+            return RedirectToAction("Index");
         }
 
 
@@ -104,11 +107,14 @@ namespace NikeFarms.v2._0.Controllers
         [HttpPost]
         public IActionResult UpdateExpenses(UpdateExpensesVM updateExpenses)
         {
+            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
             ExpensesDTO expenses = new ExpensesDTO
             {
+                UserId = userId,
                 Id = updateExpenses.Id,
                 Description = updateExpenses.Description,
                 Price = updateExpenses.Price,
+                IsApproved = false,
             };
             _expensesService.Update(expenses);
             return RedirectToAction("Index");
@@ -119,11 +125,12 @@ namespace NikeFarms.v2._0.Controllers
         public IActionResult Delete(int id)
         {
             var expense = _expensesService.FindById(id);
-            if (expense == null)
+            if (expense == null || expense.IsApproved == true)
             {
                 return NotFound();
             }
             _expensesService.Delete(id);
+            
             return RedirectToAction("Index");
         }
     }

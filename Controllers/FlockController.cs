@@ -16,13 +16,21 @@ namespace NikeFarms.v2._0.Controllers
     {
         private readonly IUserService _userService;
         private readonly IFlockService _flockService;
+        private readonly IWeeklyReportService _weeklyReportService;
         private readonly IFlockTypeService _flockTypeService;
+        private readonly IUserRoleService _userRoleService;
+        private readonly IRoleService _roleService;
+        private readonly INotificationService _notificationService;
 
-        public FlockController(IUserService userService, IFlockService flockService, IFlockTypeService flockTypeService)
+        public FlockController(IUserService userService, IFlockService flockService, IFlockTypeService flockTypeService, IUserRoleService userRoleService, INotificationService notificationService, IRoleService roleService, IWeeklyReportService weeklyReportService)
         {
             _userService = userService;
             _flockService = flockService;
             _flockTypeService = flockTypeService;
+            _userRoleService = userRoleService;
+            _notificationService = notificationService;
+            _roleService = roleService;
+            _weeklyReportService = weeklyReportService;
         }
 
         public IActionResult Index()
@@ -39,8 +47,10 @@ namespace NikeFarms.v2._0.Controllers
                     BatchNo = flock.BatchNo,
                     FlockType = _flockTypeService.FindById(flock.FlockTypeId).Name,
                     currentAge = (int)((DateTime.Now - flock.CreatedAt).TotalDays) + flock.Age,
-                    TotalAvailable = flock.TotalNo,
-                    CurrentAverageWeight = flock.AverageWeight,
+                    TotalNo = flock.TotalNo,
+                    AvailableBirds = flock.AvailableBirds,
+                    CurrentAverageWeight = _weeklyReportService.GetCurrentAverageWeight(flock.Id),
+                    IsApproved = flock.IsApproved,
                     CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
                 };
 
@@ -76,18 +86,21 @@ namespace NikeFarms.v2._0.Controllers
         public IActionResult AddFlock(AddFlockVM addFlock)
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
+            
             FlockDTO flockDTO = new FlockDTO
             {
                 UserId = userId,
                 TotalNo = addFlock.TotalNo,
                 Age = addFlock.Age,
                 AverageWeight = addFlock.AverageWeight,
+                AvailableBird = addFlock.TotalNo,
                 FlockTypeId = addFlock.FlockTypeId,
+                AmountPurchased = addFlock.AmountPurchased,
                 IsApproved = false,
             };
 
             _flockService.Add(flockDTO);
+
             return RedirectToAction("Index");
         }
 
@@ -95,7 +108,7 @@ namespace NikeFarms.v2._0.Controllers
         public IActionResult UpdateFlock(int id)
         {
             var flock = _flockService.FindById(id);
-            if (flock == null)
+            if (flock == null || flock.IsApproved == true)
             {
                 return NotFound();
             }
@@ -111,6 +124,7 @@ namespace NikeFarms.v2._0.Controllers
                     TotalNo = flock.TotalNo,
                     AverageWeight = flock.AverageWeight,
                     Age = flock.Age,
+                    AmountPurchased = flock.AmountPurchased,
                     FlockTypeId = flock.FlockTypeId,
                     FlockTypeList = _flockTypeService.GetAllFlockTypes().Select(m => new SelectListItem
                     {
@@ -127,16 +141,23 @@ namespace NikeFarms.v2._0.Controllers
         [HttpPost]
         public IActionResult UpdateFlock(UpdateFlockVM updateFlock)
         {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var user = _userService.FindById(userId);
+
             FlockDTO flock = new FlockDTO
             {
+                UserId = userId,
                 Id = updateFlock.Id,
                 TotalNo = updateFlock.TotalNo,
                 AverageWeight = updateFlock.AverageWeight,
                 Age = updateFlock.Age,
+                AvailableBird = updateFlock.TotalNo,
+                AmountPurchased = updateFlock.AmountPurchased,
                 FlockTypeId = updateFlock.FlockTypeId,
                 IsApproved = false,
             };
             _flockService.Update(flock);
+            
             return RedirectToAction("Index");
         }
 
@@ -145,12 +166,46 @@ namespace NikeFarms.v2._0.Controllers
         public IActionResult Delete(int id)
         {
             var flock = _flockService.FindById(id);
-            if (flock == null)
+            if (flock == null || flock.IsApproved == true)
             {
                 return NotFound();
             }
             _flockService.Delete(id);
             return RedirectToAction("Index");
+        }
+
+
+        public IActionResult ListApprovedFlock()
+        {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var flocks = _flockService.GetApprovedFlocks();
+            List<ListFlockVM> ListFlock = new List<ListFlockVM>();
+            foreach (var flock in flocks)
+            {
+                var Created = _userService.FindByEmail(flock.CreatedBy);
+
+                ListFlockVM listFlockVM = new ListFlockVM
+                {
+                    Id = flock.Id,
+                    BatchNo = flock.BatchNo,
+                    FlockType = _flockTypeService.FindById(flock.FlockTypeId).Name,
+                    currentAge = (int)((DateTime.Now - flock.CreatedAt).TotalDays) + flock.Age,
+                    Mortality = _flockService.Mortality(flock.Id),
+                    TotalNo = flock.TotalNo,
+                    AvailableBirds = flock.AvailableBirds,
+                    CurrentAverageWeight = _weeklyReportService.GetCurrentAverageWeight(flock.Id),
+                    IsApproved = flock.IsApproved,
+                    CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
+                };
+
+                ListFlock.Add(listFlockVM);
+            }
+
+            User userlogin = _userService.FindById(userId);
+            ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
+
+            return View(ListFlock);
         }
     }
 }

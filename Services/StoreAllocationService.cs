@@ -12,11 +12,15 @@ namespace NikeFarms.v2._0.Services
     {
         private readonly IStoreAllocationRepository _storeAllocationRepository;
         private readonly IUserService _userService;
+        private readonly IStoreItemService _storeItemService;
+        private readonly INotificationRepository _notificationRepository;
 
-        public StoreAllocationService(IStoreAllocationRepository storeAllocationRepository, IUserService userService)
+        public StoreAllocationService(IStoreAllocationRepository storeAllocationRepository, IUserService userService, INotificationRepository notificationRepository, IStoreItemService storeItemService)
         {
             _storeAllocationRepository = storeAllocationRepository;
             _userService = userService;
+            _notificationRepository = notificationRepository;
+            _storeItemService = storeItemService;
         }
 
         public StoreAllocation Add(StoreAllocationDTO storeAllocationDTO)
@@ -31,10 +35,25 @@ namespace NikeFarms.v2._0.Services
                 ItemPerKg = storeAllocationDTO.ItemPerKg,
                 ItemType = storeAllocationDTO.ItemType,
                 ItemRemaining = storeAllocationDTO.ItemRemaining,
+                BatchNo = Guid.NewGuid().ToString().Substring(0, 6).ToUpper(),
                 IsApproved = storeAllocationDTO.IsApproved,
             };
+            _storeAllocationRepository.Add(storeAllocation);
 
-            return _storeAllocationRepository.Add(storeAllocation);
+            var user = _userService.FindById(storeAllocationDTO.UserId);
+            Notification notify = new Notification
+            {
+                CreatedBy = user.Email,
+                CreatedAt = DateTime.Now,
+                Type = "Allocation",
+                ApproveId = _storeAllocationRepository.FindByBatchNo(storeAllocation.BatchNo).Id,
+                Content = $"Store Manager {user.LastName} {user.FirstName} Allocated {storeAllocationDTO.ItemType}: {_storeItemService.FindById(storeAllocationDTO.StoreItemId).Name}, " +
+                $" Qty: {storeAllocationDTO.NoOfItem},  Item Per Kg: {storeAllocationDTO.ItemPerKg} Kg To You",
+                RecieverId = storeAllocationDTO.ManagerId,
+
+            };
+            _notificationRepository.Add(notify);
+            return storeAllocation;
         }
 
         public StoreAllocation FindById(int id)
@@ -52,13 +71,22 @@ namespace NikeFarms.v2._0.Services
 
             storeAllocation.StoreItemId = storeAllocationDTO.StoreItemId;
             storeAllocation.NoOfItem = storeAllocationDTO.NoOfItem;
-            storeAllocation.ItemPerKg = storeAllocationDTO.ItemPerKg;
-            storeAllocation.ItemType = storeAllocationDTO.ItemType;
-            storeAllocation.ItemRemaining = storeAllocation.ItemRemaining;
+            storeAllocation.ItemRemaining = storeAllocationDTO.ItemRemaining;
             storeAllocation.IsApproved = storeAllocationDTO.IsApproved;
             storeAllocation.ManagerId = storeAllocationDTO.ManagerId;
             storeAllocation.UpdatedAt = DateTime.Now;
-            
+
+
+            var notify = _notificationRepository.FindByApproveId(storeAllocation.Id);
+            if (notify == null)
+            {
+                return null;
+            }
+            var user = _userService.FindById(storeAllocationDTO.UserId);
+            notify.Content = $"Store Manager {user.LastName} {user.FirstName} Allocated {storeAllocationDTO.ItemType}: {_storeItemService.FindById(storeAllocationDTO.StoreItemId).Name}, " +
+                $" Qty: {storeAllocationDTO.NoOfItem},  Item Per Kg: {storeAllocation.ItemPerKg} Kg To You";
+
+            _notificationRepository.Update(notify);
 
             return _storeAllocationRepository.Update(storeAllocation);
         }
@@ -66,6 +94,8 @@ namespace NikeFarms.v2._0.Services
         public void Delete(int id)
         {
             _storeAllocationRepository.Delete(id);
+              _notificationRepository.Delete(id);
+           
         }
 
         public IEnumerable<StoreAllocation> FeedAllocation(int userId)
@@ -91,6 +121,11 @@ namespace NikeFarms.v2._0.Services
         public IEnumerable<StoreAllocation> GetStoreAllocationsByRecieverId(int receiverId)
         {
             return _storeAllocationRepository.GetStoreAllocationsByRecieverId(receiverId);
+        }
+
+        public StoreAllocation FindMedById(int? MedAllocationId)
+        {
+            return _storeAllocationRepository.FindMedById(MedAllocationId);
         }
     }
 }

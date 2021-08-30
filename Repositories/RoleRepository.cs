@@ -47,6 +47,7 @@ namespace NikeFarms.v2._0.Repositories
 
         public List<Role> GetAllRoles()
         {
+            
             return _dbContext.Roles.ToList();
         }
 

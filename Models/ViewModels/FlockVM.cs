@@ -31,6 +31,9 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
         [Required(ErrorMessage = "Enter Average Weight of Flock!")]
         public double AverageWeight { get; set; }
+
+        [Required(ErrorMessage = "Enter Total Price of Flock!")]
+        public decimal AmountPurchased { get; set; }
     }
 
     public class UpdateFlockVM : AddFlockVM
@@ -46,13 +49,21 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
         public string BatchNo { get; set; }
 
-        public int TotalAvailable { get; set; }
+        public int TotalNo { get; set; }
+
+        public int AvailableBirds { get; set; }
 
         public string FlockType { get; set; }
 
         public int currentAge { get; set; }
 
         public double CurrentAverageWeight { get; set; }
+
+        public decimal AmountPurchased { get; set; }
+
+        public bool IsApproved { get; set; }
+
+        public int Mortality { get; set; }
 
     }
 }

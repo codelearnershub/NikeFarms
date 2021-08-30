@@ -14,6 +14,8 @@ namespace NikeFarms.v2._0.Interface
 
         public StoreItem Update(StoreItem storeItem);
 
+        public List<StoreItem> GetApprovedStoreItems();
+
         public List<StoreItem> GetAllStoreItems();
 
         public List<StoreItem> GetStoreItemsByManagerEmail(string managerEmail);

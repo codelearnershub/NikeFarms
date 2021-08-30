@@ -15,15 +15,19 @@ namespace NikeFarms.v2._0.Controllers
     {
         private readonly IStoreItemService _storeItemService;
         private readonly IUserService _userService;
+        private readonly IUserRoleService _userRoleService;
 
-        public StoreItemController(IStoreItemService storeItemService, IUserService userService)
+        public StoreItemController(IStoreItemService storeItemService, IUserService userService, IUserRoleService userRoleService)
         {
             _storeItemService = storeItemService;
             _userService = userService;
+            _userRoleService = userRoleService;
         }
 
         public IActionResult Index()
         {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            ViewBag.Role = $"{_userRoleService.FindRole(userId)}";
 
             var storeItems = _storeItemService.GetAllStoreItems();
             List<ListStoreItemVM> ListStoreItem = new List<ListStoreItemVM>();
@@ -39,15 +43,18 @@ namespace NikeFarms.v2._0.Controllers
                     Name = storeItem.Name,
                     Description = storeItem.Description,
                     NoOfItem = storeItem.NoOfItem,
+                    ItemType = storeItem.ItemType,
                     ItemPerKg = storeItem.ItemPerKg,
                     ItemRemaining = storeItem.ItemRemaining,
+                    TotalPricePurchased = storeItem.TotalPricePurchased,
+                    IsApproved = storeItem.IsApproved,
                     CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
                 };
 
                 ListStoreItem.Add(listStoreItemVM);
             }
 
-            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
 
@@ -77,6 +84,7 @@ namespace NikeFarms.v2._0.Controllers
                 NoOfItem = addStoreItem.NoOfItem,
                 ItemPerKg = addStoreItem.ItemPerKg,
                 ItemRemaining  = addStoreItem.NoOfItem,
+                TotalPricePurchased = addStoreItem.TotalPricePurchased,
                 IsApproved = false,
             };
 
@@ -88,7 +96,7 @@ namespace NikeFarms.v2._0.Controllers
         public IActionResult UpdateStoreItem(int id)
         {
             var storeItem = _storeItemService.FindById(id);
-            if (storeItem == null)
+            if (storeItem == null || storeItem.IsApproved == true)
             {
                 return NotFound();
             }
@@ -107,6 +115,7 @@ namespace NikeFarms.v2._0.Controllers
                     ItemType = storeItem.ItemType,
                     NoOfItem = storeItem.NoOfItem,
                     ItemPerKg = storeItem.ItemPerKg,
+                    TotalPricePurchased = storeItem.TotalPricePurchased,
 
                 };
 
@@ -127,6 +136,7 @@ namespace NikeFarms.v2._0.Controllers
                 NoOfItem = updateStoreItem.NoOfItem,
                 ItemPerKg = updateStoreItem.ItemPerKg,
                 ItemRemaining = updateStoreItem.NoOfItem,
+                TotalPricePurchased = updateStoreItem.TotalPricePurchased,
                 IsApproved = false,
             };
             _storeItemService.Update(storeItem);
@@ -138,7 +148,7 @@ namespace NikeFarms.v2._0.Controllers
         public IActionResult Delete(int id)
         {
             var storeItem = _storeItemService.FindById(id);
-            if (storeItem == null)
+            if (storeItem == null || storeItem.IsApproved == true)
             {
                 return NotFound();
             }

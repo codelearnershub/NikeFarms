@@ -1,0 +1,77 @@
+﻿@model NikeFarms.v2._0.Models.ViewModels.UpdateStoreItemVM
+
+@{ ViewBag.Title = "Update StoreItem"; }
+@{
+    Layout = "_StoreManagerDashboard";
+}
+
+
+<div class="container">
+    <div class="">
+        <div class="">
+            <div class="">
+                <div class="">
+                    <br /><br /><h2 class="text-center font-weight-bolder" style="color:darkred"><i class="fas fa-edit"></i> Update Store Item</h2><br /><br />
+                </div>
+                <form method="post">
+                    <input hidden asp-for="Id" />
+                    <div class="">
+                        <div class="form-row">
+                            <div class="form-group col-md-5">
+                                <label asp-for="Name" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Item Name </label>
+                                <input style="margin-right: 20px" asp-for="Name" class="form-control " placeholder="Enter Item Name" />
+                                <span asp-validation-for="Name" style="color:darkred"></span>
+                            </div>
+                            <div class="form-group col-md-2">
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label asp-for="Description" class="form-check-label font-weight-bold"><span style="color: darkred"></span>  Description</label>
+                                <input style="margin-right: 20px" asp-for="Description" class="form-control" placeholder="Description" />
+                                <span asp-validation-for="Description" style="color:darkred"></span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-5">
+                                <label class="form-check-label font-weight-bold" asp-for="ItemType"><span style="color: darkred">*</span> Select Item Type</label>
+                                <select asp-for="ItemType" class="form-control">
+                                    <option disabled selected>--Select Item Type--</option>
+                                    <option value="Feed">Feed</option>
+                                    <option value="Medication">Medication</option>
+                                </select>
+                                <span asp-validation-for="ItemType" style="color:darkred"></span><br>
+                            </div>
+                            <div class="form-group col-md-2">
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label asp-for="NoOfItem" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Total No. Of Item</label>
+                                <input asp-for="NoOfItem" class="form-control" placeholder="Total No. Of Item" type="number" min="1" />
+                                <span asp-validation-for="NoOfItem" style="color:darkred"></span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-5">
+                                <label asp-for="ItemPerKg" class="form-check-label font-weight-bold"><span style="color: darkred"></span>  Item Per Kg </label>
+                                <input style="margin-right: 20px" asp-for="ItemPerKg" class="form-control " placeholder="Item Per Kg" type="number" min="1" />
+                                <span asp-validation-for="ItemPerKg" style="color:darkred"></span>
+                            </div>
+                            <div class="form-group col-md-2">
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label asp-for="TotalPricePurchased" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Price Purchased (&#8358 )</label>
+                                <input style="margin-right: 20px" asp-for="TotalPricePurchased" class="form-control" placeholder="Price Purchased (N)" type="number" min="1" />
+                                <span asp-validation-for="TotalPricePurchased" style="color:darkred"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <input type="submit" value="Edit" class="btn font-weight-bolder" style="background-color:darkgoldenrod" />
+                        <a style="margin-left: 5%; color: darkred" asp-action="Index">Back Home</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

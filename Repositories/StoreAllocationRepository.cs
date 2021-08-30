@@ -40,14 +40,25 @@ namespace NikeFarms.v2._0.Repositories
             return _dbContext.StoreAllocations.FirstOrDefault(u => u.Id.Equals(storeAllocationId));
         }
 
+        public StoreAllocation FindMedById(int? MedAllocationId)
+        {
+            return _dbContext.StoreAllocations.FirstOrDefault(u => u.Id.Equals(MedAllocationId));
+        }
+
+        public StoreAllocation FindByBatchNo(string batchNo)
+        {
+            return  _dbContext.StoreAllocations.FirstOrDefault(u => u.BatchNo == batchNo);
+
+        }
+
         public List<StoreAllocation> FeedAllocation(int userId)
         {
-            return _dbContext.StoreAllocations.Where(s=> s.ItemType == "Feed" && s.ManagerId == userId).ToList();
+            return _dbContext.StoreAllocations.Where(s=> s.ItemType == "Feed" && s.ManagerId == userId && s.IsApproved == true && s.ItemRemaining >0).ToList();
         }
 
         public List<StoreAllocation> MedAllocation(int userId)
         {
-            return _dbContext.StoreAllocations.Where(s => s.ItemType == "Medication" && s.ManagerId == userId).ToList();
+            return _dbContext.StoreAllocations.Where(s => s.ItemType == "Medication" && s.ManagerId == userId && s.IsApproved == true && s.ItemRemaining > 0).ToList();
         }
 
         public StoreAllocation Update(StoreAllocation storeAllocation)
@@ -59,7 +70,7 @@ namespace NikeFarms.v2._0.Repositories
 
         public List<StoreAllocation> GetAllStoreAllocations()
         {
-            return _dbContext.StoreAllocations.ToList();
+            return _dbContext.StoreAllocations.Where(s=> s.ItemRemaining > 0).ToList();
         }
 
         public List<StoreAllocation> GetStoreAllocationsByManagerEmail(string managerEmail)

@@ -59,9 +59,14 @@ namespace NikeFarms.v2._0.Services
             _messageRepository.Delete(id);
         }
 
-        public IEnumerable<Message> GetMessages(string senderEmail)
+        public IEnumerable<Message> GetOutbox(string senderEmail)
         {
-           return _messageRepository.GetMessages(senderEmail);
+           return _messageRepository.GetOutbox(senderEmail);
+        }
+
+        public List<Message> GetMessages(int recieverId)
+        {
+            return _messageRepository.GetMessages(recieverId);
         }
     }
 }

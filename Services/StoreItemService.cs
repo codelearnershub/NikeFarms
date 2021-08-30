@@ -12,11 +12,17 @@ namespace NikeFarms.v2._0.Services
     {
         private readonly IStoreItemRepository _storeItemRepository;
         private readonly IUserService _userService;
+        private readonly IUserRoleService _userRoleService;
+        private readonly IRoleService _roleService;
+        private readonly INotificationRepository _notificationRepository;
 
-        public StoreItemService(IStoreItemRepository storeItemRepository, IUserService userService)
+        public StoreItemService(IStoreItemRepository storeItemRepository, IUserService userService, IUserRoleService userRoleService, IRoleService roleService, INotificationRepository notificationRepository)
         {
             _storeItemRepository = storeItemRepository;
             _userService = userService;
+            _userRoleService = userRoleService;
+            _roleService = roleService;
+            _notificationRepository = notificationRepository;
         }
 
         public StoreItem Add(StoreItemDTO storeItemDTO)
@@ -35,7 +41,22 @@ namespace NikeFarms.v2._0.Services
                 IsApproved = storeItemDTO.IsApproved
             };
 
-            return _storeItemRepository.Add(storeItem);
+            _storeItemRepository.Add(storeItem);
+            var user = _userService.FindById(storeItemDTO.UserId);
+            var role = _roleService.FindByName("Admin");
+            Notification notify = new Notification
+            {
+                CreatedBy = _userService.FindById(storeItemDTO.UserId).Email,
+                CreatedAt = DateTime.Now,
+                Type = "StoreItem",
+                ApproveId = storeItem.Id,
+                Content = $"Manager {user.LastName} {user.FirstName} Bought {storeItemDTO.ItemType}: {storeItemDTO.Name}, " +
+                $" Qty: {storeItemDTO.NoOfItem},  Item Per Kg: {storeItemDTO.ItemPerKg} Kg , Price Purchased: N{storeItemDTO.TotalPricePurchased}",
+                RecieverId = _userRoleService.FindUserWithParticularRole(role.Id).UserId,
+
+            };
+            _notificationRepository.Add(notify);
+            return storeItem;
         }
 
         public StoreItem FindById(int id)
@@ -62,12 +83,28 @@ namespace NikeFarms.v2._0.Services
             storeItem.UpdatedAt = DateTime.Now;
 
 
+            var notify = _notificationRepository.FindByApproveId(storeItem.Id);
+            if (notify == null)
+            {
+                return null;
+            }
+            var user = _userService.FindByEmail(storeItem.CreatedBy);
+            var role = _roleService.FindByName("Admin");
+            notify.Content = $"Manager {user.LastName} {user.FirstName} Bought {storeItemDTO.ItemType}: {storeItemDTO.Name}, " +
+                $" Qty: {storeItemDTO.NoOfItem},  Item Per Kg: {storeItemDTO.ItemPerKg} Kg , Price Purchased: N{storeItemDTO.TotalPricePurchased}";
+
+            _notificationRepository.Update(notify);
+
             return _storeItemRepository.Update(storeItem);
         }
 
         public void Delete(int id)
         {
             _storeItemRepository.Delete(id);
+
+            _notificationRepository.Delete(id);
+
+
         }
 
         public IEnumerable<StoreItem> GetAllStoreItems()
@@ -78,6 +115,11 @@ namespace NikeFarms.v2._0.Services
         public IEnumerable<StoreItem> GetStoreItemsByManagerEmail(string managerEmail)
         {
             return _storeItemRepository.GetStoreItemsByManagerEmail(managerEmail);
+        }
+
+        public List<StoreItem> GetApprovedStoreItems()
+        {
+            return _storeItemRepository.GetApprovedStoreItems();
         }
     }
 }

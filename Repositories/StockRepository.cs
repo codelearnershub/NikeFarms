@@ -45,6 +45,11 @@ namespace NikeFarms.v2._0.Repositories
             return _dbContext.Stocks.ToList();
         }
 
+        public List<Stock> GetStocksByFlockId(int flockId)
+        {
+            return _dbContext.Stocks.Where(s=> s.FlockId == flockId && s.ItemType == "Birds").ToList();
+        }
+
         public List<Stock> GetStocksByManagerEmail(string managerEmail)
         {
             return _dbContext.Stocks.Where(s => s.CreatedBy == managerEmail).ToList();

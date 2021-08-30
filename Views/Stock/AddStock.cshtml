@@ -1,0 +1,89 @@
+﻿@model NikeFarms.v2._0.Models.ViewModels.AddStockVM
+
+@{ ViewBag.Title = "Stock Goods"; }
+@{
+    Layout = "_StoreManagerDashboard";
+}
+
+
+<div class="container">
+    <div class="">
+        <div class="">
+            <div class="">
+                <div class="">
+                    <br /><br /><h3 class="text-center font-weight-bolder" style="color:darkred"><i class="fas fa-layer-group"></i>  Stock Goods</h3><br /><br />
+                </div>
+                @if (ViewBag.Message == "errorCrate")
+                {
+                    <p style="color:red; " class="text-center font-weight-bolder  mb-2">*Input the Price of Eggs Per Crate/ Erase Price Per Kg</p>
+                }
+                else if (ViewBag.Message == "errorKg")
+                {
+                    <p style="color:red; " class="text-center font-weight-bolder  mb-2">*Input Price of Birds per Kg/ Erase Price Per Crate</p>
+                }
+                else if (ViewBag.Message == "errorBirds")
+                {
+                    <p style="color:red; " class="text-center font-weight-bolder  mb-2">*The No of Birds you want to Stock is more than the Available Birds in this Particular Flock</p>
+                }
+                else if (ViewBag.Message == "errorStock")
+                {
+                    <p style="color:red; " class="text-center font-weight-bolder  mb-2">*@ViewBag.ErrorMss</p>
+                }
+                <form method="post">
+                    <div class="">
+                        <div class="form-row">
+
+                            <div class="form-group col-md-5">
+                                <label class="form-check-label font-weight-bold" asp-for="FlockId"><span style="color: darkred">*</span> Select Flock</label>
+                                <select asp-for="FlockId" asp-items="@Model.FlockList" class="form-control">
+                                    <option disabled selected>--Select Flock --</option>
+                                </select>
+                                <span asp-validation-for="FlockId" style="color:darkred"></span><br>
+                            </div>
+                            <div class="form-group col-md-2">
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label class="form-check-label font-weight-bold" asp-for="ItemType"><span style="color: darkred">*</span> Select Stock Item Type</label>
+                                <select asp-for="ItemType" class="form-control">
+                                    <option disabled selected>--Select Stock Type--</option>
+                                    <option value="Eggs">Eggs</option>
+                                    <option value="Birds">Birds</option>
+                                </select>
+                                <span asp-validation-for="ItemType" style="color:darkred"></span><br>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-5">
+                                <label asp-for="NoOfItem" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Number of Item Stocked </label>
+                                <input asp-for="NoOfItem" class="form-control" placeholder="Total No. of Stock Item" type="number" min="1" />
+                                <span asp-validation-for="NoOfItem" style="color:darkred"></span>
+                            </div>
+                            <div class="form-group col-md-2">
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label asp-for="PricePerCrate" class="form-check-label font-weight-bold"><span style="color: darkred"></span> Price Per Crate(*Egg) </label>
+                                <input asp-for="PricePerCrate" class="form-control" placeholder="Price of Stock Per Crate " type="number" min="1" />
+                                <span asp-validation-for="PricePerCrate" style="color:darkred"></span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-5">
+                                <label asp-for="PricePerKg" class="form-check-label font-weight-bold"><span style="color: darkred"></span> Price Per Kg(*Bird) </label>
+                                <input asp-for="PricePerKg" class="form-control" placeholder="Price of Stock Per Kg " type="number" min="1" />
+                                <span asp-validation-for="PricePerKg" style="color:darkred"></span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="">
+                        <input type="submit" value="Stock" class="btn font-weight-bolder" style="background-color:darkgoldenrod" />
+                        <a style="margin-left: 5%; color: darkred" asp-action="Index">Back Home</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,4 +1,5 @@
-﻿using NikeFarms.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using NikeFarms.Context;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
 using System;
@@ -35,6 +36,18 @@ namespace NikeFarms.v2._0.Repositories
             }
         }
 
+        public List<WeeklyReport> GetWeeklyReport()
+        {
+            return _dbContext.WeeklyReports.ToList();
+        }
+
+        public WeeklyReport GetWeeklyReportFlockId(int flockId)
+        {
+            var date = DateTime.Now.ToShortDateString();
+            return _dbContext.WeeklyReports.FirstOrDefault(d => d.FlockId == flockId && d.Date == date);
+        }
+
+
         public WeeklyReport FindById(int weeklyReportId)
         {
             return _dbContext.WeeklyReports.FirstOrDefault(u => u.Id.Equals(weeklyReportId));
@@ -45,6 +58,13 @@ namespace NikeFarms.v2._0.Repositories
             _dbContext.WeeklyReports.Update(weeklyReport);
             _dbContext.SaveChanges();
             return weeklyReport;
+        }
+
+        public IList<WeeklyReport> GetWeeklyReportByFlockId(int flockId)
+        {
+            return _dbContext.WeeklyReports
+                .Include(w => w.Flock)
+                .Where(w => w.Flock.Id == flockId).ToList();
         }
     }
 }

@@ -15,12 +15,14 @@ namespace NikeFarms.v2._0.Models.DTO
 
         public int Mortality { get; set; }
 
-        public int NoOfMedUsed { get; set; }
+        public double NoOfMedUsed { get; set; }
+
+        public double NoOfFeedUsed { get; set; }
 
         public int FlockId { get; set; }
 
         public int StoreAllocationFeedId { get; set; }
 
-        public int StoreAllocationMedId { get; set; }
+        public int? StoreAllocationMedId { get; set; }
     }
 }

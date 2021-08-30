@@ -1,4 +1,5 @@
-﻿using NikeFarms.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using NikeFarms.Context;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
 using System;
@@ -38,6 +39,22 @@ namespace NikeFarms.v2._0.Repositories
         public DailyActivity FindById(int dailyActivityId)
         {
             return _dbContext.DailyActivities.FirstOrDefault(u => u.Id.Equals(dailyActivityId));
+        }
+
+        public List<DailyActivity> GetDailyActivitiesPerFlockId(int flockId)
+        {
+            return _dbContext.DailyActivities.Where(d=> d.FlockId == flockId).ToList();
+        }
+
+        public List<DailyActivity> GetAllDailyActivities()
+        {
+            return _dbContext.DailyActivities.ToList();
+        }
+
+        public DailyActivity GetDailyActivitiesFlockId(int flockId)
+        {
+            var date = DateTime.Now.ToShortDateString();
+            return _dbContext.DailyActivities.FirstOrDefault(d => d.FlockId == flockId && d.Date == date);
         }
 
         public DailyActivity Update(DailyActivity dailyActivity)

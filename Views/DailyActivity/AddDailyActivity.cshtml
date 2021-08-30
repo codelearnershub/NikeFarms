@@ -1,0 +1,91 @@
+﻿@model NikeFarms.v2._0.Models.ViewModels.AddDailyActivityVM
+
+@{ ViewBag.Title = "Add Daily Activity"; }
+@{
+    Layout = "_FarmManagerDashboard";
+}
+
+
+<div class="container">
+    <div class="">
+        <div class="">
+            <div class="">
+                <div class="">
+                    <br /><br /><h3 class="text-center font-weight-bolder" style="color:darkred"><i class="fas fa-calendar-day"></i>  Add Today's Activity (@DateTime.Now.ToLongDateString())</h3><br /><br />
+                </div>
+                @if (ViewBag.Message == "errorFeed")
+                {
+                    <p style="color:red; " class="text-center font-weight-bolder  mb-2">*The No. of Feed you Input is more than what has been Allocated to you</p>
+                }
+                else if (ViewBag.Message == "errorMed")
+                {
+                    <p style="color:red; " class="text-center font-weight-bolder  mb-2">*The No. of Medicine you Input is more than what has been Allocated to you</p>
+                }
+                else if (ViewBag.Message == "errorMor")
+                {
+                    <p style="color:red; " class="text-center font-weight-bolder  mb-2">*Mortality cannot be more than Avaible Birds!!</p>
+                }
+                <form method="post">
+                    <div class="">
+                        <div class="form-row">
+
+                            <div class="form-group col-md-5">
+                                <label class="form-check-label font-weight-bold" asp-for="FlockId"><span style="color: darkred">*</span> Select Flock</label>
+                                <select asp-for="FlockId" asp-items="@Model.FlockList" class="form-control">
+                                    <option disabled selected>--Select Flock --</option>
+                                </select>
+                                <span asp-validation-for="FlockId" style="color:darkred"></span><br>
+                            </div>
+                            <div class="form-group col-md-2">
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label asp-for="Mortality" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Mortality </label>
+                                <input asp-for="Mortality" class="form-control" placeholder="Total No. of Deaths" type="number" min="0" />
+                                <span asp-validation-for="Mortality" style="color:darkred"></span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-5">
+                                <label class="form-check-label font-weight-bold" asp-for="StoreAllocationFeedId"><span style="color: darkred">*</span> Select Feed</label>
+                                <select asp-for="StoreAllocationFeedId" asp-items="@Model.FeedAllocationList" class="form-control">
+                                    <option disabled selected>--Select Feed Consumed --</option>
+                                </select>
+                                <span asp-validation-for="StoreAllocationFeedId" style="color:darkred"></span><br>
+                            </div>
+                            <div class="form-group col-md-2">
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label asp-for="NoOfFeedUsed" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Number of Feed Consumed </label>
+                                <input asp-for="NoOfFeedUsed" class="form-control" placeholder="Total No. of Feed Consumed" type="number" min="1" />
+                                <span asp-validation-for="NoOfFeedUsed" style="color:darkred"></span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-5">
+                                <label class="form-check-label font-weight-bold" asp-for="StoreAllocationMedId"><span style="color: darkred"></span> Select Medication</label>
+                                <select asp-for="StoreAllocationMedId" asp-items="@Model.MedAllocationList" class="form-control">
+                                    <option disabled selected>--Select Medication Used --</option>
+                                </select>
+                                <span asp-validation-for="StoreAllocationMedId" style="color:darkred"></span><br>
+                            </div>
+                            <div class="form-group col-md-2">
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label asp-for="NoOfMedUsed" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Number of Med Used </label>
+                                <input asp-for="NoOfMedUsed" class="form-control" placeholder="Total No. of Medication Used" type="number" min="0" />
+                                <span asp-validation-for="NoOfMedUsed" style="color:darkred"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <input type="submit" value="Add Record" class="btn font-weight-bolder" style="background-color:darkgoldenrod" />
+                        <a style="margin-left: 5%; color: darkred" asp-action="ListAllDailyActivities">Back Home</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

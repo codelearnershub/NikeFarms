@@ -42,13 +42,14 @@ namespace NikeFarms.v2._0.Controllers
 
                 ListStoreAllocationVM listStoreAllocationVM = new ListStoreAllocationVM
                 {
-
+                    Id = storeAllocation.Id,
                     NoOfItem = storeAllocation.NoOfItem,
                     StoreItemName = _storeItemService.FindById(storeAllocation.StoreItemId).Name,
                     AllocatedTo = $"{Allocated.LastName } {Allocated.FirstName }",
                     ItemRemaining = storeAllocation.ItemRemaining,
                     ItemType = storeAllocation.ItemType,
                     ItemPerKg = storeAllocation.ItemPerKg,
+                    IsApproved = storeAllocation.IsApproved,
                     CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
 
                 };
@@ -69,17 +70,17 @@ namespace NikeFarms.v2._0.Controllers
             var role = _roleService.FindByName("Farm Manager");
             AddStoreAllocationVM storeAllocationVM = new AddStoreAllocationVM
             {
-                StoreItemList = _storeItemService.GetAllStoreItems().Select(m => new SelectListItem
+                StoreItemList = _storeItemService.GetApprovedStoreItems().Select(m => new SelectListItem
                 {
-                    Text = m.Name,
+                    Text = $"{m.Name} ({m.ItemRemaining})",
                     Value = m.Id.ToString()
                 }),
 
-                
+
                 ManagerList = _userRoleService.FindUsersWithParticularRole(role.Id).Select(m => new SelectListItem
                 {
                     Text = $"{_userService.FindById(m.UserId).LastName} {_userService.FindById(m.UserId).FirstName} (Farm Manager)",
-                    Value =  m.UserId.ToString()
+                    Value = m.UserId.ToString()
                 }),
 
             };
@@ -103,20 +104,48 @@ namespace NikeFarms.v2._0.Controllers
                 StoreItemId = vm.StoreItemId,
                 ManagerId = vm.ManagerId,
                 NoOfItem = vm.NoOfItem,
-                ItemPerKg = vm.ItemPerKg,
-                ItemType = vm.ItemType,
+                ItemPerKg = _storeItemService.FindById(vm.StoreItemId).ItemPerKg,
+                ItemType = _storeItemService.FindById(vm.StoreItemId).ItemType,
                 ItemRemaining = vm.NoOfItem,
                 IsApproved = false,
             };
+
+
+            double StoreItemRemaining = _storeItemService.FindById(vm.StoreItemId).ItemRemaining;
+            if (StoreItemRemaining < vm.NoOfItem)
+            {
+                ViewBag.Message = "error";
+
+                var role = _roleService.FindByName("Farm Manager");
+                AddStoreAllocationVM storeAllocationVM = new AddStoreAllocationVM
+                {
+                    StoreItemList = _storeItemService.GetAllStoreItems().Select(m => new SelectListItem
+                    {
+                        Text = $"{m.Name} ({m.ItemRemaining})",
+                        Value = m.Id.ToString()
+                    }),
+
+
+                    ManagerList = _userRoleService.FindUsersWithParticularRole(role.Id).Select(m => new SelectListItem
+                    {
+                        Text = $"{_userService.FindById(m.UserId).LastName} {_userService.FindById(m.UserId).FirstName} (Farm Manager)",
+                        Value = m.UserId.ToString()
+                    }),
+
+                };
+                return View(storeAllocationVM);
+            }
+
             _storeAllocationService.Add(storeAllocationDTO);
             return RedirectToAction("Index");
+
         }
 
 
         public IActionResult UpdateStoreAllocation(int id)
         {
             var storeAllocation = _storeAllocationService.FindById(id);
-            if (storeAllocation == null)
+            if (storeAllocation == null || storeAllocation.IsApproved == true)
             {
                 return NotFound();
             }
@@ -137,7 +166,7 @@ namespace NikeFarms.v2._0.Controllers
                     ManagerId = storeAllocation.ManagerId,
                     StoreItemList = _storeItemService.GetAllStoreItems().Select(m => new SelectListItem
                     {
-                        Text = m.Name,
+                        Text = $"{m.Name} ({m.ItemRemaining})",
                         Value = m.Id.ToString()
                     }),
                     ManagerList = _userRoleService.FindUsersWithParticularRole(role.Id).Select(m => new SelectListItem
@@ -155,17 +184,48 @@ namespace NikeFarms.v2._0.Controllers
         [HttpPost]
         public IActionResult UpdateStoreAllocation(UpdateStoreAllocationVM updateStoreAllocation)
         {
+            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+
             StoreAllocationDTO storeAllocation = new StoreAllocationDTO
             {
                 Id = updateStoreAllocation.Id,
+                UserId = userId,
                 StoreItemId = updateStoreAllocation.StoreItemId,
                 ManagerId = updateStoreAllocation.ManagerId,
                 NoOfItem = updateStoreAllocation.NoOfItem,
-                ItemPerKg = updateStoreAllocation.ItemPerKg,
-                ItemType = updateStoreAllocation.ItemType,
                 ItemRemaining = updateStoreAllocation.NoOfItem,
                 IsApproved = false,
             };
+
+            double StoreItemRemaining = _storeItemService.FindById(updateStoreAllocation.StoreItemId).ItemRemaining;
+            if (StoreItemRemaining < updateStoreAllocation.NoOfItem)
+            {
+                ViewBag.Message = "error";
+
+                var role = _roleService.FindByName("Farm Manager");
+                UpdateStoreAllocationVM updateStoreAllocationD = new UpdateStoreAllocationVM
+                {
+                    Id = storeAllocation.Id,
+                    NoOfItem = storeAllocation.NoOfItem,
+                    ItemPerKg = storeAllocation.ItemPerKg,
+                    ItemType = storeAllocation.ItemType,
+                    StoreItemId = storeAllocation.StoreItemId,
+                    ManagerId = storeAllocation.ManagerId,
+                    StoreItemList = _storeItemService.GetAllStoreItems().Select(m => new SelectListItem
+                    {
+                        Text = $"{m.Name} ({m.ItemRemaining})",
+                        Value = m.Id.ToString()
+                    }),
+                    ManagerList = _userRoleService.FindUsersWithParticularRole(role.Id).Select(m => new SelectListItem
+                    {
+                        Text = $"{_userService.FindById(m.UserId).LastName} {_userService.FindById(m.UserId).FirstName} (Farm Manager)",
+                        Value = m.UserId.ToString()
+                    }),
+                };
+
+                return View(updateStoreAllocationD);
+            }
+
             _storeAllocationService.Update(storeAllocation);
             return RedirectToAction("Index");
         }
@@ -174,7 +234,7 @@ namespace NikeFarms.v2._0.Controllers
         public IActionResult Delete(int id)
         {
             var storeAllocation = _storeAllocationService.FindById(id);
-            if (storeAllocation == null)
+            if (storeAllocation == null || storeAllocation.IsApproved == true)
             {
                 return NotFound();
             }

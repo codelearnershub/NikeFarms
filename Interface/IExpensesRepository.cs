@@ -14,6 +14,8 @@ namespace NikeFarms.v2._0.Interface
 
         public Expenses Update(Expenses expenses);
 
+        public Expenses FindByBatchNo(string batchNo);
+
         public List<Expenses> GetAllExpenses();
 
         public void Delete(int expensesId);

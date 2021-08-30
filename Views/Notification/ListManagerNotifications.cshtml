@@ -1,0 +1,54 @@
+﻿@model List<NikeFarms.v2._0.Models.ViewModels.ListNotificationVM>
+@{ ViewBag.Title = "Notifications"; }
+@{
+    Layout = "_FarmManagerDashboard";
+}
+
+
+<h1 class="text-center" style="font-family:'Times New Roman'; color:darkred ">
+    <i class="fas fa-bell"></i> Notifications (<span style="color:red">@ViewBag.NotifyCount</span>)
+</h1>
+
+<div class="">
+    <div>
+        <br />
+        @if (Model.Count() > 0)
+        {
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+
+                            <th>Content</th>
+                            <th>Approve</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var notification in Model)
+                        {
+                            <tr>
+
+
+                                <td><span class="font-weight-bolder">@notification.Content </span><br /> <span class="font-italic font-weight-bolder" style="font-size:15px;color: darkred; margin-left:70%">@notification.CreatedAt.ToLongDateString() @notification.CreatedAt.ToShortTimeString()</span></td>
+
+                                <td>
+                                    <a class="btn font-weight-bold" style="background-color: greenyellow; color: white; margin-left: 20%; border-radius: 60%" asp-controller="Notification" asp-action="Approve" asp-route-id="@notification.ApproveId"><i class="fas fa-check"></i></a>
+                                </td>
+
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <br /><br />
+            <h4 class="text-center font-weight-bolder" style="color: darkred">You Have No Notifications So Far...</h4>
+        }
+    </div>
+</div>
+
+

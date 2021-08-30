@@ -14,10 +14,16 @@ namespace NikeFarms.v2._0.Interface
 
         public DailyActivity FindById(int id);
 
+        public IEnumerable<DailyActivity> GetDailyActivitiesPerFlockId(int flockId);
+
         public DailyActivity Update(DailyActivityDTO dailyActivityDTO);
 
 
         public void Delete(int id);
-        
+
+        public List<DailyActivity> GetAllDailyActivities();
+
+        public DailyActivity GetDailyActivitiesFlockId(int flockId);
+
     }
 }

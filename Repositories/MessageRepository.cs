@@ -40,11 +40,15 @@ namespace NikeFarms.v2._0.Repositories
             return _dbContext.Messages.FirstOrDefault(u => u.Id.Equals(messageId));
         }
 
-        public List<Message> GetMessages(string senderEmail)
+        public List<Message> GetOutbox(string senderEmail)
         {
             return _dbContext.Messages.Where(m=> m.CreatedBy == senderEmail).ToList();
         }
 
+        public List<Message> GetMessages(int recieverId)
+        {
+            return _dbContext.Messages.Where(m => m.RecieverId == recieverId).ToList();
+        }
 
         public Message Update(Message message)
         {

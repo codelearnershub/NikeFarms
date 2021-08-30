@@ -12,5 +12,7 @@ namespace NikeFarms.v2._0.Models
         public Flock Flock { get; set; }
 
         public int FlockId { get; set; }
+
+        public string Date { get; set; }
     }
 }

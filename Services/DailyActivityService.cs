@@ -25,12 +25,13 @@ namespace NikeFarms.v2._0.Services
             {
                 CreatedBy = _userService.FindById(dailyActivityDTO.UserId).Email,
                 CreatedAt = DateTime.Now,
-                FeedConsumedPerKg = dailyActivityDTO.FeedConsumedPerKg,
                 Mortality = dailyActivityDTO.Mortality,
                 NoOfMedUsed = dailyActivityDTO.NoOfMedUsed,
+                NoOfFeedUsed = dailyActivityDTO.NoOfFeedUsed,
                 FlockId = dailyActivityDTO.FlockId,
                 StoreAllocationFeedId = dailyActivityDTO.StoreAllocationFeedId,
                 StoreAllocationMedId = dailyActivityDTO.StoreAllocationMedId,
+                Date = DateTime.Now.ToShortDateString(),
 
             };
 
@@ -50,13 +51,15 @@ namespace NikeFarms.v2._0.Services
                 return null;
             }
 
-            dailyActivity.FeedConsumedPerKg = dailyActivityDTO.FeedConsumedPerKg;
+
             dailyActivity.Mortality = dailyActivityDTO.Mortality;
             dailyActivity.NoOfMedUsed = dailyActivityDTO.NoOfMedUsed;
+            dailyActivity.NoOfFeedUsed = dailyActivityDTO.NoOfFeedUsed;
             dailyActivity.FlockId = dailyActivityDTO.FlockId;
             dailyActivity.StoreAllocationFeedId = dailyActivityDTO.StoreAllocationFeedId;
             dailyActivity.StoreAllocationMedId = dailyActivityDTO.StoreAllocationMedId;
             dailyActivity.UpdatedAt = DateTime.Now;
+            dailyActivity.Date = dailyActivity.Date;
 
             return _dailyActivityRepository.Update(dailyActivity);
         }
@@ -64,6 +67,21 @@ namespace NikeFarms.v2._0.Services
         public void Delete(int id)
         {
             _dailyActivityRepository.Delete(id);
+        }
+
+        public IEnumerable<DailyActivity> GetDailyActivitiesPerFlockId(int flockId)
+        {
+            return _dailyActivityRepository.GetDailyActivitiesPerFlockId(flockId);
+        }
+
+        public List<DailyActivity> GetAllDailyActivities()
+        {
+            return _dailyActivityRepository.GetAllDailyActivities();
+        }
+
+        public DailyActivity GetDailyActivitiesFlockId(int flockId)
+        {
+            return _dailyActivityRepository.GetDailyActivitiesFlockId(flockId);
         }
     }
 }

@@ -7,11 +7,12 @@ namespace NikeFarms.v2._0.Models
 {
     public class DailyActivity : BaseEntity
     {
-        public double FeedConsumedPerKg { get; set; }
 
         public int Mortality { get; set; }
 
-        public int NoOfMedUsed { get; set; }
+        public double NoOfMedUsed { get; set; }
+
+        public double NoOfFeedUsed { get; set; }
 
         public Flock Flock { get; set; }
 
@@ -23,7 +24,9 @@ namespace NikeFarms.v2._0.Models
 
         public StoreAllocation StoreAllocationMed { get; set; }
 
-        public int StoreAllocationMedId { get; set; }
+        public int? StoreAllocationMedId { get; set; }
+
+        public string Date { get; set; }
 
     }
 }

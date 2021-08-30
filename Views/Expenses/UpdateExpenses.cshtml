@@ -1,0 +1,46 @@
+﻿@model NikeFarms.v2._0.Models.ViewModels.UpdateExpensesVM
+
+@{ ViewBag.Title = "Update Expenses"; }
+@{
+    Layout = "_StoreManagerDashboard";
+}
+
+
+<div class="container">
+    <div class="">
+        <div class="">
+            <div class="">
+                <div class="">
+                    <br /><br /><h3 class="text-center font-weight-bolder" style="color:darkred"><i class="fas fa-wallet"></i>  Update Expenses</h3><br /><br />
+                </div>
+
+                <form method="post">
+                    <div class="">
+                        <div class="form-row">
+
+                            <div class="form-group col-md-5">
+                                <label asp-for="Description" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Description </label>
+                                <input asp-for="Description" class="form-control" placeholder="Enter Expenses Description" />
+                                <span asp-validation-for="Description" style="color:darkred"></span>
+                            </div>
+                            <div class="form-group col-md-2">
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label asp-for="Price" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Amount Spent </label>
+                                <input asp-for="Price" class="form-control" placeholder="Input Total Amount Spent" type="number" min="0" />
+                                <span asp-validation-for="Price" style="color:darkred"></span>
+                            </div>
+                        </div>
+                        <div class="">
+                            <input type="submit" value="Edit" class="btn font-weight-bolder" style="background-color:darkgoldenrod" />
+                            <a style="margin-left: 5%; color: darkred" asp-action="Index">Back Home</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

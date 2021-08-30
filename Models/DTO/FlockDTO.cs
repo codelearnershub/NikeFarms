@@ -21,7 +21,11 @@ namespace NikeFarms.v2._0.Models.DTO
 
         public double AverageWeight { get; set; }
 
+        public decimal AmountPurchased { get; set; }
+
         public bool IsApproved { get; set; }
+
+        public int AvailableBird { get; set; }
 
     }
 }

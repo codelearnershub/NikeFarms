@@ -55,5 +55,7 @@ namespace NikeFarms.v2._0.Models.ViewModels
         public decimal TotalPricePurchased { get; set; }
 
         public string CreatedBy { get; set; }
+
+        public bool IsApproved { get; set; }
     }
 }

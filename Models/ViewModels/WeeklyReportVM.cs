@@ -29,7 +29,20 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
     public class UpdateWeeklyReportVM : AddWeeklyReportVM
     {
+        public string SelectedFlock { get; set; }
     }
 
+    public class ListWeeklyReportVM
+    {
+        public int Id { get; set; }
+
+        public string CreatedBy { get; set; }
+
+       public double AverageWeight { get; set; }
+
+        public string Flock { get; set; }
+
+        public string CreatedAt { get; set; }
+    }
 
 }

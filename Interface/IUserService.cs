@@ -18,7 +18,7 @@ namespace NikeFarms.v2._0.Interface
         public User FindByEmail(string userEmail);
         public User Update(UserDTO userDTO);
 
-        public IEnumerable<User> GetAllUser();
+        public IEnumerable<User> GetAllUser(int userId);
 
         public void Delete(int id);
         

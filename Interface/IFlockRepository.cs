@@ -12,6 +12,11 @@ namespace NikeFarms.v2._0.Interface
 
         public Flock FindById(int flockId);
 
+        public Flock FindByBatchNo(string batchNo);
+
+
+        public List<Flock> GetApprovedFlocks();
+
         public List<Flock> GetAllFlocks();
 
         public Flock Update(Flock flock);

@@ -60,32 +60,16 @@ namespace NikeFarms.v2._0.Models.ViewModels
         [Required(ErrorMessage = "Choose Role!")]
         public IEnumerable<SelectListItem> RoleList { get; set; }
 
-       
+
+        [Required(ErrorMessage = "Select Gender!")]
+        public string Gender { get; set; }
+
+
     }
 
     public class UpdateUserVM : RegisterVM
     {
-        //[Required(ErrorMessage = "Last Name is Required")]
-        //[MaxLength(20, ErrorMessage = "Last Name must not be more than 20 Characters")]
-        //public string LastName { get; set; }
-
-        //[Required(ErrorMessage = "First Name is Required")]
-        //[MaxLength(20, ErrorMessage = "First Name must not be more than 20 Characters")]
-        //public string FirstName { get; set; }
-
-
-        //[Required(ErrorMessage = "Confirm Password!!")]
-        //[Compare(nameof(Password), ErrorMessage = "Passwords do not match")]
-        //public string ConfirmPassword { get; set; }
-
-
-        //[Required(ErrorMessage = "Enter Phone Number!!")]
-        //[MaxLength(11, ErrorMessage = "Invalid Phone Number!")]
-        //[MinLength(11, ErrorMessage = "Invalid Phone Number!")]
-        //public string PhoneNo { get; set; }
-
-        //[Required(ErrorMessage = "Enter Resident Address!!")]
-        //public string Address { get; set; }
+      
     }
 
     public class ListUserVM
@@ -102,6 +86,7 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
         public string CreatedBy { get; set; }
 
-       
+        public string Gender { get; set; }
+
     }
 }

@@ -34,6 +34,9 @@ namespace NikeFarms.v2._0.Controllers
         [HttpGet]
         public IActionResult RegisterUser()
         {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            ViewBag.Role = $"{_userRoleService.FindRole(userId)}";
+
             RegisterVM registerVM = new RegisterVM
             {
                 RoleList = _roleService.GetAllRoles().Select(m => new SelectListItem
@@ -43,7 +46,7 @@ namespace NikeFarms.v2._0.Controllers
                 })
             };
 
-            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
 
@@ -66,6 +69,7 @@ namespace NikeFarms.v2._0.Controllers
                 PhoneNo = vm.PhoneNo,
                 Address = vm.Address,
                 RoleId = vm.RoleId,
+                Gender = vm.Gender,
             };
             _userService.RegisterUser(userDTO);
             return RedirectToAction("ListUser");
@@ -73,7 +77,9 @@ namespace NikeFarms.v2._0.Controllers
 
         public IActionResult ListUser()
         {
-            var users = _userService.GetAllUser();
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            ViewBag.Role = $"{_userRoleService.FindRole(userId)}";
+            var users = _userService.GetAllUser(userId);
             List<ListUserVM> ListUser = new List<ListUserVM>();
 
             foreach (var user in users)
@@ -88,6 +94,7 @@ namespace NikeFarms.v2._0.Controllers
                     Email = user.Email,
                     PhoneNo = user.PhoneNo,
                     RoleName = _userRoleService.FindRole(user.Id),
+                    Gender = user.Gender,
                     CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
 
                 };
@@ -95,14 +102,13 @@ namespace NikeFarms.v2._0.Controllers
                 ListUser.Add(listUserVM);
             }
 
-            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
 
             return View(ListUser);
         }
 
-
+        
         public IActionResult UpdateUser(int id)
         {
             var user = _userService.FindById(id);
@@ -113,6 +119,8 @@ namespace NikeFarms.v2._0.Controllers
             else
             {
                 int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+
+                ViewBag.Role = $"{_userRoleService.FindRole(userId)}";
                 User userlogin = _userService.FindById(userId);
                 ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
 
@@ -124,6 +132,7 @@ namespace NikeFarms.v2._0.Controllers
                     Email = user.Email,
                     PhoneNo = user.PhoneNo,
                     Address = user.Address,
+                    Gender = user.Gender,
                     RoleId = _userRoleService.FindUserRole(user.Id).RoleId,
                     RoleList = _roleService.GetAllRoles().Select(m => new SelectListItem
                     {
@@ -149,6 +158,7 @@ namespace NikeFarms.v2._0.Controllers
                 Email = updateUser.Email,
                 Password = updateUser.Password,
                 Address = updateUser.Address,
+                Gender = updateUser.Gender,
                 RoleId = updateUser.RoleId,
             };
             _userService.Update(user);

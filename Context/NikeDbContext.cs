@@ -26,6 +26,8 @@ namespace NikeFarms.Context
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<WeeklyReport> WeeklyReports { get; set; }
 
+        public DbSet<Notification> Notifications { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -49,6 +51,8 @@ namespace NikeFarms.Context
 
             modelBuilder.Entity<User>().Property(u => u.Address).IsRequired();
 
+            modelBuilder.Entity<User>().Property(u => u.Gender).IsRequired();
+
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
@@ -58,6 +62,7 @@ namespace NikeFarms.Context
                     Address ="lag",
                     PhoneNo = "09055220828",
                     Email = "mazeedahhamzat@gmail.com",
+                    Gender = "Female",
                     CreatedAt = DateTime.Now,
                     CreatedBy = "mazeedahhamzat@gmail.com",
                     PasswordHash = "ZIoFJMM2K8J24l9L3yXaVYnFKKca+dIlRaPO9OJVB0g=",
@@ -78,7 +83,7 @@ namespace NikeFarms.Context
                 }
                 );
 
-            modelBuilder.Entity<Stock>().Property(u => u.Item).IsRequired();
+            modelBuilder.Entity<Stock>().Property(u => u.ItemType).IsRequired();
 
 
             modelBuilder.Entity<Expenses>().Property(u => u.Description).IsRequired();
@@ -92,6 +97,7 @@ namespace NikeFarms.Context
             modelBuilder.Entity<FlockType>().Property(u => u.Name).IsRequired();
 
 
+
             modelBuilder.Entity<Flock>().Property(u => u.BatchNo).IsRequired();
 
             modelBuilder.Entity<Flock>().HasIndex(u => u.BatchNo).IsUnique();
@@ -100,6 +106,15 @@ namespace NikeFarms.Context
 
 
             modelBuilder.Entity<Sales>().Property(u => u.Item).IsRequired();
+
+
+
+
+            modelBuilder.Entity<Notification>().Property(u => u.Content).IsRequired();
+
+            modelBuilder.Entity<Notification>().Property(u => u.CreatedBy).IsRequired();
+
+
 
 
             modelBuilder.Entity<SalesItem>().Property(u => u.Item).IsRequired();

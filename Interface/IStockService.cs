@@ -15,6 +15,10 @@ namespace NikeFarms.v2._0.Interface
 
         public Stock Update(StockDTO stockDTO);
 
+        public IEnumerable<Stock> GetStocksByFlockId(int flockId);
+
+        public double EstimatedPriceOfFlockPerKg(int flockId);
+
         public IEnumerable<Stock> GetAllStocks();
 
         public IEnumerable<Stock> GetStocksByManagerEmail(string managerEmail);

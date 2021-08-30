@@ -24,22 +24,29 @@
             </div>
             <div class="form-group col-md-5">
                 <label asp-for="Age" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Age of Incoming Flock (In Days)</label>
-                <input style="margin-right: 20px" asp-for="Age" class="form-control" placeholder="Enter Flock Age (In Days)" />
+                <input style="margin-right: 20px" asp-for="Age" class="form-control" placeholder="Enter Flock Age (In Days)" type="number" min="1"/>
                 <span asp-validation-for="Age" style="color:darkred"></span>
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-5">
                 <label asp-for="AverageWeight" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Enter Average Weight of Incoming Flock (Kg)</label>
-                <input asp-for="AverageWeight" class="form-control" placeholder="Average Weight (Kg)" />
+                <input asp-for="AverageWeight" class="form-control" placeholder="Average Weight (Kg)" type="number" min="1"/>
                 <span asp-validation-for="AverageWeight" style="color:darkred"></span>
             </div>
             <div class="form-group col-md-2">
             </div>
             <div class="form-group col-md-5">
+                <label asp-for="AmountPurchased" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Price of Flock (&#8358 ) </label>
+                <input asp-for="AmountPurchased" class="form-control" placeholder="Total Amount used to Purchase Flock (N)" type="number" min="1"/>
+                <span asp-validation-for="AmountPurchased" style="color:darkred"></span>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-5">
                 <label class="form-check-label font-weight-bold" asp-for="FlockTypeId"><span style="color: darkred">*</span> Select Flock Type</label>
                 <select asp-for="FlockTypeId" asp-items="@Model.FlockTypeList" class="form-control">
-                    <option disabled>--Select Flock Type--</option>
+                    <option disabled selected>--Select Flock Type--</option>
                 </select>
                 <span asp-validation-for="FlockTypeId" style="color:darkred"></span><br>
             </div>

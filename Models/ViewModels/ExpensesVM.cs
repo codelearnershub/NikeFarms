@@ -37,5 +37,9 @@ namespace NikeFarms.v2._0.Models.ViewModels
         public string Description { get; set; }
 
         public decimal Price { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+
+        public bool IsApproved { get; set; }
     }
 }

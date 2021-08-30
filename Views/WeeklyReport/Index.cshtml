@@ -1,0 +1,70 @@
+﻿@model List<NikeFarms.v2._0.Models.ViewModels.ListWeeklyReportVM>
+@{ ViewBag.Title = "Weekly Report"; }
+@{
+    Layout = "_FarmManagerDashboard";
+}
+
+@*@if (DateTime.Now.DayOfWeek.ToString() != "Sturday")
+{
+    <h1 style="color:darkred; font-family:'Times New Roman'; margin-top:15%" class= "text-center">Weekly Reports are meant To be Made on Mondays Alone <i class="fas fa-exclamation-circle"></i></h1><br /><br><br />
+    <h4 style="color:darkgoldenrod" class= "text-center">Come back Next Monday to Update Average Weight of All Birds </h4>
+}
+else
+{*@
+    <br />
+    <h1 class="text-center" style="color:darkred"><i class="far fa-calendar-alt"></i>  Weekly Reports </h1><br />
+
+    <div class="card">
+        <div>
+            <br />
+            <a class="btn font-weight-bold ml-4" asp-controller="WeeklyReport" asp-action="AddWeeklyReport" style="background-color:darkgoldenrod"><i class="fas fa-plus"></i> Add Weekly Report</a>
+            @if (Model.Count() > 0)
+            {
+                <div class="card-body">
+                    <table class="table table-bordered ">
+                        <thead>
+                            <tr>
+                                <th> Flock </th>
+                                <th> Average Weight (Kg) </th>
+                                <td>Created At</td>
+                                <th>Action</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var week in Model)
+                            {
+                                <tr>
+
+
+                                    <td class="font-weight-bolder"><span style="color:red">*</span> @week.Flock</td>
+
+                                    <td><span class="comma">@week.AverageWeight</span> <span class="font-weight-bolder">Kg</span></td>
+                                    <td>@week.CreatedAt</td>
+
+                                    @if (week.CreatedBy == ViewBag.UserName && week.CreatedAt == DateTime.Now.ToShortDateString())
+                                    {
+                                        <td>
+                                            <a class="btn font-weight-bold" asp-action="UpdateWeeklyReport" asp-route-id="@week.Id" style="background-color:greenyellow; color:white">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+
+                                        </td>
+                                    }
+
+
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <br /><br />
+                <h4 class="text-center font-weight-bolder" style="color:darkred">No Report has Been Added for this Week! </h4>
+            }
+        </div>
+    </div>
+

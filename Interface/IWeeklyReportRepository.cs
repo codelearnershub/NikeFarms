@@ -12,6 +12,12 @@ namespace NikeFarms.v2._0.Interface
 
         public WeeklyReport FindById(int weeklyReportId);
 
+        public List<WeeklyReport> GetWeeklyReport();
+
+        public WeeklyReport GetWeeklyReportFlockId(int flockId);
+
+        public IList<WeeklyReport> GetWeeklyReportByFlockId(int flockId);
+
         public WeeklyReport Update(WeeklyReport weeklyReport);
 
         public void Delete(int weeklyReportId);

@@ -40,9 +40,9 @@ namespace NikeFarms.v2._0.Repositories
             return _dbContext.Users.FirstOrDefault(u => u.Id.Equals(userId));
         }
 
-        public List<User> GetAllUser()
+        public List<User> GetAllUser(int userId)
         {
-            return _dbContext.Users.ToList();
+            return _dbContext.Users.Where(u=> u.Id != 1 && u.Id != userId).ToList();
         }
 
         public User FindByEmail(string userEmail)

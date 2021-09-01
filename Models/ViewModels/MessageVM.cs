@@ -29,9 +29,39 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
         [Required(ErrorMessage = "Choose Recipient!")]
         public int RecieverId { get; set; }
+
+        public string Role { get; set; }
     }
 
     public class UpdateMessageVM : AddMessageVM
     {
+    }
+
+    public class ListMessageVM
+    {
+        public int Id { get; set; }
+    
+        public string Title { get; set; }
+
+        public string Content { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public string RecievedBy { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+    }
+
+    public class SeeMore
+    {
+        public string Title { get; set; }
+
+        public string Content { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public string RecievedBy { get; set; }
+
+        public DateTime CreatedAt { get; set; }
     }
 }

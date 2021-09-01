@@ -29,16 +29,36 @@ namespace NikeFarms.v2._0.Controllers
 
         public IActionResult Index()
         {
-            
+
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
 
-            return View();
+
+            var weekly = _weeklyReportService.GetWeeklyReport();
+            List<ListWeeklyReportVM> ListWeeklyReport = new List<ListWeeklyReportVM>();
+            foreach (var week in weekly)
+            {
+                var Created = _userService.FindByEmail(week.CreatedBy);
+
+                ListWeeklyReportVM listWeeklyReportVM = new ListWeeklyReportVM
+                {
+                    Id = week.Id,
+                    CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
+                    AverageWeight = week.AverageWeight,
+                    CreatedAt = week.Date,
+                    Flock = $"{_flockService.FindById(week.FlockId).FlockType.Name} Batch No: {_flockService.FindById(week.FlockId).BatchNo}",
+                };
+
+                ListWeeklyReport.Add(listWeeklyReportVM);
+            }
+
+            return View(ListWeeklyReport);
         }
 
         public IActionResult AddWeeklyReport()
         {
+            
             AddWeeklyReportVM weeklyReportVM = new AddWeeklyReportVM
             {
                 FlockList = _flockService.GetAllFlocks().Select(m => new SelectListItem
@@ -67,7 +87,29 @@ namespace NikeFarms.v2._0.Controllers
                 FlockId = addWeeklyReport.FlockId,
             };
 
-            _weeklyReportService.Add(weeklyReportDTO);
+
+           if( _weeklyReportService.Add(weeklyReportDTO) == null)
+            {
+                ViewBag.Message = "Error";
+                AddWeeklyReportVM weeklyReportVM = new AddWeeklyReportVM
+                {
+                    FlockList = _flockService.GetAllFlocks().Select(m => new SelectListItem
+                    {
+                        Text = $"{_flockTypeService.FindById(m.FlockTypeId).Name} Batch No: {m.BatchNo}",
+                        Value = m.Id.ToString()
+                    })
+                };
+
+               
+                User userlogin = _userService.FindById(userId);
+                ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
+
+                return View(weeklyReportVM);
+            }
+            else
+            {
+                _weeklyReportService.Add(weeklyReportDTO);
+            }
             return RedirectToAction("Index");
         }
 
@@ -75,7 +117,7 @@ namespace NikeFarms.v2._0.Controllers
         public IActionResult UpdateWeeklyReport(int id)
         {
             var weeklyReport = _weeklyReportService.FindById(id);
-            if (weeklyReport == null)
+            if (weeklyReport == null || weeklyReport.Date != DateTime.Now.ToShortDateString())
             {
                 return NotFound();
             }
@@ -89,12 +131,7 @@ namespace NikeFarms.v2._0.Controllers
                 {
                     Id = weeklyReport.Id,
                     AverageWeight = weeklyReport.AverageWeight,
-                    FlockId = weeklyReport.FlockId,
-                    FlockList = _flockService.GetAllFlocks().Select(m => new SelectListItem
-                    {
-                        Text = $"{_flockTypeService.FindById(m.FlockTypeId).Name} Batch No: {m.BatchNo}",
-                        Value = m.Id.ToString(),
-                    }),
+                    SelectedFlock = $"{_flockService.FindById(weeklyReport.FlockId).FlockType.Name} Batch No: {_flockService.FindById(weeklyReport.FlockId).BatchNo}",
                 };
 
                 return View(updateWeeklyReport);
@@ -105,27 +142,28 @@ namespace NikeFarms.v2._0.Controllers
         [HttpPost]
         public IActionResult UpdateWeeklyReport(UpdateWeeklyReportVM updateWeeklyReport)
         {
+            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
             WeeklyReportDTO weeklyReport = new WeeklyReportDTO
             {
                 Id = updateWeeklyReport.Id,
                 AverageWeight = updateWeeklyReport.AverageWeight,
-                FlockId = updateWeeklyReport.FlockId,
             };
+
             _weeklyReportService.Update(weeklyReport);
             return RedirectToAction("Index");
         }
 
 
 
-        public IActionResult Delete(int id)
-        {
-            var weeklyReport = _weeklyReportService.FindById(id);
-            if (weeklyReport == null)
-            {
-                return NotFound();
-            }
-            _weeklyReportService.Delete(id);
-            return RedirectToAction("Index");
-        }
+        //public IActionResult Delete(int id)
+        //{
+        //    var weeklyReport = _weeklyReportService.FindById(id);
+        //    if (weeklyReport == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    _weeklyReportService.Delete(id);
+        //    return RedirectToAction("Index");
+        //}
     }
 }

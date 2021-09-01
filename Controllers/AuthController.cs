@@ -77,6 +77,25 @@ namespace NikeFarms.v2._0.Controllers
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props);
             }
+            else if (role == "Admin")
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, "Admin")
+
+
+                };
+
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var principal = new ClaimsPrincipal(identity);
+
+                var props = new AuthenticationProperties();
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props);
+            }
             else if (role == "Sales Manager")
             {
                 var claims = new List<Claim>
@@ -115,13 +134,13 @@ namespace NikeFarms.v2._0.Controllers
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props);
             }
-            else if (role == "Admin")
+            else if (role == "Farm Manager")
             {
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, "Admin")
+                    new Claim(ClaimTypes.Role, "Farm Manager")
 
 
                 };
@@ -136,13 +155,15 @@ namespace NikeFarms.v2._0.Controllers
             }
 
 
+
+
             if (role == "Super Admin")
             {
                 return RedirectToAction("ListUser", "SuperAdmin");
             }
             else if (role == "Admin")
             {
-                return RedirectToAction("Index", "Flock");
+                return RedirectToAction("ListAdminNotifications", "Notification");
             }
             else if (role == "Store Manager")
             {
@@ -154,7 +175,8 @@ namespace NikeFarms.v2._0.Controllers
             }
             else if (role == "Farm Manager")
             {
-                return RedirectToAction("Index", "Flock");
+               // return RedirectToAction("AddDailyActivity", "DailyActivity");
+                return RedirectToAction("ListManagerNotifications", "Notification");
             }
             else
             {

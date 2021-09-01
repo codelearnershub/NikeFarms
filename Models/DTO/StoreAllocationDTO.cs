@@ -25,5 +25,6 @@ namespace NikeFarms.v2._0.Models.DTO
 
         public bool IsApproved { get; set; }
 
+        public DateTime CreatedAt { get; set; }
     }
 }

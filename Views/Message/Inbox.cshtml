@@ -1,0 +1,94 @@
+﻿@model List<NikeFarms.v2._0.Models.ViewModels.ListMessageVM>
+@{ ViewBag.Title = "Messages"; }
+@if (ViewBag.Role == "Admin")
+{
+
+    Layout = "_AdminDashboard";
+
+}
+else if (ViewBag.Role == "Store Manager")
+{
+    Layout = "_StoreManagerDashboard";
+}
+else if (ViewBag.Role == "Sales Manager")
+{
+    Layout = "_SalesManagerDashboard";
+}
+else if (ViewBag.Role == "Farm Manager")
+{
+    Layout = "_FarmManagerDashboard"; 
+}
+
+
+<h1 class="text-center" style="font-family:'Times New Roman'; color:darkred ">
+    <i class="fas fa-envelope-open-text"></i> Inbox (<span style="color:red">@ViewBag.MssCount</span>)
+</h1>
+
+<div class="">
+    <div>
+        <br />
+        @if (Model.Count() > 0)
+        {
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+
+                            <th>From</th>
+                            <th>Message (Title)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var message in Model)
+                        {
+                            string modalId = $"exampleModalCenter{message.Id}";
+                            string modalIdHash = $"#exampleModalCenter{message.Id}";
+                            <tr>
+
+                                <td class="font-weight-bolder"><i class="fas fa-user-circle ml-3" style="font-size: 50px"></i> <great class="font-weight-bolder" style="color:darkgoldenrod"> @message.CreatedBy</great></td>
+
+                                <td class="see-more"><span class="font-weight-bolder">@message.Title </span><br /><span><a class="font-weight-bolder" style="color: darkgoldenrod; margin-left: 55%" asp-controller="Message" asp-action="SeeMore" asp-route-id="@message.Id">...See More</a></span><br /> <span class="font-italic font-weight-bolder" style="font-size:10px;color: darkred; margin-left:55%">@message.CreatedAt</span></td>
+
+                                <td>
+                                    <a class="btn font-weight-bold" style="background-color:red; color:white" data-toggle="modal" data-target=@modalIdHash>
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+
+
+                                    <div class="modal fade" id=@modalId tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title font-weight-bolder" style="color:red" id="exampleModalLongTitle">Delete Message <i class="fas fa-trash-alt"></i> </h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <br /> <span class="font-weight-bolder text-center">Are you sure you want to delete this Message: <span style="color:darkred">@message.Title ??</span></span>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a class="btn font-weight-bold" style="background-color:red; color:white" asp-action="Delete" asp-route-id="@message.Id">Yes</a>
+                                                    <a class="btn font-weight-bold" style="background-color:greenyellow; color:white" data-dismiss="modal">No</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <br /><br />
+            <h4 class="text-center font-weight-bolder" style="color: darkred">You Have No Messages So Far...</h4>
+        }
+    </div>
+</div>
+
+

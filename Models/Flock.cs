@@ -20,7 +20,11 @@ namespace NikeFarms.v2._0.Models
 
         public double AverageWeight { get; set; }
 
+        public decimal AmountPurchased { get; set; }
+
         public bool IsApproved { get; set; }
+
+        public int AvailableBirds { get; set; } 
 
 
         List<DailyActivity> DailyActivities { get; set; }

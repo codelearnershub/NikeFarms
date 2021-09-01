@@ -11,7 +11,6 @@ namespace NikeFarms.v2._0.Models.DTO
 
         public int UserId { get; set; }
 
-        public string Item { get; set; }
 
         public double NoOfItem { get; set; }
 
@@ -20,6 +19,8 @@ namespace NikeFarms.v2._0.Models.DTO
         public decimal? PricePerCrate { get; set; }
 
         public decimal? PricePerKg { get; set; }
+
+        public string ItemType { get; set; }
 
         public Flock Flock { get; set; }
 

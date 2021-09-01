@@ -17,6 +17,8 @@ namespace NikeFarms.v2._0.Interface
 
         public IEnumerable<StoreItem> GetAllStoreItems();
 
+        public List<StoreItem> GetApprovedStoreItems();
+
         public IEnumerable<StoreItem> GetStoreItemsByManagerEmail(string managerEmail);
 
         public void Delete(int id);

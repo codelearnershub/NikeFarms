@@ -26,5 +26,7 @@ namespace NikeFarms.v2._0.Interface
         public IEnumerable<StoreAllocation> GetStoreAllocationsByRecieverId(int receiverId);
 
         public void Delete(int id);
+
+        public StoreAllocation FindMedById(int? MedAllocationId);
     }
 }

@@ -1,10 +1,16 @@
 ﻿@model List<NikeFarms.v2._0.Models.ViewModels.ListUserVM>
 @{ ViewBag.Title = "List of Users"; }
-@{
+@if (ViewBag.Role == "Admin")
+{
+    Layout = "_AdminDashboard";
+}
+else
+{
     Layout = "_SuperAdminDashboard";
 }
+
 <br />
-<h1 class="text-center"><i class="fas fa-users"></i>   Manage <great style="color:red">THE</great> Users</h1>
+<h1 class="text-center"><i class="fas fa-users"></i>   Manage <great style="color:red">THE</great> Managers</h1>
 
 <div class="card">
     <div>
@@ -20,6 +26,7 @@
                             <th>Full Name</th>
                             <th>Email Address </th>
                             <th>Phone No</th>
+                            <th>Gender</th>
                             <th>Role</th>
                             <th>Created By</th>
                             <th>Action</th>
@@ -36,6 +43,7 @@
                                 <td>@user.FullName</td>
                                 <td>@user.Email</td>
                                 <td>@user.PhoneNo</td>
+                                <td>@user.Gender</td>
                                 <td>@user.RoleName</td>
                                 <td>@user.CreatedBy</td>
                                 <td>

@@ -25,6 +25,8 @@ namespace NikeFarms.v2._0.Models
 
         public bool IsApproved { get; set; }
 
+        public string BatchNo { get; set; }
+
         List<DailyActivity> DailyActivities { get; set; }
     }
 }

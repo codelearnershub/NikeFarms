@@ -1,4 +1,5 @@
-﻿using NikeFarms.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using NikeFarms.Context;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
 using System;
@@ -40,10 +41,21 @@ namespace NikeFarms.v2._0.Repositories
             return _dbContext.Flocks.ToList();
         }
 
+        public List<Flock> GetApprovedFlocks()
+        {
+            return _dbContext.Flocks.Where(f=> f.IsApproved == true && f.AvailableBirds > 0).ToList();
+        }
+
         public Flock FindById(int flockId)
         {
-            return _dbContext.Flocks.FirstOrDefault(u => u.Id.Equals(flockId));
+            return _dbContext.Flocks.Include(f=> f.FlockType).FirstOrDefault(u => u.Id.Equals(flockId));
         }
+
+        public Flock FindByBatchNo(string batchNo)
+        {
+            return _dbContext.Flocks.FirstOrDefault(u => u.BatchNo.Equals(batchNo));
+        }
+
 
         public Flock Update(Flock flock)
         {

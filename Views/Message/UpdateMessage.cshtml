@@ -1,0 +1,69 @@
+﻿@model NikeFarms.v2._0.Models.ViewModels.UpdateMessageVM
+
+@if (Model.Role == "Admin")
+{
+
+    Layout = "_AdminDashboard";
+
+}
+else if (Model.Role == "Store Manager")
+{
+    Layout = "_StoreManagerDashboard";
+}
+else if (Model.Role == "Sales Manager")
+{
+    Layout = "_SalesManagerDashboard";
+}
+else if (Model.Role == "Farm Manager")
+{
+    Layout = "_FarmManagerDashboard";
+}
+@{
+    ViewData["Title"] = "Send Message";
+}
+
+<br />
+
+<h1 class="text-center" style="font-family:'Times New Roman'"> <i class="fas fa fa-edit"></i> Edit Messages</h1>
+<hr />
+<br />
+<form method="post">
+    <input hidden asp-for="Id" />
+    <div class="">
+        <div class="form-row">
+            <div class="form-group col-md-5">
+                <label asp-for="Title" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Message Title </label>
+                <input style="margin-right: 20px" asp-for="Title" class="form-control " placeholder="Message Title" />
+                <span asp-validation-for="Title" style="color:darkred"></span>
+            </div>
+            <div class="form-group col-md-2">
+            </div>
+            <div class="form-group col-md-5">
+                <label class="form-check-label font-weight-bold" asp-for="RecieverId"><span style="color: darkred">*</span> Select Reciever</label>
+                <select asp-for="RecieverId" asp-items="@Model.RecieverList" class="form-control">
+                    <option disabled selected>--Select Reciever--</option>
+                </select>
+                <span asp-validation-for="RecieverId" style="color:darkred"></span><br>
+            </div>
+        </div>
+        <div class="form-row">
+
+            <div class="form-group col-md-5">
+                <label asp-for="Content" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Message Content</label>
+                <textarea style="margin-right: 20px" asp-for="Content" class="form-control" placeholder="Enter Message"></textarea>
+                <span asp-validation-for="Content" style="color:darkred"></span>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <input type="submit" value="Edit" class="btn font-weight-bolder" style="background-color:darkgoldenrod" />
+        <a style="margin-left: 5%; color: darkred" asp-action="Outbox">Back Home</a>
+    </div>
+
+</form>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

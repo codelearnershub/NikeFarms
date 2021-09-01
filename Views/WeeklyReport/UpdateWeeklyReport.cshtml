@@ -1,0 +1,48 @@
+﻿@model NikeFarms.v2._0.Models.ViewModels.UpdateWeeklyReportVM
+
+@{ ViewBag.Title = "Update Weekly Report"; }
+@{
+    Layout = "_FarmManagerDashboard";
+}
+
+
+<div class="container">
+    <div class="">
+        <div class="">
+            <div class="">
+                <div class="">
+                    <br /><br /><h3 class="text-center font-weight-bolder" style="color:darkred"><i class="far fa-calendar-alt"></i>  Update Weekly Report (@DateTime.Now.ToLongDateString())</h3><br /><br />
+                </div>
+
+                <form method="post">
+                    <div class="">
+                        <div class="form-row">
+
+                            <div class="form-group col-md-5">
+                                <label class="form-check-label font-weight-bold" asp-for="FlockId"><span style="color: darkred">*</span> Select Flock</label>
+                                <select class="form-control">
+                                    <option disabled selected>@Model.SelectedFlock</option>
+                                </select>
+                                <span asp-validation-for="FlockId" style="color:darkred"></span><br>
+                            </div>
+                            <div class="form-group col-md-2">
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label asp-for="AverageWeight" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> AverageWeight </label>
+                                <input asp-for="AverageWeight" class="form-control" placeholder="Input Average Weight" type="number" min="0" />
+                                <span asp-validation-for="AverageWeight" style="color:darkred"></span>
+                            </div>
+                        </div>
+                        <div class="">
+                            <input type="submit" value="Edit" class="btn font-weight-bolder" style="background-color:darkgoldenrod" />
+                            <a style="margin-left: 5%; color: darkred" asp-action="Index">Back Home</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

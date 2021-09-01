@@ -39,9 +39,14 @@ namespace NikeFarms.v2._0.Repositories
             return _dbContext.StoreItems.FirstOrDefault(u => u.Id.Equals(storeItemId));
         }
 
+        public List<StoreItem> GetApprovedStoreItems()
+        {
+            return _dbContext.StoreItems.Where(s=> s.IsApproved == true && s.ItemRemaining > 0).ToList();
+        }
+
         public List<StoreItem> GetAllStoreItems()
         {
-            return _dbContext.StoreItems.ToList();
+            return _dbContext.StoreItems.Where(s=> s.ItemRemaining > 0).ToList();
         }
 
         public List<StoreItem> GetStoreItemsByManagerEmail(string managerEmail)

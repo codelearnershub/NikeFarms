@@ -20,5 +20,6 @@ namespace NikeFarms.v2._0.Interface
 
         public void Delete(int id);
 
+        public Expenses FindByBatchNo(string batchNo);
     }
 }

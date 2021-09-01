@@ -14,6 +14,8 @@ namespace NikeFarms.v2._0.Interface
 
         public StoreAllocation Update(StoreAllocation storeAllocation);
 
+        public StoreAllocation FindByBatchNo(string batchNo);
+
         public List<StoreAllocation> FeedAllocation(int userId);
 
         public List<StoreAllocation> MedAllocation(int userId);
@@ -25,5 +27,7 @@ namespace NikeFarms.v2._0.Interface
         public List<StoreAllocation> GetStoreAllocationsByRecieverId(int receiverId);
 
         public void Delete(int storeAllocationId);
+
+        public StoreAllocation FindMedById(int? MedAllocationId);
     }
 }

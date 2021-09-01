@@ -44,6 +44,7 @@ namespace NikeFarms.v2._0.Services
                 Email = userDTO.Email,
                 PhoneNo = userDTO.PhoneNo,
                 Address = userDTO.Address,
+                Gender = userDTO.Gender,
                 HashSalt = saltString,
                 PasswordHash = hashedPassword,
             };
@@ -127,6 +128,7 @@ namespace NikeFarms.v2._0.Services
             user.Email = userDTO.Email;
             user.PhoneNo = userDTO.PhoneNo;
             user.Address = userDTO.Address;
+            user.Gender = userDTO.Gender;
             user.HashSalt = saltString;
             user.PasswordHash = hashedPassword;
             user.UpdatedAt = DateTime.Now;
@@ -144,9 +146,9 @@ namespace NikeFarms.v2._0.Services
             return _userRepository.Update(user);
         }
 
-        public IEnumerable<User> GetAllUser()
+        public IEnumerable<User> GetAllUser(int userId)
         {
-            return _userRepository.GetAllUser();
+            return _userRepository.GetAllUser(userId);
         }
 
         public User FindByEmail(string userEmail)

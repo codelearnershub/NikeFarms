@@ -7,9 +7,10 @@ namespace NikeFarms.v2._0.Models
 {
     public class Stock : BaseEntity
     {
-        public string Item { get; set; }
-
+       
         public double NoOfItem { get; set; }
+
+        public string ItemType { get; set; }
 
         public double AvailableItem { get; set; }
 

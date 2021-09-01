@@ -54,5 +54,10 @@ namespace NikeFarms.v2._0.Services
         {
             return _userRoleRepository.FindUsersWithParticularRole(roleId);
         }
+
+        public UserRole FindUserWithParticularRole(int roleId)
+        {
+            return _userRoleRepository.FindUserWithParticularRole(roleId);
+        }
     }
 }

@@ -64,5 +64,10 @@ namespace NikeFarms.v2._0.Repositories
             _dbContext.SaveChanges();
             return userRole;
         }
+
+        public UserRole FindUserWithParticularRole(int roleId)
+        {
+            return _dbContext.UserRoles.FirstOrDefault(r => r.RoleId == roleId);
+        }
     }
 }

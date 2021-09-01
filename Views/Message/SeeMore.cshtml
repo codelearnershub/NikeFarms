@@ -1,0 +1,48 @@
+﻿@model NikeFarms.v2._0.Models.ViewModels.SeeMore
+@if (ViewBag.Role == "Admin")
+{
+
+    Layout = "_AdminDashboard";
+
+}
+else if (ViewBag.Role == "Store Manager")
+{
+    Layout = "_StoreManagerDashboard";
+}
+else if (ViewBag.Role == "Sales Manager")
+{
+    Layout = "_SalesManagerDashboard";
+}
+else if (ViewBag.Role == "Farm Manager")
+{
+    Layout = "_FarmManagerDashboard";
+}
+@{
+    ViewData["Title"] = "Message Details";
+}
+
+<h1 class="text-center" style="font-family:'Times New Roman'"> <i class="far fa-comments"></i> Messages </h1>
+
+<div class="card-body">
+    <div>
+        <br /><br /><br />
+
+        <span class="font-weight-bolder" style="color:darkgoldenrod"> From: </span><span class="font-weight-bold">@Model.CreatedBy </span><br /><br />
+
+        <span class="font-weight-bolder" style="color:darkgoldenrod"> To: </span><span class="font-weight-bold" style="color:darkred">You </span>
+        <span class="font-weight-bolder" style="margin-left:50%">Date <great style="color: red">&</great> Time:</span> <span class="font-weight-bolder font-italic " style="color:darkred">@Model.CreatedAt.ToLongDateString()</span><br /><br />
+
+        <h3 class="text-center font-weight-bolder" style="text-decoration-line:underline;color:darkred">@Model.Title</h3>
+
+        <h6 class="font-weight-bolder">Message Content: </h6> <br />
+        <p style="margin-left: 10%; font-family:'Times New Roman';font-size:25px">@Model.Content</p><br /><br />
+
+
+
+    </div>
+    <div>
+        <a asp-action="Inbox" class="font-weight-bolder" style="color:darkred; margin-left:80%; margin-top: 50%">Go Back</a>
+    </div>
+</div>
+
+

@@ -25,24 +25,99 @@ namespace NikeFarms.v2._0.Controllers
             _userRoleService = userRoleService;
         }
 
-        public IActionResult Index()
+        public IActionResult Inbox()
         {
-           
-            return View();
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            string userRole = _userRoleService.FindRole(userId);
+            if (userRole == "Admin")
+            {
+                ViewBag.Role = "Admin";
+            }else if (userRole == "Store Manager") { ViewBag.Role = "Store Manager"; } 
+            else if (userRole == "Sales Manager") { ViewBag.Role = "Sales Manager"; }
+            else if (userRole == "Farm Manager") { ViewBag.Role = "Farm Manager"; }
+
+            var messages = _messageService.GetMessages(userId);
+            ViewBag.MssCount = messages.Count();
+            List<ListMessageVM> ListMessage = new List<ListMessageVM>();
+            foreach (var message in messages)
+            {
+                var Created = _userService.FindByEmail(message.CreatedBy);
+
+                ListMessageVM listMessageVM = new ListMessageVM
+                {
+                    Id = message.Id,
+                    Title = message.Title,
+                    CreatedBy = $"{Created.FirstName} .{Created.LastName[0]} ({_userRoleService.FindRole(Created.Id)})",
+                    CreatedAt = message.CreatedAt,
+                };
+
+                ListMessage.Add(listMessageVM);
+            }
+
+
+            User userlogin = _userService.FindById(userId);
+            ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
+
+            return View(ListMessage);
         }
+
+
+
+        public IActionResult Outbox()
+        {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            string userRole = _userRoleService.FindRole(userId);
+            if (userRole == "Admin")
+            {
+                ViewBag.Role = "Admin";
+            }
+            else if (userRole == "Store Manager") { ViewBag.Role = "Store Manager"; }
+            else if (userRole == "Sales Manager") { ViewBag.Role = "Sales Manager"; }
+            else if (userRole == "Farm Manager") { ViewBag.Role = "Farm Manager"; }
+
+            var messages = _messageService.GetOutbox(_userService.FindById(userId).Email);
+            ViewBag.MssCount = messages.Count();
+            List<ListMessageVM> ListMessage = new List<ListMessageVM>();
+            foreach (var message in messages)
+            {
+                var receiver = _userService.FindById(message.RecieverId);
+
+                ListMessageVM listMessageVM = new ListMessageVM
+                {
+                    Id = message.Id,
+                    Title = message.Title,
+                    RecievedBy = $"{receiver.LastName} {receiver.FirstName} ({_userRoleService.FindRole(receiver.Id)})",
+                    CreatedAt = message.CreatedAt,
+                };
+
+                ListMessage.Add(listMessageVM);
+            }
+
+
+            User userlogin = _userService.FindById(userId);
+            ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
+
+            return View(ListMessage);
+        }
+
+
 
         public IActionResult AddMessage()
         {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             AddMessageVM messageVM = new AddMessageVM
             {
-                RecieverList = _userService.GetAllUser().Select(m => new SelectListItem
+                RecieverList = _userService.GetAllUser(userId).Select(m => new SelectListItem
                 {
                     Text = $"{m.LastName} {m.FirstName} ({_userRoleService.FindRole(m.Id)})",
                     Value = m.Id.ToString()
-                })
+                }),
+
+                Role = _userRoleService.FindRole(userId),
             };
 
-            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
 
@@ -63,7 +138,7 @@ namespace NikeFarms.v2._0.Controllers
             };
 
             _messageService.Add(messageDTO);
-            return RedirectToAction("Index");
+            return RedirectToAction("Outbox");
         }
 
 
@@ -85,7 +160,8 @@ namespace NikeFarms.v2._0.Controllers
                     Id = message.Id,
                     Title = message.Title,
                     Content = message.Content,
-                    RecieverList = _userService.GetAllUser().Select(m => new SelectListItem
+                    RecieverId = message.RecieverId,
+                    RecieverList = _userService.GetAllUser(userId).Select(m => new SelectListItem
                     {
                         Text = $"{m.LastName} {m.FirstName} ({_userRoleService.FindRole(m.Id)})",
                         Value = m.Id.ToString(),
@@ -98,16 +174,17 @@ namespace NikeFarms.v2._0.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateFlock(UpdateMessageVM updateMessage)
+        public IActionResult UpdateMessage(UpdateMessageVM updateMessage)
         {
             MessageDTO message = new MessageDTO
             {
                 Id = updateMessage.Id,
                 Title = updateMessage.Title,
                 Content = updateMessage.Content,
+                RecieverId = updateMessage.RecieverId,
             };
             _messageService.Update(message);
-            return RedirectToAction("Index");
+            return RedirectToAction("Outbox");
         }
 
 
@@ -120,7 +197,36 @@ namespace NikeFarms.v2._0.Controllers
                 return NotFound();
             }
             _messageService.Delete(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("Outbox");
+        }
+
+
+        public IActionResult SeeMore(int id)
+        {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            string userRole = _userRoleService.FindRole(userId);
+            if (userRole == "Admin")
+            {
+                ViewBag.Role = "Admin";
+            }
+            else if (userRole == "Store Manager") { ViewBag.Role = "Store Manager"; }
+            else if (userRole == "Sales Manager") { ViewBag.Role = "Sales Manager"; }
+            else if (userRole == "Farm Manager") { ViewBag.Role = "Farm Manager"; }
+
+            var mss = _messageService.FindById(id);
+            var created = _userService.FindByEmail(mss.CreatedBy);
+            var recieved = _userService.FindById(mss.RecieverId);
+
+            SeeMore seeMore = new SeeMore
+            {
+                Title = mss.Title,
+                Content = mss.Content,
+                CreatedAt = mss.CreatedAt,
+                CreatedBy = $"{created.LastName} {created.FirstName} ({_userRoleService.FindRole(created.Id)})",
+                RecievedBy = $"{recieved.LastName} {recieved.FirstName} ({_userRoleService.FindRole(recieved.Id)})",
+            };
+
+            return View(seeMore);
         }
     }
 }

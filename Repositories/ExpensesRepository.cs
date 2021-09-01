@@ -45,6 +45,12 @@ namespace NikeFarms.v2._0.Repositories
             return _dbContext.Expenses.ToList();
         }
 
+        public Expenses FindByBatchNo(string batchNo)
+        {
+            return _dbContext.Expenses.FirstOrDefault(u => u.BatchNo.Equals(batchNo));
+
+        }
+
         public Expenses Update(Expenses expenses)
         {
             _dbContext.Expenses.Update(expenses);

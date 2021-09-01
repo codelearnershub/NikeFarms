@@ -57,21 +57,21 @@
         <div class="ml-3 font-weight-bolder">
             <a asp-controller="Calculation" asp-action="AdminDashboard"><i class="fas fa-tachometer-alt"></i>   Dashboard</a>
             <hr />
-            <a asp-controller="Calculation" asp-action="AdminDashboard"><i class="fas fa-bell"></i>   Notifications</a>
+            <a asp-controller="Notification" asp-action="ListAdminNotifications"><i class="fas fa-bell"></i>   Notifications</a>
             <hr />
-            <a asp-controller="AdminDashboard" asp-action="Notification"><i class="fas fa-envelope-open-text"></i>   Inbox </a>
+            <a asp-controller="Message" asp-action="Inbox"><i class="fas fa-envelope-open-text"></i>   Inbox </a>
             <hr />
-            <a asp-controller="AdminDashboard" asp-action="Notification"><i class="fab fa-twitter"></i>   Flocks</a>
+            <a asp-controller="Flock" asp-action="ListApprovedFlock"><i class="fab fa-twitter"></i>   Flocks</a>
             <hr />
-            <a asp-controller="AdminDashboard" asp-action="ExpenseRecord"> <i class="fas fa-shopping-cart"></i>   Store</a>
+            <a asp-controller="StoreItem" asp-action="Index"> <i class="fas fa-shopping-cart"></i>   Store</a>
             <hr />
             <a asp-controller="AdminDashboard" asp-action="ExpenseRecord"> <i class="fas fa-layer-group"></i>   Stocks</a>
             <hr />
             <a asp-controller="Calculation" asp-action="Profits"> <i class="far fa-clipboard"></i>   Sales</a>
             <hr />
-            <a asp-controller="Calculation" asp-action="Sales"> <i class="far fa-envelope"></i>   Outbox</a>
+            <a asp-controller="Message" asp-action="Outbox"> <i class="far fa-envelope"></i>   Outbox</a>
             <hr />
-            <a asp-controller="AdminDashboard" asp-action="ListManager"> <i class="fas fa-users-cog"></i>  Manage <great style="color:red">D</great> Managers</a>
+            <a asp-controller="SuperAdmin" asp-action="ListUser"> <i class="fas fa-users-cog"></i>  Manage <great style="color:red">D</great> Managers</a>
             <hr />
             
             <a class="bottom-sivenav" style="font-size: 23px; color:darkred" data-toggle="modal" data-target="#exampleModalCenter">

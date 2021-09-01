@@ -15,15 +15,18 @@ namespace NikeFarms.v2._0.Models.ViewModels
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Input Stock Item!")]
-        public string Item { get; set; }
-
+        
 
         [Required(ErrorMessage = "Enter No. of Item Stocked!")]
         public double NoOfItem { get; set; }
-       
+
+
+        [Required(ErrorMessage = "Select Stock Item Type!")]
+        public string ItemType { get; set; }
+
 
         public decimal? PricePerCrate { get; set; }
+
 
         public decimal? PricePerKg { get; set; }
 
@@ -57,5 +60,7 @@ namespace NikeFarms.v2._0.Models.ViewModels
         public string FlockBatchNo { get; set; }
 
         public string CreatedBy { get; set; }
+
+        public string CreatedAt { get; set; }
     }
 }

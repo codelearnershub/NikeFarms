@@ -15,7 +15,9 @@ namespace NikeFarms.v2._0.Interface
 
         public Message Update(MessageDTO messageDTO);
 
-        public IEnumerable<Message> GetMessages(string senderEmail);
+        public IEnumerable<Message> GetOutbox(string senderEmail);
+
+        public List<Message> GetMessages(int recieverId);
 
         public void Delete(int id);
     }

@@ -1,0 +1,133 @@
+﻿@model List<NikeFarms.v2._0.Models.ViewModels.ListDailyActivityVM>
+@{ ViewBag.Title = "Daily Activity"; }
+
+@{
+    Layout = "_FarmManagerDashboard";
+
+}
+
+<br />
+<h1 class="text-center" style="color:darkred"><i class="fas fa-calendar-day"></i>  Daily Activities </h1>
+<br />
+<div class="card">
+    <div>
+        <br />
+        <a class="btn font-weight-bold ml-4" asp-controller="DailyActivity" asp-action="AddDailyActivity" style="background-color:darkgoldenrod"><i class="fas fa-plus"></i> Add Today's Activity</a>
+
+        @if (Model.Count() > 0)
+        {
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th> Flock</th>
+                            <th> Feed Type</th>
+                            <th> Feed Consumed </th>
+                            <th> Medication</th>
+                            <th> No. of Med Used</th>
+                            <th> Mortality</th>
+                            <th>Date</th>
+                            <th> Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var daily in Model)
+                        {
+                            string modalId = $"exampleModalCenter{daily.Id}";
+                            string modalIdHash = $"#exampleModalCenter{daily.Id}";
+                        <tr>
+                            <td>@daily.FlockDescription</td>
+                            <td class="font-weight-bolder"><span style="color:darkred">*</span> @daily.FeedUsed</td>
+                            <td><span class="comma">@daily.NoOfFeedUsed</span> Bag(s)</td>
+                            @if (daily.MedUsed == "null")
+                            {
+                                <td class="font-weight-bold" style="color:red">Null</td>
+                            }
+                            else
+                            {
+                                <td class="font-weight-bolder"><span style="color:darkred">*</span> @daily.MedUsed </td>
+                            }
+                            @if (daily.NoOfMedUsed <= 0)
+                            {
+                                <td class="font-weight-bold" style="color:red">Null</td>
+                            }
+                            else
+                            {
+                                <td><span class="comma">@daily.NoOfMedUsed</span> Unit(s)</td>
+                            }
+                            @if (daily.Mortality <= 0)
+                            {
+
+                                <td style="color:red" class="font-weight-bolder">Null</td>
+                            }
+                            else
+                            {
+                                <td><span class="comma">@daily.Mortality</span> Death(s)</td>
+                            }
+                            <td class="font-weight-bolder">@daily.CreatedAt</td>
+
+                            @if (daily.CreatedAt == DateTime.Now.ToShortDateString() && daily.CreatedBy == ViewBag.UserName)
+                            {
+                                <td>
+                                    <a class="btn font-weight-bold" style="background-color:red; color:white" data-toggle="modal" data-target=@modalIdHash>
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+
+
+                                    <div class="modal fade" id=@modalId tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title font-weight-bolder" style="color:red" id="exampleModalLongTitle">Delete Flock <i class="fas fa-trash-alt"></i> </h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <br /> <span class="font-weight-bolder text-center">Are you Sure you want to delete Today's Activity For  <span style="color:darkred">@daily.FlockDescription ??</span></span>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a class="btn font-weight-bold" style="background-color:red; color:white" asp-action="Delete" asp-route-id="@daily.Id">Yes</a>
+                                                    <a class="btn font-weight-bold" style="background-color:greenyellow; color:white" data-dismiss="modal">No</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </td>
+
+                            }
+
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <br /><br />
+            <h4 class="text-center font-weight-bolder" style="color:darkred">No Daily Activity has been Added !! </h4>
+        }
+    </div>
+</div>
+
+
+<script>
+
+    function numberWithCommas(x) {
+        let newNumber = x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        return newNumber
+    }
+
+
+    let comma = document.getElementsByClassName("comma");
+
+
+    for (var i = 0; i < comma.length; i++) {
+        let result = numberWithCommas(comma[i].innerHTML);
+        document.getElementsByClassName("comma")[i].innerHTML = result;
+    }
+
+
+</script>

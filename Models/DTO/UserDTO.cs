@@ -23,6 +23,8 @@ namespace NikeFarms.v2._0.Models.DTO
 
         public string Address { get; set; }
 
+        public string Gender { get; set; }
+
         public int RoleId { get; set; }
     }
 }

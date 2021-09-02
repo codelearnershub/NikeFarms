@@ -26,6 +26,7 @@ namespace NikeFarms.v2._0.Services
                 CreatedBy = _userService.FindById(salesDTO.UserId).Email,
                 CreatedAt = DateTime.Now,
                 Item = salesDTO.Item,
+                TotalPrice = salesDTO.TotalPrice,
                 CustomerId = salesDTO.CustomerId,
                 Voucher = Guid.NewGuid().ToString().Substring(0, 10).ToUpper(),
                 IsSold = salesDTO.IsSold,
@@ -40,6 +41,23 @@ namespace NikeFarms.v2._0.Services
         }
 
         public Sales Update(SalesDTO salesDTO)
+        {
+            var sales = _salesRepository.FindById(salesDTO.Id);
+            if (sales == null)
+            {
+                return null;
+            }
+
+            sales.Item = salesDTO.Item;
+            sales.TotalPrice = sales.TotalPrice;
+            sales.CustomerId = salesDTO.CustomerId;
+            sales.IsSold = salesDTO.IsSold;
+            sales.UpdatedAt = DateTime.Now;
+
+            return _salesRepository.Update(sales);
+        }
+
+        public Sales UpdateMore(SalesDTO salesDTO)
         {
             var sales = _salesRepository.FindById(salesDTO.Id);
             if (sales == null)
@@ -69,6 +87,21 @@ namespace NikeFarms.v2._0.Services
         public IEnumerable<Sales> GetSalesByManagerEmail(string managerEmail)
         {
             return _salesRepository.GetSalesByManagerEmail(managerEmail);
+        }
+
+        public IEnumerable<Sales> GetSoldSales()
+        {
+            return _salesRepository.GetSoldSales();
+        }
+
+        public IEnumerable<Sales> GetUnSoldSales()
+        {
+            return _salesRepository.GetUnSoldSales();
+        }
+
+        public Sales FindByVoucher(string voucher)
+        {
+            return _salesRepository.FindByVoucher(voucher);
         }
     }
 }

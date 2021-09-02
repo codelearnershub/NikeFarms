@@ -8,8 +8,6 @@ namespace NikeFarms.v2._0.Models
     public class DailyActivity : BaseEntity
     {
 
-        public int Mortality { get; set; }
-
         public double NoOfMedUsed { get; set; }
 
         public double NoOfFeedUsed { get; set; }

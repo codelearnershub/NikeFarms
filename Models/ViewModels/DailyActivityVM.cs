@@ -20,9 +20,6 @@ namespace NikeFarms.v2._0.Models.ViewModels
         public double FeedConsumedPerKg { get; set; }
 
 
-        [Required(ErrorMessage = "Input Mortality!!")]
-        public int Mortality { get; set; }
-
 
         [Required(ErrorMessage = "You must fill out this field!!")]
         public double NoOfMedUsed { get; set; }
@@ -62,8 +59,7 @@ namespace NikeFarms.v2._0.Models.ViewModels
     {
         public int Id { get; set; }
 
-        public int Mortality { get; set; }
-
+       
         public string MedUsed { get; set; }
 
         public double NoOfMedUsed { get; set; }

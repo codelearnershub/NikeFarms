@@ -163,15 +163,15 @@ namespace NikeFarms.v2._0.Controllers
             }
             else if (role == "Admin")
             {
-                return RedirectToAction("ListAdminNotifications", "Notification");
+                return RedirectToAction("Index", "AdminDashboard");
             }
             else if (role == "Store Manager")
             {
-                return RedirectToAction("Index", "Flock");
+                return RedirectToAction("Inbox", "Message");
             }
             else if (role == "Sales Manager")
             {
-                return RedirectToAction("Index", "Flock");
+                return RedirectToAction("Inbox", "Message");
             }
             else if (role == "Farm Manager")
             {

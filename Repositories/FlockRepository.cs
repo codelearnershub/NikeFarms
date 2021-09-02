@@ -38,7 +38,7 @@ namespace NikeFarms.v2._0.Repositories
 
         public List<Flock> GetAllFlocks()
         {
-            return _dbContext.Flocks.ToList();
+            return _dbContext.Flocks.Where(f=> f.AvailableBirds > 0).ToList();
         }
 
         public List<Flock> GetApprovedFlocks()

@@ -58,5 +58,7 @@ namespace NikeFarms.v2._0.Models.ViewModels
         public string Address { get; set; }
 
         public string Gender { get; set; }
+
+        public string CreatedBy { get; set; }
     }
 }

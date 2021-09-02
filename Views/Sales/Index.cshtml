@@ -1,0 +1,139 @@
+﻿@model List<NikeFarms.v2._0.Models.ViewModels.ListSalesVM>
+@{ ViewBag.Title = "Sales"; }
+@{
+
+    Layout = "_SalesManagerDashboard";
+}
+
+<br />
+<h1 class="text-center" style="color:darkred"><i class="fas fa-clipboard"></i>  Sales </h1>
+<br />
+
+<div class="card">
+    <div>
+        <br />
+
+        <a class="btn font-weight-bold ml-4" asp-controller="Sales" asp-action="AddSales" style="background-color:darkgoldenrod"><i class="fas fa-plus"></i> Add Sales</a>
+
+        @if (Model.Count() > 0)
+        {
+            <div class="card-body">
+                <table class="table table-bordered ">
+                    <thead>
+                        <tr>
+                            <th> Description </th>
+                            <th> Total Price (&#8358 ) </th>
+                            <th>Sold By</th>
+                            <th>Customer</th>
+                            <th>Date <span style="color:red">&</span> Time</th>
+                            <th>Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var sale in Model)
+                        {
+                            string modalId = $"exampleModalCenter{sale.Id}";
+                            string modalIdHash = $"#exampleModalCenter{sale.Id}";
+                            <tr>
+
+
+                                <td class="font-weight-bolder">
+                                    <span style="color:red">*</span> <a asp-controller="SalesItem" asp-action="Index" asp-route-id="@sale.Id">@sale.Item</a>
+
+                                </td>
+                                @if (sale.TotalPrice == null)
+                                {
+                                    <td class="font-weight-bold" style="color:red">Null</td>
+                                }
+                                else
+                                {
+                                    <td><span class="comma">@sale.TotalPrice</span></td>
+                                }
+
+                                @if (sale.CreatedBy == ViewBag.UserName)
+                                {
+                                    <td class="font-weight-bold" style="color:darkred">You</td>
+                                }
+                                else
+                                {
+                                    <td>@sale.CreatedBy (Sales)</td>
+                                }
+                                <td>@sale.CustomerFullName</td>
+                                <td class="font-weight-bold">@sale.Date</td>
+                                @if (sale.CreatedBy == ViewBag.UserName)
+                                {
+                                    <td>
+                                        <a class="btn font-weight-bold" asp-controller="SalesItem" asp-action="AddSalesItem" asp-route-id="@sale.Id" style="background-color:grey; color:white">
+                                            <i class="fas fa-plus"></i>
+                                        </a>
+                                        <a class="btn font-weight-bold" asp-controller="SalesItem" asp-action="Receipt" asp-route-id="@sale.Id" style="background-color:skyblue; color:white">
+                                            <i class="fas fa-receipt"></i>
+                                        </a>
+                                        <a class="btn font-weight-bold" asp-action="UpdateSales" asp-route-id="@sale.Id" style="background-color:greenyellow; color:white">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+
+                                        <a class="btn font-weight-bold" style="background-color:red; color:white" data-toggle="modal" data-target=@modalIdHash>
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+
+
+                                        <div class="modal fade" id=@modalId tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title font-weight-bolder" style="color:red" id="exampleModalLongTitle">Delete Sales <i class="fas fa-trash-alt"></i> </h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <br /> <span class="font-weight-bolder text-center">Are you Sure you want to delete Sales: <span style="color:darkred">@sale.Item ??</span></span>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <a class="btn font-weight-bold" style="background-color:red; color:white" asp-action="Delete" asp-route-id="@sale.Id">Yes</a>
+                                                        <a class="btn font-weight-bold" style="background-color:greenyellow; color:white" data-dismiss="modal">No</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </td>
+
+                                }
+
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <br /><br />
+            <h4 class="text-center font-weight-bolder" style="color:darkred">No Pending Sales! </h4>
+        }
+    </div>
+</div>
+
+<script>
+
+    function numberWithCommas(x) {
+        let newNumber = x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        return newNumber
+    }
+
+
+    let comma = document.getElementsByClassName("comma");
+
+
+    for (var i = 0; i < comma.length; i++) {
+        let result = numberWithCommas(comma[i].innerHTML);
+        document.getElementsByClassName("comma")[i].innerHTML = result;
+    }
+
+
+</script>
+

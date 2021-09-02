@@ -20,5 +20,7 @@ namespace NikeFarms.v2._0.Interface
         public List<Message> GetMessages(int recieverId);
 
         public void Delete(int id);
+
+       
     }
 }

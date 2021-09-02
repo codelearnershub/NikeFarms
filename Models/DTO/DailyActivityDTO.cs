@@ -13,8 +13,6 @@ namespace NikeFarms.v2._0.Models.DTO
 
         public double FeedConsumedPerKg { get; set; }
 
-        public int Mortality { get; set; }
-
         public double NoOfMedUsed { get; set; }
 
         public double NoOfFeedUsed { get; set; }

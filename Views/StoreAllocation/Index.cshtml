@@ -34,7 +34,8 @@
                             string modalIdHash = $"#exampleModalCenter{allocation.Id}";
                         <tr>
                              
-                            <td class="font-weight-bolder"><span style="color: darkred">*</span> @allocation.StoreItemName  @if (allocation.IsApproved == true) {<span><a class="btn" style="background-color: greenyellow; color: white; font-size: 10px; border-radius: 60%" href="#">  <i class="fas fa-check"></i></a></span> }</td>
+                            <td class="font-weight-bolder"><span style="color: darkred">*</span> @allocation.StoreItemName  @if (allocation.IsApproved == true)
+                                                        {<span><a class="btn font-weight-bold" style=" color: greenyellow;" href="#"><i class="fas fa-check"></i></a></span>}</td>
                            
                             @if (allocation.ItemPerKg == null)
                             {

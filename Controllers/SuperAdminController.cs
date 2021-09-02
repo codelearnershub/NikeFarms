@@ -16,13 +16,15 @@ namespace NikeFarms.v2._0.Controllers
     {
         private readonly IUserService _userService;
         private readonly IUserRoleService _userRoleService;
+        private readonly ICustomerService _customerService;
         private readonly IRoleService _roleService;
 
-        public SuperAdminController(IUserService userService, IUserRoleService userRoleService, IRoleService roleService)
+        public SuperAdminController(IUserService userService, IUserRoleService userRoleService, IRoleService roleService, ICustomerService customerService)
         {
             _userService = userService;
             _userRoleService = userRoleService;
             _roleService = roleService;
+            _customerService = customerService;
         }
 
         public IActionResult Index()
@@ -36,10 +38,26 @@ namespace NikeFarms.v2._0.Controllers
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             ViewBag.Role = $"{_userRoleService.FindRole(userId)}";
+            var role = _roleService.FindByName("Admin");
+            var checkUser = _userRoleService.FindUserWithParticularRole(role.Id);
+
+            if(checkUser == null)
+            {
+                RegisterVM registerV = new RegisterVM
+                {
+                    RoleList = _roleService.GetAllRoles().Select(m => new SelectListItem
+                    {
+                        Text = m.Name,
+                        Value = m.Id.ToString()
+                    })
+                };
+
+                return View(registerV);
+            }
 
             RegisterVM registerVM = new RegisterVM
             {
-                RoleList = _roleService.GetAllRoles().Select(m => new SelectListItem
+                RoleList = _roleService.GetRolesWithoutAdmin().Select(m => new SelectListItem
                 {
                     Text = m.Name,
                     Value = m.Id.ToString()
@@ -71,6 +89,22 @@ namespace NikeFarms.v2._0.Controllers
                 RoleId = vm.RoleId,
                 Gender = vm.Gender,
             };
+
+            var userC = _userService.FindByEmail(vm.Email);
+            if (userC != null )
+            {
+                ViewBag.Message = "error";
+
+                RegisterVM registerVM = new RegisterVM
+                {
+                    RoleList = _roleService.GetRolesWithoutAdmin().Select(m => new SelectListItem
+                    {
+                        Text = m.Name,
+                        Value = m.Id.ToString()
+                    })
+                };
+                return View(registerVM);
+            }
             _userService.RegisterUser(userDTO);
             return RedirectToAction("ListUser");
         }
@@ -123,6 +157,31 @@ namespace NikeFarms.v2._0.Controllers
                 ViewBag.Role = $"{_userRoleService.FindRole(userId)}";
                 User userlogin = _userService.FindById(userId);
                 ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
+                var role = _roleService.FindByName("Admin");
+                var checkUser = _userRoleService.FindUserWithParticularRole(role.Id);
+
+                if (checkUser == null)
+                {
+                    UpdateUserVM updateUserVM = new UpdateUserVM
+                    {
+                        Id = user.Id,
+                        LastName = user.LastName,
+                        FirstName = user.FirstName,
+                        Email = user.Email,
+                        PhoneNo = user.PhoneNo,
+                        Address = user.Address,
+                        Gender = user.Gender,
+                        RoleId = _userRoleService.FindUserRole(user.Id).RoleId,
+                        RoleList = _roleService.GetAllRoles().Select(m => new SelectListItem
+                        {
+                            Text = m.Name,
+                            Value = m.Id.ToString()
+                        })
+                    };
+
+                    return View(updateUserVM);
+                };
+
 
                 UpdateUserVM updateUser = new UpdateUserVM
                 {
@@ -134,7 +193,7 @@ namespace NikeFarms.v2._0.Controllers
                     Address = user.Address,
                     Gender = user.Gender,
                     RoleId = _userRoleService.FindUserRole(user.Id).RoleId,
-                    RoleList = _roleService.GetAllRoles().Select(m => new SelectListItem
+                    RoleList = _roleService.GetRolesWithoutAdmin().Select(m => new SelectListItem
                     {
                         Text = m.Name,
                         Value = m.Id.ToString()
@@ -149,6 +208,12 @@ namespace NikeFarms.v2._0.Controllers
         [HttpPost]
         public IActionResult UpdateUser(UpdateUserVM updateUser)
         {
+            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+
+            ViewBag.Role = $"{_userRoleService.FindRole(userId)}";
+            User userlogin = _userService.FindById(userId);
+            ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
+
             UserDTO user = new UserDTO
             {
                 Id = updateUser.Id,
@@ -161,6 +226,30 @@ namespace NikeFarms.v2._0.Controllers
                 Gender = updateUser.Gender,
                 RoleId = updateUser.RoleId,
             };
+
+            var userC = _userService.FindByEmail(updateUser.Email);
+            if (userC != null && updateUser.Id != userC.Id)
+            {
+                ViewBag.Message = "error";
+                UpdateUserVM updateV = new UpdateUserVM
+                {
+                    Id = user.Id,
+                    LastName = user.LastName,
+                    FirstName = user.FirstName,
+                    Email = user.Email,
+                    PhoneNo = user.PhoneNo,
+                    Address = user.Address,
+                    Gender = user.Gender,
+                    RoleId = _userRoleService.FindUserRole(user.Id).RoleId,
+                    RoleList = _roleService.GetRolesWithoutAdmin().Select(m => new SelectListItem
+                    {
+                        Text = m.Name,
+                        Value = m.Id.ToString()
+                    })
+                };
+
+                return View(updateV);
+            }
             _userService.Update(user);
             return RedirectToAction("ListUser");
         }

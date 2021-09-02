@@ -15,16 +15,20 @@ namespace NikeFarms.v2._0.Controllers
     {
         private readonly IExpensesService _expensesService;
         private readonly IUserService _userService;
+        private readonly IUserRoleService _userRoleService;
 
-        public ExpensesController(IExpensesService expensesService, IUserService userService)
+        public ExpensesController(IExpensesService expensesService, IUserService userService, IUserRoleService userRoleService)
         {
             _expensesService = expensesService;
             _userService = userService;
+            _userRoleService = userRoleService;
         }
 
         public IActionResult Index()
         {
             var expenses = _expensesService.GetAllExpenses();
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            ViewBag.Role = $"{_userRoleService.FindRole(userId)}";
             List<ListExpensesVM> ListExpenses = new List<ListExpensesVM>();
 
             foreach (var expense in expenses)
@@ -45,7 +49,7 @@ namespace NikeFarms.v2._0.Controllers
                 ListExpenses.Add(listExpensesVM);
             }
 
-            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
 

@@ -55,6 +55,10 @@ namespace NikeFarms.v2._0
 
             services.AddScoped<INotificationService, NotificationService>();
 
+            services.AddScoped<IMortalityRepository, MortalityRepository>();
+
+            services.AddScoped<IMortalityService, MortalityService>();
+
             services.AddScoped<ICustomerRepository, CustomerRepository>();
 
             services.AddScoped<ICustomerService, CustomerService>();

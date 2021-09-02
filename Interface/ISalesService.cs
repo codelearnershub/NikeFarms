@@ -13,6 +13,8 @@ namespace NikeFarms.v2._0.Interface
 
         public Sales FindById(int id);
 
+        public Sales FindByVoucher(string voucher);
+
         public Sales Update(SalesDTO salesDTO);
 
         public IEnumerable<Sales> GetAllSales();
@@ -20,5 +22,11 @@ namespace NikeFarms.v2._0.Interface
         public IEnumerable<Sales> GetSalesByManagerEmail(string managerEmail);
 
         public void Delete(int id);
+
+        public IEnumerable<Sales> GetSoldSales();
+
+        public IEnumerable<Sales> GetUnSoldSales();
+
+        public Sales UpdateMore(SalesDTO salesDTO);
     }
 }

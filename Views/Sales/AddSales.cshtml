@@ -1,0 +1,55 @@
+﻿@model NikeFarms.v2._0.Models.ViewModels.AddSalesVM
+
+@{ ViewBag.Title = "Add Sales"; }
+@{
+    Layout = "_SalesManagerDashboard";
+}
+
+
+
+<div class="container">
+    <div class="">
+        <div class="">
+            <div class="">
+                <div class="">
+                    <br /><br /><h3 class="text-center font-weight-bolder" style="color:darkred"><i class="far fa-clipboard"></i>  Add Sales</h3><br /><br />
+                </div>
+
+                <form method="post">
+                    <div class="">
+                        <div class="form-row">
+
+                            <div class="form-group col-md-5">
+                                <label asp-for="Item" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Item Sold </label>
+                                <textarea asp-for="Item" class="form-control" placeholder="Enter Sales Description"></textarea>
+                                <span asp-validation-for="Item" style="color:darkred"></span>
+                            </div>
+                            <div class="form-group col-md-2">
+                            </div>
+
+                            <div class="form-group col-md-5">
+                                <label class="form-check-label font-weight-bold" asp-for="CustomerId"><span style="color: darkred">*</span> Select Customer</label>
+                                <div>
+                                    
+                                    <select  asp-for="CustomerId" asp-items="@Model.CustomerList" class="form-control" >
+                                        <option disabled selected>--Choose Customer--</option>
+                                    </select>
+                                    <span asp-validation-for="CustomerId" style="color:darkred"></span><br>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="">
+                            <input type="submit" value="Add Sales" class="btn font-weight-bolder" style="background-color:darkgoldenrod" />
+                            <a style="margin-left: 5%; color: darkred" asp-action="Index">Back Home</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

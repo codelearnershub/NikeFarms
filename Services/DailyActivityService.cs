@@ -25,7 +25,6 @@ namespace NikeFarms.v2._0.Services
             {
                 CreatedBy = _userService.FindById(dailyActivityDTO.UserId).Email,
                 CreatedAt = DateTime.Now,
-                Mortality = dailyActivityDTO.Mortality,
                 NoOfMedUsed = dailyActivityDTO.NoOfMedUsed,
                 NoOfFeedUsed = dailyActivityDTO.NoOfFeedUsed,
                 FlockId = dailyActivityDTO.FlockId,
@@ -52,7 +51,6 @@ namespace NikeFarms.v2._0.Services
             }
 
 
-            dailyActivity.Mortality = dailyActivityDTO.Mortality;
             dailyActivity.NoOfMedUsed = dailyActivityDTO.NoOfMedUsed;
             dailyActivity.NoOfFeedUsed = dailyActivityDTO.NoOfFeedUsed;
             dailyActivity.FlockId = dailyActivityDTO.FlockId;

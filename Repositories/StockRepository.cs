@@ -42,7 +42,12 @@ namespace NikeFarms.v2._0.Repositories
 
         public List<Stock> GetAllStocks()
         {
-            return _dbContext.Stocks.ToList();
+            return _dbContext.Stocks.Where(s=> s.AvailableItem > 0).ToList();
+        }
+
+        public List<Stock> GetBirdStocks()
+        {
+            return _dbContext.Stocks.Where(s=> s.ItemType == "Birds" && s.AvailableItem > 0).ToList();
         }
 
         public List<Stock> GetStocksByFlockId(int flockId)

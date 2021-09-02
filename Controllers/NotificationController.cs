@@ -53,6 +53,7 @@ namespace NikeFarms.v2._0.Controllers
                     Id = notification.Id,
                     Content = notification.Content,
                     ApproveId = notification.ApproveId,
+                    Type = notification.Type,
                     CreatedAt = notification.CreatedAt,
                 };
 
@@ -80,6 +81,7 @@ namespace NikeFarms.v2._0.Controllers
                     Id = notification.Id,
                     Content = notification.Content,
                     ApproveId = notification.ApproveId,
+                    Type = notification.Type,
                     CreatedAt = notification.CreatedAt,
                 };
 
@@ -87,6 +89,14 @@ namespace NikeFarms.v2._0.Controllers
             }
 
             return View(ListNotifications);
+        }
+
+        public IActionResult InsufficientStoreItem()
+        {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            User userlogin = _userService.FindById(userId);
+            ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
+            return View();
         }
 
 
@@ -139,7 +149,11 @@ namespace NikeFarms.v2._0.Controllers
                 var storeAllocation = _storeAllocationService.FindById(id);
                 var store = _storeItemService.FindById(storeAllocation.StoreItemId);
 
-
+                if(store.ItemRemaining - storeAllocation.NoOfItem < 0)
+                {
+                    ViewBag.Message = "Insufficient";
+                    return RedirectToAction("InsufficientStoreItem");
+                }
                 StoreItemDTO storeItem = new StoreItemDTO
                 {
                     Id = store.Id,
@@ -183,6 +197,10 @@ namespace NikeFarms.v2._0.Controllers
                 _expensesService.Update(expenses);
                 _notificationService.Delete(id);
 
+            }
+            else if(notify.Type == "FlockFinish")
+            {
+                _notificationService.Delete(id);
             }
             return RedirectToAction("ListAdminNotifications");
         }

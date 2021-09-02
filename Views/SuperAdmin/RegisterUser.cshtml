@@ -45,6 +45,10 @@ else
                             <div class="form-group col-md-5">
                                 <label asp-for="Email" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Email</label>
                                 <input asp-for="Email" class="form-control" placeholder="Email" />
+                                @if (ViewBag.Message == "error")
+                                {
+                                    <p style="color:red; " class="font-weight-bolder  mb-2">*A User with this Email already Exist!!</p>
+                                }
                                 <span asp-validation-for="Email" style="color:darkred"></span><br />
                             </div>
                         </div>

@@ -64,5 +64,10 @@ namespace NikeFarms.v2._0.Services
         {
           return  _roleRepository.FindByName(roleName);
         }
+
+        public IEnumerable<Role> GetRolesWithoutAdmin()
+        {
+            return _roleRepository.GetRolesWithoutAdmin();
+        }
     }
 }

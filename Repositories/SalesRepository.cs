@@ -40,9 +40,24 @@ namespace NikeFarms.v2._0.Repositories
             return _dbContext.Sales.FirstOrDefault(u => u.Id.Equals(salesId));
         }
 
+        public Sales FindByVoucher(string voucher)
+        {
+            return _dbContext.Sales.FirstOrDefault(u => u.Voucher.Equals(voucher));
+        }
+
         public List<Sales> GetAllSales()
         {
             return _dbContext.Sales.ToList();
+        }
+
+        public List<Sales> GetSoldSales()
+        {
+            return _dbContext.Sales.Where(s=> s.IsSold == true).ToList();
+        }
+
+        public List<Sales> GetUnSoldSales()
+        {
+            return _dbContext.Sales.Where(s => s.IsSold != true).ToList();
         }
 
         public List<Sales> GetSalesByManagerEmail(string managerEmail)

@@ -1,0 +1,76 @@
+﻿@model NikeFarms.v2._0.Models.ViewModels.AddMortalityVM
+
+@{ ViewBag.Title = "Add Mortailty"; }
+@{
+    Layout = "_FarmManagerDashboard";
+}
+
+
+<div class="container">
+    <div class="">
+        <div class="">
+            <div class="">
+                <div class="">
+                    <br /><br /><h3 class="text-center font-weight-bolder" style="color:darkred"><i class="fas fa-skull-crossbones"></i>  Add Mortality</h3><br /><br />
+                </div>
+                @if (ViewBag.Message == "AtLeastOne")
+                {
+                    <p style="color:red; " class="text-center font-weight-bolder  mb-2">*You must Select one from either Flock or Stock</p>
+                }
+                else if (ViewBag.Message == "AtMostOne")
+                {
+                    <p style="color:red; " class="text-center font-weight-bolder  mb-2">*You can't Select Both Flock and Stock(Select only One!)</p>
+                }
+                else if (ViewBag.Message == "errorStock")
+                {
+                    <p style="color:red; " class="text-center font-weight-bolder  mb-2">*The No. of Deaths you Input is more than Available Birds in Stock</p>
+                }
+                else if (ViewBag.Message == "errorFlock")
+                {
+                    <p style="color:red; " class="text-center font-weight-bolder  mb-2">*The No. of Deaths you Input is more than Available Birds in Flock</p>
+                }
+                <form method="post">
+                    <div class="">
+                        <div class="form-row">
+
+                            <div class="form-group col-md-5">
+                                <label class="form-check-label font-weight-bold" asp-for="FlockId"><span style="color: darkred"></span> Select Flock </label>
+                                <select asp-for="FlockId" asp-items="@Model.FlockList" class="form-control">
+                                    <option disabled selected>--Select Flock --</option>
+                                </select>
+                                <span asp-validation-for="FlockId" style="color:darkred"></span><br>
+                            </div>
+                            <div class="form-group col-md-2">
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label class="form-check-label font-weight-bold" asp-for="StockId"><span style="color: darkred"></span> Select Stock </label>
+                                <select asp-for="StockId" asp-items="@Model.StockList" class="form-control">
+                                    <option disabled selected>--Select Stock --</option>
+                                </select>
+                                <span asp-validation-for="StockId" style="color:darkred"></span><br>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+
+                            <div class="form-group col-md-5">
+                                <label asp-for="NoOfDeaths" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Mortality </label>
+                                <input asp-for="NoOfDeaths" class="form-control" placeholder="Input No. of Deaths" type="number" min="1" />
+                                <span asp-validation-for="NoOfDeaths" style="color:darkred"></span>
+                            </div>
+
+                        </div>
+
+                        <div class="">
+                            <input type="submit" value="Add Mortality" class="btn font-weight-bolder" style="background-color:darkgoldenrod" />
+                            <a style="margin-left: 5%; color: darkred" asp-action="Index">Back Home</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -25,7 +25,6 @@
                             <th> Feed Consumed </th>
                             <th> Medication</th>
                             <th> No. of Med Used</th>
-                            <th> Mortality</th>
                             <th>Date</th>
                             <th> Action</th>
                         </tr>
@@ -55,15 +54,7 @@
                             {
                                 <td><span class="comma">@daily.NoOfMedUsed</span> Unit(s)</td>
                             }
-                            @if (daily.Mortality <= 0)
-                            {
-
-                                <td style="color:red" class="font-weight-bolder">Null</td>
-                            }
-                            else
-                            {
-                                <td><span class="comma">@daily.Mortality</span> Death(s)</td>
-                            }
+                           
                             <td class="font-weight-bolder">@daily.CreatedAt</td>
 
                             @if (daily.CreatedAt == DateTime.Now.ToShortDateString() && daily.CreatedBy == ViewBag.UserName)

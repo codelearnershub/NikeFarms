@@ -18,6 +18,8 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
         public int ApproveId { get; set; }
 
+        public string Type { get; set; }
+
         public DateTime CreatedAt { get; set; }
     }
 

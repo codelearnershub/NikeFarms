@@ -50,7 +50,7 @@ namespace NikeFarms.v2._0.Repositories
             return _dbContext.SalesItems.Where(s => s.SalesId == salesId).ToList();
         }
 
-
+        
         public SalesItem Update(SalesItem salesItem)
         {
             _dbContext.SalesItems.Update(salesItem);

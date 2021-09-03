@@ -42,7 +42,7 @@ namespace NikeFarms.v2._0.Repositories
 
         public Customer FindByEmail(string customerEmail)
         {
-            return _dbContext.Customers.FirstOrDefault(u => u.Id.Equals(customerEmail));
+            return _dbContext.Customers.FirstOrDefault(u => u.Email.Equals(customerEmail));
         }
 
         public List<Customer> GetAllCustomers()

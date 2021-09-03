@@ -11,10 +11,12 @@ namespace NikeFarms.v2._0.Models
 
         public Stock Stock { get; set; }
 
-        public int? stockId { get; set; }
+        public int? StockId { get; set; }
 
         public Flock Flock { get; set; }
 
         public int? FlockId { get; set; }
+
+        public string Date { get; set; }
     }
 }

@@ -201,6 +201,17 @@ namespace NikeFarms.v2._0.Controllers
         }
 
 
+        public IActionResult DeleteInbox(int id)
+        {
+            var message = _messageService.FindById(id);
+            if (message == null)
+            {
+                return NotFound();
+            }
+            _messageService.Delete(id);
+            return RedirectToAction("Inbox");
+        }
+
         public IActionResult SeeMore(int id)
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));

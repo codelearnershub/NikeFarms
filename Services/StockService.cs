@@ -11,29 +11,16 @@ namespace NikeFarms.v2._0.Services
     public class StockService : IStockService
     {
         private readonly IStockRepository _stockRepository;
-        private readonly IWeeklyReportService _weeklyReportService;
         private readonly IUserService _userService;
-        private readonly IFlockService _flockService;
+       
 
-        public StockService(IStockRepository stockRepository, IUserService userService, IFlockService flockService, IWeeklyReportService weeklyReportService)
+        public StockService(IStockRepository stockRepository, IUserService userService)
         {
             _stockRepository = stockRepository;
             _userService = userService;
-            _flockService = flockService;
-            _weeklyReportService = weeklyReportService;
         }
 
-        public double EstimatedPriceOfFlockPerKg(int flockId)
-        {
-            var flock = _flockService.FindById(flockId);
-            double currentWeight = _weeklyReportService.GetCurrentAverageWeight(flockId);
-            double estimatedPrice = 0;
-            if (flock != null)
-            {
-                estimatedPrice = ((double)(flock.AmountPurchased) * currentWeight) / flock.AverageWeight;
-            };
-            return estimatedPrice;
-        }
+        
 
         public Stock Add(StockDTO stockDTO)
         {
@@ -65,7 +52,26 @@ namespace NikeFarms.v2._0.Services
                 return null;
             }
 
-            stock.NoOfItem = stockDTO.NoOfItem;
+            stock.NoOfItem = stock.NoOfItem;
+            stock.ItemType = stockDTO.ItemType;
+            stock.AvailableItem = stock.AvailableItem;
+            stock.PricePerCrate = stockDTO.PricePerCrate;
+            stock.PricePerKg = stockDTO.PricePerKg;
+            stock.FlockId = stockDTO.FlockId;
+            stock.UpdatedAt = DateTime.Now;
+
+            return _stockRepository.Update(stock);
+        }
+
+        public Stock UpdateMore(StockDTO stockDTO)
+        {
+            var stock = _stockRepository.FindById(stockDTO.Id);
+            if (stock == null)
+            {
+                return null;
+            }
+
+            stock.NoOfItem = stock.NoOfItem;
             stock.ItemType = stockDTO.ItemType;
             stock.AvailableItem = stockDTO.AvailableItem;
             stock.PricePerCrate = stockDTO.PricePerCrate;
@@ -95,5 +101,12 @@ namespace NikeFarms.v2._0.Services
         {
             return _stockRepository.GetStocksByFlockId(flockId);
         }
+
+        public IEnumerable<Stock> GetBirdStocks()
+        {
+            return _stockRepository.GetBirdStocks();
+        }
+
+       
     }
 }

@@ -42,5 +42,27 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
         public string CreatedBy { get; set; }
 
+        public string Date { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+
+        public string Voucher { get; set; }
+
+    }
+
+    public class CheckSoldVM
+    {
+        public int SalesId { get;set; }
+
+        public string Voucher { get; set; }
+    }
+
+    public class ListSalesStockVM
+    {
+        public int SalesId { get; set; }
+
+        public string StockDescription { get; set; }
+
+        public string Qty { get; set; }
     }
 }

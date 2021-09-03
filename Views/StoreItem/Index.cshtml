@@ -33,11 +33,13 @@ else
                             <th> Total No. Purchased </th>
                             <th> Item Remaining </th>
                             <th> Price Purchased (&#8358 )</th>
+                            <th> Bought By</th>
                             @if (ViewBag.Role != "Admin")
                             {
 
                                 <th>Action</th>
                             }
+
 
                         </tr>
                     </thead>
@@ -46,84 +48,101 @@ else
                         {
                             string modalId = $"exampleModalCenter{store.Id}";
                             string modalIdHash = $"#exampleModalCenter{store.Id}";
-                        <tr>
+                            <tr>
 
-                            <td class="font-weight-bolder">
-                                <span style="color:darkred">*</span> @store.Name @if (store.IsApproved == true)
-                                {<span><a class="btn font-weight-bold" style="background-color: greenyellow; color: white; margin-left: 20%; border-radius: 60%" href="#"><i class="fas fa-check"></i></a></span>}
-                            </td>
-                            @if (store.ItemPerKg == null)
-                            {
-                                <td class="font-weight-bold" style="color:red">Null</td>
-                            }
-                            else
-                            {
-                                <td> <span class="comma">@store.ItemPerKg</span> <span class="font-weight-bold">Kg</span></td>
-                            }
-
-                            @if (store.ItemType == "Feed")
-                            {
-                                <td> <span class="comma">@store.NoOfItem</span> <span class="font-weight-bold">Bag(s)</span></td>
-                            }
-                            else
-                            {
-                                <td> <span class="comma">@store.NoOfItem</span> <span class="font-weight-bold">Unit(s)</span></td>
-                            }
-
-                            @if (store.ItemType == "Feed")
-                            {
-                                @if (store.ItemRemaining < 11)
+                                <td class="font-weight-bolder">
+                                    <span style="color:darkred">*</span> @store.Name @if (store.IsApproved == true)
+                                    {<span><a class="btn font-weight-bold" style=" color: greenyellow;" href="#"><i class="fas fa-check"></i></a></span>}
+                                </td>
+                                @if (store.ItemPerKg == null)
                                 {
-                                    <td style="color: red"><span class="comma">@store.ItemRemaining</span> <span class="font-weight-bold">Bag(s) !!</span></td>
+                                    <td class="font-weight-bold" style="color:red">Null</td>
                                 }
-                                <td><span class="comma">@store.ItemRemaining</span> <span class="font-weight-bold">Bag(s)</span></td>
-                            }
-                            else
-                            {
-                                @if (store.ItemRemaining < 11)
+                                else
                                 {
-                                    <td style="color: red"><span class="comma">@store.ItemRemaining</span> <span class="font-weight-bold">Unit(s) !!</span></td>
+                                    <td> <span class="comma">@store.ItemPerKg</span> <span class="font-weight-bold">Kg</span></td>
                                 }
-                                <td><span class="comma">@store.ItemRemaining</span> <span class="font-weight-bold">Unit(s)</span></td>
-                            }
-                            <td> &#8358 <span class="comma">@store.TotalPricePurchased</span></td>
-                            @if (ViewBag.Role != "Admin")
-                            {
-                                @if (store.IsApproved == false && store.CreatedBy == ViewBag.UserName)
+
+                                @if (store.ItemType == "Feed")
                                 {
-                                    <td>
-                                        <a class="btn font-weight-bold" asp-action="UpdateStoreItem" asp-route-id="@store.Id" style="background-color:greenyellow; color:white">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <a class="btn font-weight-bold" style="background-color:red; color:white" data-toggle="modal" data-target=@modalIdHash>
-                                            <i class="fas fa-trash-alt"></i>
-                                        </a>
+                                    <td> <span class="comma">@store.NoOfItem</span> <span class="font-weight-bold">Bag(s)</span></td>
+                                }
+                                else
+                                {
+                                    <td> <span class="comma">@store.NoOfItem</span> <span class="font-weight-bold">Unit(s)</span></td>
+                                }
+
+                                @if (store.ItemType == "Feed")
+                                {
+                                    @if (store.ItemRemaining < 11)
+                                    {
+                                        <td style="color: red"><span class="comma">@store.ItemRemaining</span> <span class="font-weight-bold">Bag(s) !!</span></td>
+                                    }
+                                    else
+                                    {
+                                        <td><span class="comma">@store.ItemRemaining</span> <span class="font-weight-bold">Bag(s)</span></td>
+                                    }
+
+                                }
+                                else
+                                {
+                                    @if (store.ItemRemaining < 11)
+                                    {
+                                        <td style="color: red"><span class="comma">@store.ItemRemaining</span> <span class="font-weight-bold">Unit(s) !!</span></td>
+                                    }
+                                    else
+                                    {
+                                        <td><span class="comma">@store.ItemRemaining</span> <span class="font-weight-bold">Unit(s)</span></td>
+                                    }
 
 
-                                        <div class="modal fade" id=@modalId tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title font-weight-bolder" style="color:red" id="exampleModalLongTitle">Delete Store Item <i class="fas fa-trash-alt"></i> </h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <br /><span class="font-weight-bolder text-center">Are you Sure you want to delete Store Item: <span style="color:darkred">@store.Name (Qty: @store.NoOfItem) ??</span></span>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <a class="btn font-weight-bold" style="background-color:red; color:white" asp-action="Delete" asp-route-id="@store.Id">Yes</a>
-                                                        <a class="btn font-weight-bold" style="background-color:greenyellow; color:white" data-dismiss="modal">No</a>
+                                }
+                                <td> &#8358 <span class="comma">@store.TotalPricePurchased</span></td>
+                                @if (store.CreatedBy == ViewBag.UserName)
+                                {
+                                    <td class="font-weight-bold" style="color:darkred">You</td>
+                                }
+                                else
+                                {
+                                    <td>@store.CreatedBy (Store)</td>
+                                }
+                                @if (ViewBag.Role != "Admin")
+                                {
+                                    @if (store.IsApproved == false && store.CreatedBy == ViewBag.UserName)
+                                    {
+                                        <td>
+                                            <a class="btn font-weight-bold" asp-action="UpdateStoreItem" asp-route-id="@store.Id" style="background-color:greenyellow; color:white">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a class="btn font-weight-bold" style="background-color:red; color:white" data-toggle="modal" data-target=@modalIdHash>
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+
+
+                                            <div class="modal fade" id=@modalId tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title font-weight-bolder" style="color:red" id="exampleModalLongTitle">Delete Store Item <i class="fas fa-trash-alt"></i> </h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <br /><span class="font-weight-bolder text-center">Are you Sure you want to delete Store Item: <span style="color:darkred">@store.Name (Qty: @store.NoOfItem) ??</span></span>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <a class="btn font-weight-bold" style="background-color:red; color:white" asp-action="Delete" asp-route-id="@store.Id">Yes</a>
+                                                            <a class="btn font-weight-bold" style="background-color:greenyellow; color:white" data-dismiss="modal">No</a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
+                                        </td>
+                                    }
                                 }
-                            }
 
-                        </tr>
+                            </tr>
                         }
                     </tbody>
                 </table>

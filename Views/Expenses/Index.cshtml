@@ -1,6 +1,11 @@
 ﻿@model List<NikeFarms.v2._0.Models.ViewModels.ListExpensesVM>
 @{ ViewBag.Title = "Expenses"; }
-@{
+@if (ViewBag.Role == "Admin")
+{
+    Layout = "_AdminDashboard";
+}
+else
+{
     Layout = "_StoreManagerDashboard";
 }
 
@@ -11,18 +16,26 @@
 <div class="card">
     <div>
         <br />
-        <a class="btn font-weight-bold ml-4" asp-controller="Expenses" asp-action="AddExpenses" style="background-color:darkgoldenrod"><i class="fas fa-plus"></i> Add Expenses</a>
+        @if (ViewBag.Role != "Admin")
+        {
+            <a class="btn font-weight-bold ml-4" asp-controller="Expenses" asp-action="AddExpenses" style="background-color:darkgoldenrod"><i class="fas fa-plus"></i> Add Expenses</a>
+        }
+
         @if (Model.Count() > 0)
         {
             <div class="card-body">
-                <table class="table table-bordered ">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th> Description </th>
                             <th> Price (&#8358 ) </th>
-                            <td>Created At</td>
+                            <th>Date <span style="color:red">&</span> Time</th>
                             <th>Created By</th>
-                            <th>Action</th>
+                            @if (ViewBag.Role != "Admin")
+                            {
+
+                                <th>Action</th>
+                            }
 
                         </tr>
                     </thead>
@@ -36,8 +49,8 @@
 
                                 <td class="font-weight-bolder">
                                     <span style="color:red">*</span> @expense.Description @if (expense.IsApproved == true)
-                                    {<span><a class="btn font-weight-bold" style="background-color: greenyellow; color: white; margin-left: 20%; border-radius: 60%" href="#"><i class="fas fa-check"></i></a></span>}
- 
+                                    {<span><a class="btn font-weight-bold" style=" color: greenyellow;" href="#"><i class="fas fa-check"></i></a></span>}
+
                                 </td>
 
                                 <td><span class="comma">@expense.Price</span></td>
@@ -48,44 +61,47 @@
                                 }
                                 else
                                 {
-                                    <td>@expense.CreatedBy</td>
+                                    <td>@expense.CreatedBy (Store)</td>
                                 }
 
-                                @if (expense.IsApproved == false && expense.CreatedBy == ViewBag.UserName)
+                                @if (ViewBag.Role != "Admin")
                                 {
-                                    <td>
-                                        <a class="btn font-weight-bold" asp-action="UpdateExpenses" asp-route-id="@expense.Id" style="background-color:greenyellow; color:white">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
 
-                                        <a class="btn font-weight-bold" style="background-color:red; color:white" data-toggle="modal" data-target=@modalIdHash>
-                                            <i class="fas fa-trash-alt"></i>
-                                        </a>
+                                    @if (expense.IsApproved == false && expense.CreatedBy == ViewBag.UserName)
+                                    {
+                                        <td>
+                                            <a class="btn font-weight-bold" asp-action="UpdateExpenses" asp-route-id="@expense.Id" style="background-color:greenyellow; color:white">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+
+                                            <a class="btn font-weight-bold" style="background-color:red; color:white" data-toggle="modal" data-target=@modalIdHash>
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
 
 
-                                        <div class="modal fade" id=@modalId tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title font-weight-bolder" style="color:red" id="exampleModalLongTitle">Delete Expenses <i class="fas fa-trash-alt"></i> </h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <br /> <span class="font-weight-bolder text-center">Are you Sure you want to delete Expenses: <span style="color:darkred">@expense.Description ??</span></span>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <a class="btn font-weight-bold" style="background-color:red; color:white" asp-action="Delete" asp-route-id="@expense.Id">Yes</a>
-                                                        <a class="btn font-weight-bold" style="background-color:greenyellow; color:white" data-dismiss="modal">No</a>
+                                            <div class="modal fade" id=@modalId tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title font-weight-bolder" style="color:red" id="exampleModalLongTitle">Delete Expenses <i class="fas fa-trash-alt"></i> </h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <br /> <span class="font-weight-bolder text-center">Are you Sure you want to delete Expenses: <span style="color:darkred">@expense.Description ??</span></span>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <a class="btn font-weight-bold" style="background-color:red; color:white" asp-action="Delete" asp-route-id="@expense.Id">Yes</a>
+                                                            <a class="btn font-weight-bold" style="background-color:greenyellow; color:white" data-dismiss="modal">No</a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                    </td>
+                                        </td>
+                                    }
                                 }
-
 
 
                             </tr>
@@ -103,7 +119,7 @@
 </div>
 
 <script>
-   
+
     function numberWithCommas(x) {
         let newNumber = x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         return newNumber

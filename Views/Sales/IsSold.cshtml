@@ -1,0 +1,46 @@
+﻿@model NikeFarms.v2._0.Models.ViewModels.CheckSoldVM
+
+@{ ViewBag.Title = "Sales"; }
+@{
+    Layout = "_StoreManagerDashboard";
+}
+
+
+<div class="container">
+    <div class="">
+        <div class="">
+            <div class="">
+                <div class="">
+                    <br /><br /><h3 class="text-center font-weight-bolder" style="color:darkred"><i class="fas fa-clipboard"></i>  Sell Goods</h3><br /><br />
+                </div>
+                @if (ViewBag.Message == "Invalid")
+                {
+                    <p style="color:red; " class="font-weight-bolder text-center mb-2">*Invalid Voucher Number!</p>
+                }
+                else if (ViewBag.Message == "Used")
+                {
+                    <p style="color:red" class="font-weight-bolder text-center mb-2">*This Voucher has Been Used!</p>
+                }
+                <form method="post">
+                    <div class="">
+                        <div class="form-row">
+
+                            <div class="form-group col-md-5">
+                                <label asp-for="Voucher" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Voucher </label>
+                                <input asp-for="Voucher" class="form-control" placeholder="Input Voucher Number" />
+                                <span asp-validation-for="Voucher" style="color:darkred"></span>
+                            </div>
+
+                        </div>
+                        <div class="">
+                            <input type="submit" value="Check" class="btn font-weight-bolder" style="background-color:darkgoldenrod" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

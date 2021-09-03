@@ -1,0 +1,115 @@
+﻿@model List<NikeFarms.v2._0.Models.ViewModels.ListSalesItemVM>
+@{ ViewBag.Title = "Sales"; }
+
+@if (ViewBag.Role == "Admin")
+{
+    Layout = "_AdminDashboard";
+}
+else
+{
+    Layout = "_SalesManagerDashboard";
+}
+
+
+<h1 class="text-center" style="font-family:'Times New Roman'; color:darkred ">
+    <i class="fas fa-clipboard"></i> Sales Item
+</h1>
+
+<div>
+    <br /><br />
+    @if (Model.Count() > 0)
+    {
+
+        <div class="">
+            @foreach (var salesItem in Model)
+            {
+                string modalId = $"exampleModalCenter{salesItem.Id}";
+                string modalIdHash = $"#exampleModalCenter{salesItem.Id}";
+                <div class=" cardW  column " style="display:inline; margin-right: 70px; margin-bottom:70px">
+                    <span class="font-weight-bolder">Item: <span style="color:darkred">@salesItem.Item</span></span><br /><br />
+
+
+                    @if (salesItem.ItemType == "Birds")
+                    {
+                        <span class="font-weight-bolder"><span style="color:darkred">*</span>No. Sold: <span class="comma">@salesItem.NoOfItem</span> Bird(s)</span><br />
+                    }
+                    else
+                    {
+                        <span class="font-weight-bolder"><span style="color:darkred">*</span>No. Sold: <span class="comma">@salesItem.NoOfItem</span> Crate(s)</span><br />
+                    }
+                    @if (salesItem.ItemType == "Birds")
+                    {
+                        <span class="font-weight-bolder"><span style="color:darkred">*</span>Average Weight: <span class="comma">@salesItem.CurrentWeight</span> Kg</span><br />
+                    }
+                    else
+                    {
+                        <span class="font-weight-bolder"><span style="color:darkred">*</span>Average Weight: <span class="font-weight-bolder" style="color:red">Null</span></span><br />
+                    }
+                    <span class="font-weight-bolder"><span style="color:darkred">*</span>Price Per Item: &#8358 <span style="font-weight: lighter" class="comma">@salesItem.PricePerItem</span></span><br />
+                    <span class="font-weight-bolder"><span style="color:darkred">*</span>Total Price Sold: &#8358 <span style="font-weight: lighter" class="comma">@salesItem.TotalPrice</span></span><br /><br /><br />
+
+
+
+                    @if (ViewBag.Role != "Admin")
+                    {
+                        @if (salesItem.CreatedBy == ViewBag.UserName)
+                        {
+                            <div>
+
+                                <a style="background-color: white; color: red; margin-left: 80%; font-size: 15px" class="font-weight-bolder" data-toggle="modal" data-target=@modalIdHash><i class="fas fa-trash-alt"></i></a>
+
+                            </div>
+
+                            <div class="modal fade" id=@modalId tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title font-weight-bolder" style="color:red" id="exampleModalLongTitle">Delete Store Item <i class="fas fa-trash-alt"></i> </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <br /><span class="font-weight-bolder text-center">Are you Sure you want to delete Sales Item: <span style="color:darkred">@salesItem.Item ??</span></span>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a class="btn font-weight-bold" style="background-color:red; color:white" asp-controller="SalesItem" asp-action="Delete" asp-route-id="@salesItem.Id">Yes</a>
+                                            <a class="btn font-weight-bold" style="background-color:greenyellow; color:white" data-dismiss="modal">No</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    }
+                </div>
+
+            }
+        </div>
+    }
+    else
+    {
+        <br /><br />
+        <h4 class="text-center font-weight-bolder" style="color: darkred; margin-top: 15%">No Sales Item Has been Added for this Sale!</h4>
+    }
+</div>
+
+
+<script>
+
+    function numberWithCommas(x) {
+        let newNumber = x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        return newNumber
+    }
+
+
+    let comma = document.getElementsByClassName("comma");
+
+
+    for (var i = 0; i < comma.length; i++) {
+        let result = numberWithCommas(comma[i].innerHTML);
+        document.getElementsByClassName("comma")[i].innerHTML = result;
+    }
+
+
+</script>

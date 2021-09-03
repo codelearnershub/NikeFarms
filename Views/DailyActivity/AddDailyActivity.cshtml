@@ -21,10 +21,6 @@
                 {
                     <p style="color:red; " class="text-center font-weight-bolder  mb-2">*The No. of Medicine you Input is more than what has been Allocated to you</p>
                 }
-                else if (ViewBag.Message == "errorMor")
-                {
-                    <p style="color:red; " class="text-center font-weight-bolder  mb-2">*Mortality cannot be more than Avaible Birds!!</p>
-                }
                 <form method="post">
                     <div class="">
                         <div class="form-row">
@@ -38,11 +34,7 @@
                             </div>
                             <div class="form-group col-md-2">
                             </div>
-                            <div class="form-group col-md-5">
-                                <label asp-for="Mortality" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Mortality </label>
-                                <input asp-for="Mortality" class="form-control" placeholder="Total No. of Deaths" type="number" min="0" />
-                                <span asp-validation-for="Mortality" style="color:darkred"></span>
-                            </div>
+                            
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-5">

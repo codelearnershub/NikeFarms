@@ -17,14 +17,16 @@ namespace NikeFarms.v2._0.Controllers
         private readonly IUserService _userService;
         private readonly IStockService _stockService;
         private readonly IFlockService _flockService;
+        private readonly IUserRoleService _userRoleService;
         private readonly IFlockTypeService _flockTypeService;
 
-        public StockController(IUserService userService, IStockService stockService, IFlockService flockService, IFlockTypeService flockTypeService)
+        public StockController(IUserService userService, IStockService stockService, IFlockService flockService, IFlockTypeService flockTypeService, IUserRoleService userRoleService)
         {
             _userService = userService;
             _stockService = stockService;
             _flockService = flockService;
             _flockTypeService = flockTypeService;
+            _userRoleService = userRoleService;
         }
 
         public IActionResult Index()
@@ -32,6 +34,9 @@ namespace NikeFarms.v2._0.Controllers
             var stocks = _stockService.GetAllStocks();
             List<ListStockVM> ListStocks = new List<ListStockVM>();
 
+
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            ViewBag.Role = $"{_userRoleService.FindRole(userId)}";
             foreach (var stock in stocks)
             {
                 var Created = _userService.FindByEmail(stock.CreatedBy);
@@ -44,17 +49,17 @@ namespace NikeFarms.v2._0.Controllers
                     NoOfItem = stock.NoOfItem,
                     PricePerCrate = stock.PricePerCrate,
                     PricePerKg = stock.PricePerKg,
-                    FlockBatchNo = _flockService.FindById(stock.FlockId).BatchNo,
-                    AvailableItem = stock.NoOfItem,
+                    FlockBatchNo = $"{_flockTypeService.FindById(_flockService.FindById(stock.FlockId).FlockTypeId).Name} ({_flockService.FindById(stock.FlockId).BatchNo})",
+                    AvailableItem = stock.AvailableItem,
+                    EstimatedPricePerKg = _flockService.EstimatedPriceOfFlockPerKg(stock.FlockId),
                     CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
                     CreatedAt = stock.CreatedAt.ToShortDateString(),
+                    UpdatedAt = stock.UpdatedAt,
                 };
 
                 ListStocks.Add(listStockVM);
             }
 
-
-            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
 
@@ -65,7 +70,7 @@ namespace NikeFarms.v2._0.Controllers
         {
             AddStockVM stockVM = new AddStockVM
             {
-                FlockList = _flockService.GetAllFlocks().Select(m => new SelectListItem
+                FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
                 {
                     Text = $"{_flockTypeService.FindById(m.FlockTypeId).Name} Batch No: {m.BatchNo}, Available Birds: {m.AvailableBirds}",
                     Value = m.Id.ToString()
@@ -106,7 +111,7 @@ namespace NikeFarms.v2._0.Controllers
                     noOfStock += stock.NoOfItem;
                 };
 
-                if (flock.AvailableBirds - noOfStock <= 0)
+                if (flock.AvailableBirds - noOfStock < addStock.NoOfItem)
                 {
                     isGreaterThanFlock = true;
                 }
@@ -119,7 +124,7 @@ namespace NikeFarms.v2._0.Controllers
                 ViewBag.ErrorMss = $"{noOfStock} Birds of Flock with Batch No: {flock.BatchNo} has already been Stocked, the highest you can stock now is {flock.AvailableBirds - noOfStock}";
                 AddStockVM stockVM = new AddStockVM
                 {
-                    FlockList = _flockService.GetAllFlocks().Select(m => new SelectListItem
+                    FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
                     {
                         Text = $"{_flockTypeService.FindById(m.FlockTypeId).Name} Batch No: {m.BatchNo}, Available Birds: {m.AvailableBirds}",
                         Value = m.Id.ToString()
@@ -132,7 +137,7 @@ namespace NikeFarms.v2._0.Controllers
                 ViewBag.Message = "errorBirds";
                 AddStockVM stockVM = new AddStockVM
                 {
-                    FlockList = _flockService.GetAllFlocks().Select(m => new SelectListItem
+                    FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
                     {
                         Text = $"{_flockTypeService.FindById(m.FlockTypeId).Name} Batch No: {m.BatchNo}, Available Birds: {m.AvailableBirds}",
                         Value = m.Id.ToString()
@@ -163,7 +168,7 @@ namespace NikeFarms.v2._0.Controllers
                     ViewBag.Message = "errorKg";
                     AddStockVM stockVM = new AddStockVM
                     {
-                        FlockList = _flockService.GetAllFlocks().Select(m => new SelectListItem
+                        FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
                         {
                             Text = $"{_flockTypeService.FindById(m.FlockTypeId).Name} Batch No: {m.BatchNo}, Available Birds: {m.AvailableBirds}",
                             Value = m.Id.ToString()
@@ -198,7 +203,7 @@ namespace NikeFarms.v2._0.Controllers
                     PricePerCrate = stock.PricePerCrate,
                     PricePerKg = stock.PricePerKg,
                     FlockId = stock.FlockId,
-                    FlockList = _flockService.GetAllFlocks().Select(m => new SelectListItem
+                    FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
                     {
                         Text = $"{_flockTypeService.FindById(m.FlockTypeId).Name} Batch No: {m.BatchNo}, Available Birds: {m.AvailableBirds}",
                         Value = m.Id.ToString(),
@@ -220,11 +225,9 @@ namespace NikeFarms.v2._0.Controllers
                 Id = updateStock.Id,
                 ItemType = updateStock.ItemType,
                 UserId = userId,
-                NoOfItem = updateStock.NoOfItem,
                 PricePerCrate = updateStock.PricePerCrate,
                 PricePerKg = updateStock.PricePerKg,
                 FlockId = updateStock.FlockId,
-                AvailableItem = updateStock.NoOfItem,
             };
 
             var stockList = _stockService.GetStocksByFlockId(updateStock.FlockId);
@@ -238,7 +241,7 @@ namespace NikeFarms.v2._0.Controllers
                     noOfStock += stockL.NoOfItem;
                 };
 
-                if (flock.AvailableBirds - noOfStock <= 0)
+                if (flock.AvailableBirds - noOfStock < updateStock.NoOfItem)
                 {
                     isGreaterThanFlock = true;
                 }
@@ -257,7 +260,7 @@ namespace NikeFarms.v2._0.Controllers
                     PricePerCrate = stock.PricePerCrate,
                     PricePerKg = stock.PricePerKg,
                     FlockId = stock.FlockId,
-                    FlockList = _flockService.GetAllFlocks().Select(m => new SelectListItem
+                    FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
                     {
                         Text = $"{_flockTypeService.FindById(m.FlockTypeId).Name} Batch No: {m.BatchNo}, {m.AvailableBirds}(Birds)",
                         Value = m.Id.ToString(),
@@ -298,7 +301,7 @@ namespace NikeFarms.v2._0.Controllers
                         PricePerCrate = stock.PricePerCrate,
                         PricePerKg = stock.PricePerKg,
                         FlockId = stock.FlockId,
-                        FlockList = _flockService.GetAllFlocks().Select(m => new SelectListItem
+                        FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
                         {
                             Text = $"{_flockTypeService.FindById(m.FlockTypeId).Name} Batch No: {m.BatchNo}, Available Birds: {m.AvailableBirds}",
                             Value = m.Id.ToString(),
@@ -321,7 +324,7 @@ namespace NikeFarms.v2._0.Controllers
                         PricePerCrate = stock.PricePerCrate,
                         PricePerKg = stock.PricePerKg,
                         FlockId = stock.FlockId,
-                        FlockList = _flockService.GetAllFlocks().Select(m => new SelectListItem
+                        FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
                         {
                             Text = $"{_flockTypeService.FindById(m.FlockTypeId).Name} Batch No: {m.BatchNo}, {m.AvailableBirds}(Birds)",
                             Value = m.Id.ToString(),

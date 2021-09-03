@@ -1,0 +1,107 @@
+﻿@model NikeFarms.v2._0.Models.ViewModels.ListFlockVM
+@{ ViewBag.Title = "Flocks"; }
+
+@{
+
+    Layout = "_AdminDashboard";
+
+}
+
+
+<h1 class="text-center" style="font-family:'Times New Roman'; color:darkred ">
+    <i class="fab fa-twitter"></i> Flock @Model.FlockType (@Model.BatchNo) <button style="margin-left:20px" class="btn btn-outline-secondary" onclick="window.print()"><i class="fas fa-save"></i>  Save</button>
+</h1>
+
+<div>
+    <br />
+    <div class="" style="font-size: 20px">
+
+
+        <span class="font-weight-bolder"><span style="color:darkred">*</span>Batch No: <span style="color:darkred">@Model.BatchNo</span></span><br /><br />
+
+        <span class="font-weight-bolder"><span style="color:darkred">*</span>Flock Type: <span style="font-weight: lighter">@Model.FlockType</span></span><br /><br />
+        <span class="font-weight-bolder"><span style="color:darkred">*</span>Date(Intake): <span style="font-weight: lighter">@Model.CreatedAt.ToLongDateString()</span></span><br /><br />
+        <span class="font-weight-bolder"><span style="color:darkred">*</span>Date(Now): <span style="font-weight: lighter">@DateTime.Now.ToLongDateString()</span></span><br /><br />
+        <span class="font-weight-bolder">
+            <span style="color:darkred;">*</span>Age: <span style="font-weight: lighter">
+
+                @if (Model.currentAge < 31)
+                {
+                    @Model.currentAge <span class="font-weight-bolder">Day(s)</span><br />
+                }
+                else if (Model.currentAge > 30 && Model.currentAge < 356)
+                {
+                    int remainder = Model.currentAge % 31;
+                    int month = Model.currentAge / 31;
+                    if (remainder == 0)
+                    {
+                        @month <span class="font-weight-bolder">Month(s)</span><br />
+                    }
+                    else
+                    {
+                        @month <span class="font-weight-bolder">Month(s)</span> @remainder <span class="font-weight-bolder">Day(s)</span><br />
+                    }
+
+                }
+                else
+                {
+                    if (Model.currentAge >= 365)
+                    {
+                        int rmonth = (Model.currentAge % 365) / 31;
+                        int year = Model.currentAge / 365;
+                        int rday = (Model.currentAge % 365) % 31;
+                        if (rmonth == 0)
+                        {
+                            @year <span class="font-weight-bolder">Year(s)</span><br />
+                        }
+                        else if (rday == 0)
+                        {
+                            @year <span class="font-weight-bolder">Year(s)</span> @rmonth <span class="font-weight-bolder">Month(s)</span><br />
+                        }
+                        else
+                        {
+                            @year <span class="font-weight-bolder">Year(s)</span> @rmonth <span class="font-weight-bolder">Month(s)</span> @rday <span class="font-weight-bolder">Day(s)</span><br />
+                        }
+
+                    }
+
+                }
+            </span>
+        </span><br />
+        <span class="font-weight-bolder"><span style="color:darkred">*</span>Initially Stocked: <span style="font-weight: lighter" class="comma">@Model.TotalNo</span> Bird(s)</span><br /><br />
+        @if (Model.AvailableBirds <= 10)
+        {
+            <span class="font-weight-bolder" style="color:red"><span style="color:darkred">*</span>Available Birds: <span class="comma">@Model.AvailableBirds</span> Bird(s)!!</span><br /><br />
+        }
+        else
+        {
+            <span class="font-weight-bolder"><span style="color:darkred">*</span>Available Birds: <span style="font-weight: lighter" class="comma">@Model.AvailableBirds</span> Bird(s)</span><br /><br />
+        }
+
+        <span class="font-weight-bolder"><span style="color:darkred">*</span>Mortality: <span style="font-weight: lighter" class="comma">@Model.Mortality</span> Death(s)</span><br /><br />
+        <span class="font-weight-bolder"><span style="color:darkred">*</span>Average Weight(Initial): <span style="font-weight: lighter" class="comma">@Model.InitialAverageWeight</span> Kg</span><br /><br />
+        <span class="font-weight-bolder"><span style="color:darkred">*</span>Average Weight(Now): <span style="font-weight: lighter" class="comma">@Model.CurrentAverageWeight</span> Kg</span><br /><br />
+
+    </div>
+
+</div>
+
+
+<script>
+
+    function numberWithCommas(x) {
+        let newNumber = x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        return newNumber
+    }
+
+
+    let comma = document.getElementsByClassName("comma");
+
+
+    for (var i = 0; i < comma.length; i++) {
+        let result = numberWithCommas(comma[i].innerHTML);
+        document.getElementsByClassName("comma")[i].innerHTML = result;
+    }
+
+    
+</script>

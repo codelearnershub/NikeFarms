@@ -1,0 +1,69 @@
+﻿@model NikeFarms.v2._0.Models.ViewModels.AddSalesItemVM
+
+@{ ViewBag.Title = "Add Sales Item"; }
+@{
+    Layout = "_SalesManagerDashboard";
+}
+
+
+
+<div class="container">
+    <div class="">
+        <div class="">
+            <div class="">
+                <div class="">
+                    <br /><br /><h3 class="text-center font-weight-bolder" style="color:darkred"><i class="far fa-clipboard"></i>  Add Sales Item</h3><br /><br />
+                </div>
+                @if (ViewBag.Message == "moreThan")
+                {
+                    <p style="color:red; " class="text-center font-weight-bolder  mb-2">*The amount of Goods you want to sell is More than what is in Stock</p>
+                }
+                <form method="post">
+                    <div class="">
+                        <div class="form-row">
+                            <input hidden asp-for="SalesId" />
+                            <div class="form-group col-md-5">
+                                <label asp-for="Item" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Item Sold </label>
+                                <input asp-for="Item" class="form-control" placeholder="Item Description" />
+                                <span asp-validation-for="Item" style="color:darkred"></span>
+                            </div>
+                            <div class="form-group col-md-2">
+                            </div>
+
+                            <div class="form-group col-md-5">
+                                <label asp-for="NoOfItem" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> No Sold </label>
+                                <input asp-for="NoOfItem" class="form-control" placeholder="Total. No of Item Sold" type="number" min="1" />
+                                <span asp-validation-for="NoOfItem" style="color:darkred"></span>
+
+                            </div>
+
+
+                        </div>
+                        <div class="form-row">
+
+                            <div class="form-group col-md-5">
+                                <label class="form-check-label font-weight-bold" asp-for="StockId"><span style="color: darkred">*</span> Select Stock</label>
+                                <div>
+
+                                    <select asp-for="StockId" asp-items="@Model.StockList" class="form-control">
+                                        <option disabled selected>--Select Stock--</option>
+                                    </select>
+                                    <span asp-validation-for="StockId" style="color:darkred"></span><br>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="">
+                            <input type="submit" value="Add Sales Item" class="btn font-weight-bolder" style="background-color:darkgoldenrod" />
+                            <a style="margin-left: 5%; color: darkred" asp-controller="Sales" asp-action="Index">Back Home</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

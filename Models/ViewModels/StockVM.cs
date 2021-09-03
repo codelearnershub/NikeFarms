@@ -57,10 +57,14 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
         public decimal? PricePerKg { get; set; }
 
+        public decimal EstimatedPricePerKg { get; set; }
+
         public string FlockBatchNo { get; set; }
 
         public string CreatedBy { get; set; }
 
         public string CreatedAt { get; set; }
+
+        public DateTime? UpdatedAt { get; set; }
     }
 }

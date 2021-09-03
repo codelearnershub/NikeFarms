@@ -20,5 +20,7 @@ namespace NikeFarms.v2._0.Interface
         public IEnumerable<SalesItem> GetSalesItemBySalesId(int salesId);
 
         public void Delete(int id);
+
+        public decimal TotalPriceOfSales(int salesId);
     }
 }

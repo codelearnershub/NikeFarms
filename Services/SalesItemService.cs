@@ -12,15 +12,30 @@ namespace NikeFarms.v2._0.Services
     {
         private readonly ISalesItemRepository _salesItemRepository;
         private readonly IUserService _userService;
+        private readonly ISalesService _salesService;
+        private readonly IFlockService _flockService;
+        private readonly IStockService _stockService;
 
-        public SalesItemService(ISalesItemRepository salesItemRepository, IUserService userService)
+        public SalesItemService(ISalesItemRepository salesItemRepository, IUserService userService, ISalesService salesService = null, IStockService stockService = null, IFlockService flockService = null)
         {
             _salesItemRepository = salesItemRepository;
             _userService = userService;
+            _salesService = salesService;
+            _stockService = stockService;
+            _flockService = flockService;
         }
 
         public SalesItem Add(SalesItemDTO salesItemDTO)
         {
+            decimal? pricePerItem = 0;
+            if(_stockService.FindById(salesItemDTO.StockId).PricePerKg == null)
+            {
+                pricePerItem = _stockService.FindById(salesItemDTO.StockId).PricePerCrate;
+            }
+            else
+            {
+                pricePerItem = _stockService.FindById(salesItemDTO.StockId).PricePerKg;
+            }
             var salesItem = new SalesItem
             {
                 CreatedBy = _userService.FindById(salesItemDTO.UserId).Email,
@@ -29,8 +44,8 @@ namespace NikeFarms.v2._0.Services
                 NoOfItem = salesItemDTO.NoOfItem,
                 StockId = salesItemDTO.StockId,
                 SalesId = salesItemDTO.SalesId,
-                PricePerItem = salesItemDTO.PricePerItem,
-                
+                PricePerItem = (decimal)pricePerItem,
+
             };
 
             return _salesItemRepository.Add(salesItem);
@@ -72,6 +87,34 @@ namespace NikeFarms.v2._0.Services
         public IEnumerable<SalesItem> GetSalesItemBySalesId(int salesId)
         {
             return _salesItemRepository.GetSalesItemBySalesId(salesId);
+        }
+
+        public decimal TotalPriceOfSales(int salesId)
+        {
+            var salesItem = GetSalesItemBySalesId(salesId);
+            decimal overallPrice = 0;
+            decimal totalPrice = 0;
+            decimal? pricePerItem = 0;
+            if (salesItem != null)
+            {
+                foreach(var sale in salesItem)
+                {
+                    if (_stockService.FindById(sale.StockId).PricePerKg == null)
+                    {
+                        pricePerItem = _stockService.FindById(sale.StockId).PricePerCrate;
+                        totalPrice = (decimal)pricePerItem  * sale.NoOfItem;
+                    }
+                    else
+                    {
+                        pricePerItem = _stockService.FindById(sale.StockId).PricePerKg * (decimal)_flockService.GetCurrentAverageWeight(_stockService.FindById(sale.StockId).FlockId);
+                        totalPrice = (decimal)pricePerItem * sale.NoOfItem;
+                    }
+
+                    overallPrice += totalPrice;
+                }
+            }
+
+            return overallPrice;
         }
     }
 }

@@ -12,13 +12,11 @@ namespace NikeFarms.v2._0.Services
     {
         private readonly IWeeklyReportRepository _weeklyReportRepository;
         private readonly IUserService _userService;
-        private readonly IFlockService _flockService;
 
-        public WeeklyReportService(IWeeklyReportRepository weeklyReportRepository, IUserService userService, IFlockService flockService)
+        public WeeklyReportService(IWeeklyReportRepository weeklyReportRepository, IUserService userService)
         {
             _weeklyReportRepository = weeklyReportRepository;
             _userService = userService;
-            _flockService = flockService;
         }
 
         public WeeklyReport Add(WeeklyReportDTO weeklyReportDTO)
@@ -93,36 +91,28 @@ namespace NikeFarms.v2._0.Services
             return _weeklyReportRepository.GetWeeklyReportFlockId(flockId);
         }
 
-        public List<Flock> OperationWeekly()
+        public IEnumerable<WeeklyReport> GetWeeklyReportByFlockId(int flockId)
         {
-            List<Flock> FlockId = new List<Flock>();
-            var flocks = _flockService.GetApprovedFlocks();
-            foreach (var flock in flocks)
-            {
-                var weekly = _weeklyReportRepository.GetWeeklyReportFlockId(flock.Id);
-                if (weekly == null)
-                {
-                    FlockId.Add(flock);
-                }
-
-            }
-
-            return FlockId;
+            return _weeklyReportRepository.GetWeeklyReportByFlockId(flockId);
         }
 
-        public double GetCurrentAverageWeight(int flockId)
-        {
-            var weekly = _weeklyReportRepository.GetWeeklyReportByFlockId(flockId);
-            double CAW = _flockService.FindById(flockId).AverageWeight;
-            if (weekly != null)
-            {
-                foreach (var week in weekly)
-                {
-                    CAW += week.AverageWeight;
+        //public List<Flock> OperationWeekly()
+        //{
+        //    List<Flock> FlockId = new List<Flock>();
+        //    var flocks = _flockService.GetApprovedFlocks();
+        //    foreach (var flock in flocks)
+        //    {
+        //        var weekly = _weeklyReportRepository.GetWeeklyReportFlockId(flock.Id);
+        //        if (weekly == null)
+        //        {
+        //            FlockId.Add(flock);
+        //        }
 
-                }
-            };
-            return CAW;
-        }
+        //    }
+
+        //    return FlockId;
+        //}
+
+
     }
 }

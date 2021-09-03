@@ -45,10 +45,19 @@ namespace NikeFarms.v2._0.Repositories
             return _dbContext.Roles.FirstOrDefault(u => u.Name.Equals(roleName));
         }
 
+
+
+
         public List<Role> GetAllRoles()
         {
             
-            return _dbContext.Roles.ToList();
+            return _dbContext.Roles.Where(r => r.Name != "Super Admin").ToList();
+        }
+
+        public List<Role> GetRolesWithoutAdmin()
+        {
+
+            return _dbContext.Roles.Where(r=> r.Name != "Admin" && r.Name != "Super Admin").ToList();
         }
 
         public Role Update(Role role)

@@ -30,7 +30,7 @@
                             <tr>
 
 
-                                <td><span class="font-weight-bolder">@notification.Content </span><br /> <span class="font-italic font-weight-bolder" style="font-size:15px;color: darkred; margin-left:70%">@notification.CreatedAt.ToLongDateString() @notification.CreatedAt.ToShortTimeString()</span></td>
+                                <td><span class="font-weight-bolder">@notification.Content </span><br /> <span class="font-italic font-weight-bolder" style="font-size:15px;color: darkred; margin-left:60%">@notification.CreatedAt.ToLongDateString() @notification.CreatedAt.ToShortTimeString()</span></td>
 
                                 <td>
                                     <a class="btn font-weight-bold" style="background-color: greenyellow; color: white; margin-left: 20%; border-radius: 60%" asp-controller="Notification" asp-action="Approve" asp-route-id="@notification.ApproveId"><i class="fas fa-check"></i></a>

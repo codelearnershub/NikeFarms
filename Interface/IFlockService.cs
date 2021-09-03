@@ -13,8 +13,6 @@ namespace NikeFarms.v2._0.Interface
 
         public Flock FindById(int id);
 
-        public int Mortality(int flockId);
-
         public List<Flock> GetApprovedFlocks();
 
         public Flock FindByBatchNo(string batchNo);
@@ -27,6 +25,21 @@ namespace NikeFarms.v2._0.Interface
 
         public List<Flock> OperationDaily();
 
-        
+        public int Mortality(int flockId);
+
+        public double GetCurrentAverageWeight(int flockId);
+
+        public decimal EstimatedPriceOfFlockPerKg(int flockId);
+
+        public double TotalNoOfStockedBird(int flockId);
+
+
+        public List<Flock> OperationFlock();
+
+        public Flock UpdateFlockOnly(FlockDTO flockDTO);
+
+        public List<Stock> OperationStock();
+
+        public void CheckFlockFinish(int flockId);
     }
 }

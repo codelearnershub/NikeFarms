@@ -49,7 +49,8 @@ namespace NikeFarms.v2._0.Controllers
                     currentAge = (int)((DateTime.Now - flock.CreatedAt).TotalDays) + flock.Age,
                     TotalNo = flock.TotalNo,
                     AvailableBirds = flock.AvailableBirds,
-                    CurrentAverageWeight = _weeklyReportService.GetCurrentAverageWeight(flock.Id),
+                    CurrentAverageWeight = _flockService.GetCurrentAverageWeight(flock.Id),
+                    Mortality = _flockService.Mortality(flock.Id),
                     IsApproved = flock.IsApproved,
                     CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
                 };
@@ -191,10 +192,10 @@ namespace NikeFarms.v2._0.Controllers
                     BatchNo = flock.BatchNo,
                     FlockType = _flockTypeService.FindById(flock.FlockTypeId).Name,
                     currentAge = (int)((DateTime.Now - flock.CreatedAt).TotalDays) + flock.Age,
-                    Mortality = _flockService.Mortality(flock.Id),
                     TotalNo = flock.TotalNo,
                     AvailableBirds = flock.AvailableBirds,
-                    CurrentAverageWeight = _weeklyReportService.GetCurrentAverageWeight(flock.Id),
+                    InitialAverageWeight = flock.AverageWeight,
+                    CurrentAverageWeight = _flockService.GetCurrentAverageWeight(flock.Id),
                     IsApproved = flock.IsApproved,
                     CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
                 };
@@ -206,6 +207,33 @@ namespace NikeFarms.v2._0.Controllers
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
 
             return View(ListFlock);
+        }
+
+        public IActionResult Details(int id)
+        {
+            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            User userlogin = _userService.FindById(userId);
+            ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
+
+            var flock = _flockService.FindById(id);
+            var Created = _userService.FindByEmail(flock.CreatedBy);
+
+            ListFlockVM listFlockVM = new ListFlockVM
+            {
+                Id = flock.Id,
+                BatchNo = flock.BatchNo,
+                FlockType = _flockTypeService.FindById(flock.FlockTypeId).Name,
+                currentAge = (int)((DateTime.Now - flock.CreatedAt).TotalDays) + flock.Age,
+                TotalNo = flock.TotalNo,
+                AvailableBirds = flock.AvailableBirds,
+                InitialAverageWeight = flock.AverageWeight,
+                CurrentAverageWeight = _flockService.GetCurrentAverageWeight(flock.Id),
+                IsApproved = flock.IsApproved,
+                CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
+                CreatedAt = flock.CreatedAt,
+            };
+
+            return View(listFlockVM);
         }
     }
 }

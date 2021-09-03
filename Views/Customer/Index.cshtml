@@ -1,0 +1,75 @@
+﻿@model List<NikeFarms.v2._0.Models.ViewModels.ListCustomerVM>
+@{ ViewBag.Title = "Customers"; }
+@{
+    Layout = "_SalesManagerDashboard";
+}
+
+<br />
+<h1 class="text-center"><i class="fas fa-users"></i>  Customers</h1>
+
+<div class="card">
+    <div>
+        <br />
+        <a class="btn font-weight-bold ml-4" asp-controller="Customer" asp-action="AddCustomer" style="background-color:darkgoldenrod"><i class="fas fa-plus"></i> Add Customers</a>
+        @if (Model.Count() > 0)
+        {
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Email Address </th>
+                            <th>Phone No</th>
+                            <th>Created By</th>
+                            <th>Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var customer in Model)
+                        {
+                            <tr>
+                                @if (customer.Gender == "Male")
+                                {
+                                    <td class="font-weight-bold"><span style="color:darkred">*</span>Mr. @customer.FullName</td>
+                                }
+                                else
+                                {
+                                    <td class="font-weight-bold"><span style="color:darkred">*</span>Mrs. @customer.FullName</td>
+                                }
+
+                                <td>@customer.Email</td>
+                                <td>@customer.PhoneNo</td>
+                                @if (customer.CreatedBy == ViewBag.UserName)
+                                {
+                                    <td class="font-weight-bolder" style="color:darkred">You</td>
+                                }
+                                else
+                                {
+                                    <td>@customer.CreatedBy (Sales)</td>
+                                }
+
+                                @if (customer.CreatedBy == ViewBag.UserName)
+                                {
+                                    <td>
+                                        <a class="btn font-weight-bold" asp-action="UpdateCustomer" asp-route-id="@customer.Id" style="background-color:greenyellow; color:white">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+
+                                    </td>
+                                }
+
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <br /><br />
+            <h4 class="text-center font-weight-bolder" style="color:red">No Customer has been Added! </h4>
+        }
+    </div>
+</div>

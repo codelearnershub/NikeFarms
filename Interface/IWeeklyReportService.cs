@@ -21,9 +21,7 @@ namespace NikeFarms.v2._0.Interface
 
         public void Delete(int id);
 
-        public double GetCurrentAverageWeight(int flockId);
-
-        public List<Flock> OperationWeekly();
+        public IEnumerable<WeeklyReport> GetWeeklyReportByFlockId(int flockId);
 
     }
 }

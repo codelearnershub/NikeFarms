@@ -19,6 +19,8 @@ namespace NikeFarms.v2._0.Interface
 
         public IEnumerable<Role> GetAllRoles();
 
+        public IEnumerable<Role> GetRolesWithoutAdmin();
+
         public void Delete(int id);
     }
 }

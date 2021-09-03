@@ -68,7 +68,7 @@ else if (ViewBag.Role == "Farm Manager")
                                                     <br /> <span class="font-weight-bolder text-center">Are you sure you want to delete this Message: <span style="color:darkred">@message.Title ??</span></span>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <a class="btn font-weight-bold" style="background-color:red; color:white" asp-action="Delete" asp-route-id="@message.Id">Yes</a>
+                                                    <a class="btn font-weight-bold" style="background-color:red; color:white" asp-action="DeleteInbox" asp-route-id="@message.Id">Yes</a>
                                                     <a class="btn font-weight-bold" style="background-color:greenyellow; color:white" data-dismiss="modal">No</a>
                                                 </div>
                                             </div>

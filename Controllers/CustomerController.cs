@@ -27,9 +27,10 @@ namespace NikeFarms.v2._0.Controllers
             var customers = _customerService.GetAllCustomers();
             List<ListCustomerVM> ListCustomer = new List<ListCustomerVM>();
 
+            
             foreach (var customer in customers)
             {
-
+                var Created = _userService.FindByEmail(customer.CreatedBy);
                 ListCustomerVM listCustomerVM = new ListCustomerVM
                 {
                     Id = customer.Id,
@@ -38,6 +39,7 @@ namespace NikeFarms.v2._0.Controllers
                     PhoneNo = customer.PhoneNo,
                     Address = customer.Address,
                     Gender = customer.Gender,
+                    CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
                 };
 
                 ListCustomer.Add(listCustomerVM);
@@ -76,6 +78,13 @@ namespace NikeFarms.v2._0.Controllers
                 Address = addCustomer.Address,
             };
 
+            var customer = _customerService.FindByEmail(addCustomer.Email);
+            if(customer != null)
+            {
+                ViewBag.Message = "error";
+                return View(addCustomer);
+            }
+
             _customerService.Add(customerDTO);
             return RedirectToAction("Index");
         }
@@ -100,6 +109,7 @@ namespace NikeFarms.v2._0.Controllers
                     FirstName = customer.FirstName,
                     LastName = customer.LastName,
                     Email = customer.Email,
+                    Gender = customer.Gender,
                     PhoneNo = customer.PhoneNo,
                     Address = customer.Address,
                 };
@@ -123,21 +133,29 @@ namespace NikeFarms.v2._0.Controllers
                 Address = updateCustomer.Address,
                 
             };
+
+            var customerC = _customerService.FindByEmail(updateCustomer.Email);
+            if (customerC != null)
+            {
+                ViewBag.Message = "error";
+                return View(updateCustomer);
+            }
+
             _customerService.Update(customer);
             return RedirectToAction("Index");
         }
 
 
 
-        public IActionResult Delete(int id)
-        {
-            var customer = _customerService.FindById(id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
-            _customerService.Delete(id);
-            return RedirectToAction("Index");
-        }
+        //public IActionResult Delete(int id)
+        //{
+        //    var customer = _customerService.FindById(id);
+        //    if (customer == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    _customerService.Delete(id);
+        //    return RedirectToAction("Index");
+        //}
     }
 }

@@ -24,23 +24,16 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
 
         [Required(ErrorMessage = "Select Stock!")]
-        public IEnumerable<SelectListItem> Stock { get; set; }
+        public IEnumerable<SelectListItem> StockList { get; set; }
 
 
         [Required(ErrorMessage = "Select Stock!")]
         public int StockId { get; set; }
 
 
-        [Required(ErrorMessage = "Choose Sales!")]
-        public IEnumerable<SelectListItem> Sales { get; set; }
-
-
-        [Required(ErrorMessage = "Choose Sales!")]
         public int SalesId { get; set; }
 
 
-        [Required(ErrorMessage = "Fill out this Field!")]
-        public decimal PricePerItem { get; set; }
     }
 
     public class UpdateSalesItemVM : AddSalesItemVM
@@ -55,11 +48,14 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
         public int NoOfItem { get; set; }
 
-        public int SalesId { get; set; }
+        public string ItemType { get; set; }
 
+        public double CurrentWeight { get; set; }
         public decimal PricePerItem { get; set; }
 
         public decimal TotalPrice { get; set; }
+
+        public string CreatedBy { get; set; }
 
     }
 }

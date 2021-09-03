@@ -1,15 +1,30 @@
 ﻿@model List<NikeFarms.v2._0.Models.ViewModels.ListStockVM>
-@{ ViewBag.Title = "Flocks"; }
-@{
+@{ ViewBag.Title = "Stocks"; }
+@if (ViewBag.Role == "Admin")
+{
+    Layout = "_AdminDashboard";
+}
+else if(ViewBag.Role == "Store Manager")
+{
     Layout = "_StoreManagerDashboard";
 }
+else
+    {
+    Layout = "_SalesManagerDashboard";
+}
+
 <br />
 <h1 class="text-center"><i class="fas fa-layer-group"></i>  Stocks</h1>
 
 <div class="card">
     <div>
         <br />
-        <a class="btn font-weight-bold ml-4" asp-controller="Stock" asp-action="AddStock" style="background-color:darkgoldenrod"><i class="fas fa-plus"></i> Stock Goods</a>
+        @if (ViewBag.Role == "Store Manager")
+        {
+            <a class="btn font-weight-bold ml-4" asp-controller="Stock" asp-action="AddStock" style="background-color:darkgoldenrod"><i class="fas fa-plus"></i> Stock Goods</a>
+        }
+
+
         @if (Model.Count() > 0)
         {
             <div class="card-body">
@@ -21,10 +36,18 @@
                             <th> Item Type </th>
                             <th> No. Stocked </th>
                             <th> Item Remaining</th>
-                            <th> Price (Crate/ Kg) </th>
+                            <th> Price (&#8358 ) </th>
                             <th> Date </th>
                             <th> Created By</th>
-                            <th>Action</th>
+                            @if (ViewBag.Role == "Store Manager")
+                            {
+
+                                <th>Action</th>
+                            }
+                            else
+                            {
+                                <th>Updated At</th>
+                            }
 
                         </tr>
                     </thead>
@@ -50,16 +73,30 @@
 
                                 @if (stock.Item == "Birds")
                                 {
-                                    <td><span class="comma">@stock.AvailableItem</span> Bird(s)</td>
+                                    @if (stock.AvailableItem < 11)
+                                    {
+                                        <td style="color: red"><span class="comma">@stock.AvailableItem</span> <span class="font-weight-bold">Bird(s) !!</span></td>
+                                    }
+                                    else
+                                    {
+                                        <td><span class="comma">@stock.AvailableItem</span> <span class="font-weight-bold">Bird(s)</span></td>
+                                    }
                                 }
                                 else
                                 {
-                                    <td><span class="comma">@stock.AvailableItem</span> Crate(s)</td>
+                                    @if (stock.AvailableItem < 11)
+                                    {
+                                        <td style="color: red"><span class="comma">@stock.AvailableItem</span> <span class="font-weight-bold">Crate(s) !!</span></td>
+                                    }
+                                    else
+                                    {
+                                        <td><span class="comma">@stock.AvailableItem</span> <span class="font-weight-bold">Crate(s)</span></td>
+                                    }
                                 }
 
                                 @if (stock.Item == "Birds")
                                 {
-                                    <td><span class="comma">@stock.PricePerKg</span> (Per Kg)</td>
+                                    <td><span class="comma">@stock.PricePerKg</span> (Per Kg) <br /><span class="font-weight-bolder" style="color:darkgoldenrod; border-color: red; font-size: 12px; margin-left:40%">&#8358 <span class="comma">@stock.EstimatedPricePerKg</span></span></td>
                                 }
 
                                 else
@@ -73,44 +110,59 @@
                                 }
                                 else
                                 {
-                                    <td>@stock.CreatedBy (Store)</td>
+                                    <td>@stock.CreatedBy</td>
                                 }
 
 
-
-                                @if (stock.CreatedBy == ViewBag.UserName)
+                                @if (ViewBag.Role == "Store Manager")
                                 {
-                                    <td>
-                                        <a class="btn font-weight-bold" asp-action="UpdateStock" asp-route-id="@stock.Id" style="background-color:greenyellow; color:white">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <a class="btn font-weight-bold" style="background-color:red; color:white" data-toggle="modal" data-target=@modalIdHash>
-                                            <i class="fas fa-trash-alt"></i>
-                                        </a>
+
+                                    @if (stock.CreatedBy == ViewBag.UserName)
+                                    {
+                                        <td>
+                                            <a class="btn font-weight-bold" asp-action="UpdateStock" asp-route-id="@stock.Id" style="background-color:greenyellow; color:white">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a class="btn font-weight-bold" style="background-color:red; color:white" data-toggle="modal" data-target=@modalIdHash>
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
 
 
-                                        <div class="modal fade" id=@modalId tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title font-weight-bolder" style="color:red" id="exampleModalLongTitle">Delete Stock <i class="fas fa-trash-alt"></i> </h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <br /> <span class="font-weight-bolder text-center">Are you Sure you want to delete Stock with Batch No: <span style="color:darkred">@stock.FlockBatchNo (@stock.NoOfItem) ??</span></span>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <a class="btn font-weight-bold" style="background-color:red; color:white" asp-action="Delete" asp-route-id="@stock.Id">Yes</a>
-                                                        <a class="btn font-weight-bold" style="background-color:greenyellow; color:white" data-dismiss="modal">No</a>
+                                            <div class="modal fade" id=@modalId tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title font-weight-bolder" style="color:red" id="exampleModalLongTitle">Delete Stock <i class="fas fa-trash-alt"></i> </h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <br /> <span class="font-weight-bolder text-center">Are you Sure you want to delete Stock with Batch No: <span style="color:darkred">@stock.FlockBatchNo (@stock.NoOfItem) ??</span></span>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <a class="btn font-weight-bold" style="background-color:red; color:white" asp-action="Delete" asp-route-id="@stock.Id">Yes</a>
+                                                            <a class="btn font-weight-bold" style="background-color:greenyellow; color:white" data-dismiss="modal">No</a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                }
+                                        </td>
+                                    }
 
+                                }
+                                else
+                                {
+                                    @if (stock.UpdatedAt == null)
+                                    {
+                                        <td class="font-weight-bolder" style="color:red">Null</td>
+                                    }
+                                    else
+                                    {
+                                        string[] dateTime = stock.UpdatedAt.ToString().Split(" ");
+                                        <td class="font-weight-bolder">@dateTime[0]</td>
+                                    }
+                                }
 
 
                             </tr>
@@ -122,7 +174,7 @@
         else
         {
             <br /><br />
-            <h4 class="text-center font-weight-bolder" style="color:red">No Flock has been Added! </h4>
+            <h4 class="text-center font-weight-bolder" style="color:darkred">Goods are Yet to be Stocked </h4>
         }
     </div>
 </div>

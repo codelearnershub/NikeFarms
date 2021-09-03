@@ -26,6 +26,8 @@ namespace NikeFarms.Context
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<WeeklyReport> WeeklyReports { get; set; }
 
+        public DbSet<Mortality> Mortalities { get; set; }
+
         public DbSet<Notification> Notifications { get; set; }
 
 
@@ -112,7 +114,7 @@ namespace NikeFarms.Context
 
             modelBuilder.Entity<Notification>().Property(u => u.Content).IsRequired();
 
-            modelBuilder.Entity<Notification>().Property(u => u.CreatedBy).IsRequired();
+            //modelBuilder.Entity<Notification>().Property(u => u.CreatedBy).IsRequired();
 
 
 
@@ -138,6 +140,17 @@ namespace NikeFarms.Context
                 }
                 );
 
+            modelBuilder.Entity<Customer>().HasIndex(u => u.Email).IsUnique();
+
+            modelBuilder.Entity<Customer>().Property(u => u.FirstName).IsRequired();
+
+            modelBuilder.Entity<Customer>().Property(u => u.LastName).IsRequired();
+
+            modelBuilder.Entity<Customer>().Property(u => u.PhoneNo).IsRequired();
+
+            modelBuilder.Entity<Customer>().Property(u => u.Address).IsRequired();
+
+            modelBuilder.Entity<Customer>().Property(u => u.Gender).IsRequired();
 
         }
     }

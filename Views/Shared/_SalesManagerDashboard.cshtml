@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - NikeFarms AdminDashboard</title>
+    <title>@ViewData["Title"] - NikeFarms </title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/mycss.css" />
@@ -55,15 +55,14 @@
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a><br />
         <i class="fas fa-user-circle ml-3" style="font-size: 60px; color: grey"></i><span class="font-weight-bolder" style="color: grey; margin-left:20px; font-size: 20px">@ViewBag.UserName <great></great><br /><span style="margin-left: 110px; color: darkred; font-size: 15px">(Sales Manager)</span> </span><br /><span style="color: greenyellow"><i class="fas fa-circle onlinedot"></i>  Online</span><br /><br />
         <div class="ml-3 font-weight-bolder">
-            <a asp-controller="Calculation" asp-action="AdminDashboard"><i class="fas fa-bell"></i>   Notifications</a>
-            <hr />
+            
             <a asp-controller="Message" asp-action="Inbox"><i class="fas fa-envelope-open-text"></i>   Inbox </a>
             <hr />
             <a asp-controller="Stock" asp-action="Index"> <i class="fas fa-layer-group"></i>   Stock</a>
             <hr />
-            <a asp-controller="AdminDashboard" asp-action="ListManager"> <i class="far fa-clipboard"></i>  Sales</a>
+            <a asp-controller="Sales" asp-action="Index"> <i class="far fa-clipboard"></i>  Sales</a>
             <hr />
-            <a asp-controller="AdminDashboard" asp-action="ListManager"> <i class="fas fa-users"></i>  Customers</a>
+            <a asp-controller="Customer" asp-action="Index"> <i class="fas fa-users"></i>  Customers</a>
             <hr />
             <a asp-controller="Message" asp-action="Outbox"> <i class="far fa-envelope"></i>   Outbox</a>
             <hr />

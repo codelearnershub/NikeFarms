@@ -1,0 +1,30 @@
+﻿@model List<NikeFarms.v2._0.Models.ViewModels.ListSalesStockVM>
+
+@{ ViewBag.Title = "Sales_Stock"; }
+@{
+    Layout = "_StoreManagerDashboard";
+}
+
+<div class="container">
+    <div class="card " style="background-color: white; border: solid 3px darkred; width: 40%; height: 600px; margin-left: 30%">
+        <div class="container">
+            <br />
+            <div class="text-center">
+                <img class="nikesmall" src="~/Images/Nikesmall.jpg" />  <span class="font-weight-bolder" style="font-family:'Times New Roman'; color: darkred; font-size:30px; margin-left: 10px">Sales Stock</span>
+            </div>
+            <br />
+            <div>
+                <span class="font-weight-bolder" style="margin-left:5%; font-family:'Times New Roman'">Description</span> <span class="font-weight-bolder" style="margin-left:50%; font-family:'Times New Roman'">Qty</span>
+            </div>
+            @foreach (var salesStock in Model)
+            {
+                <span class="font-weight-bolder" style="color:darkred">*</span><span style="margin-left:2%; font-family:'Times New Roman'">@salesStock.StockDescription</span> <span class="font-weight-bolder" style="margin-left:10%; font-family:'Times New Roman'">@salesStock.Qty</span>
+                
+                <div class="font-weight-bolder text-center" style="color:darkred">----------------------------------------------------------------</div>
+                <div class="font-weight-bolder text-center" style="color:darkred; margin-top: -5%">----------------------------------------------------------------</div><br />
+            }
+            <a asp-controller="Sales" asp-action="ConfirmSales" asp-route-id="@ViewBag.SalesId" class="btn" style="background-color:darkgoldenrod; margin-top:20%; margin-left:80%"><i class="fas fa-clipboard-check"></i> Sold</a>
+        </div>
+    </div>
+
+</div>

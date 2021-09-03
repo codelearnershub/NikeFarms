@@ -18,6 +18,8 @@ namespace NikeFarms.v2._0.Interface
 
         public List<Role> GetAllRoles();
 
+        public List<Role> GetRolesWithoutAdmin();
+
         public void Delete(int roleId);
     }
 }

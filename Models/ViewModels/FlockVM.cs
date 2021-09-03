@@ -59,11 +59,16 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
         public double CurrentAverageWeight { get; set; }
 
+        public double InitialAverageWeight { get; set; }
+        
+
         public decimal AmountPurchased { get; set; }
 
         public bool IsApproved { get; set; }
 
         public int Mortality { get; set; }
+
+        public DateTime CreatedAt { get; set; }
 
     }
 }

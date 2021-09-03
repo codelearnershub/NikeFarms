@@ -79,7 +79,6 @@ namespace NikeFarms.v2._0.Controllers
             DailyActivityDTO dailyActivityDTO = new DailyActivityDTO
             {
                 UserId = userId,
-                Mortality = addDailyActivity.Mortality,
                 NoOfMedUsed = addDailyActivity.NoOfMedUsed,
                 NoOfFeedUsed = addDailyActivity.NoOfFeedUsed,
                 FlockId = addDailyActivity.FlockId,
@@ -95,7 +94,7 @@ namespace NikeFarms.v2._0.Controllers
                 StoreAlloMedRemaining = _storeAllocationService.FindMedById(addDailyActivity.StoreAllocationMedId).ItemRemaining;
             }
 
-            if (StoreAlloFeedRemaining < addDailyActivity.NoOfFeedUsed || StoreAlloMedRemaining < addDailyActivity.NoOfMedUsed || availableBirds < addDailyActivity.Mortality)
+            if (StoreAlloFeedRemaining < addDailyActivity.NoOfFeedUsed || StoreAlloMedRemaining < addDailyActivity.NoOfMedUsed)
             {
                 if (StoreAlloFeedRemaining < addDailyActivity.NoOfFeedUsed)
                 {
@@ -105,10 +104,7 @@ namespace NikeFarms.v2._0.Controllers
                 {
                     ViewBag.Message = "errorMed";
                 }
-                else if (availableBirds < addDailyActivity.Mortality)
-                {
-                    ViewBag.Message = "errorMor";
-                }
+               
 
                 AddDailyActivityVM dailyActivityVM = new AddDailyActivityVM
                 {
@@ -180,7 +176,6 @@ namespace NikeFarms.v2._0.Controllers
                     TotalNo = flock.TotalNo,
                     AverageWeight = flock.AverageWeight,
                     Age = flock.Age,
-                    AvailableBird = flock.AvailableBirds - addDailyActivity.Mortality,
                     AmountPurchased = flock.AmountPurchased,
                     FlockTypeId = flock.FlockTypeId,
                     IsApproved = true,
@@ -215,7 +210,6 @@ namespace NikeFarms.v2._0.Controllers
                 ListDailyActivityVM listDailyActivityVM = new ListDailyActivityVM
                 {
                     Id = dailyAct.Id,
-                    Mortality = dailyAct.Mortality,
                     MedUsed = MedName,
                     NoOfMedUsed = dailyAct.NoOfMedUsed,
                     FeedUsed = $"{_storeItemService.FindById(storeAllocationFeed.StoreItemId).Name}",
@@ -257,7 +251,6 @@ namespace NikeFarms.v2._0.Controllers
                 {
                     Id = dailyAct.Id,
                     FlockDescription = $"{_flockTypeService.FindById(Flock.FlockTypeId).Name}  Batch No: {Flock.BatchNo}",
-                    Mortality = dailyAct.Mortality,
                     MedUsed = MedName,
                     NoOfMedUsed = dailyAct.NoOfMedUsed,
                     FeedUsed = $"{_storeItemService.FindById(storeAllocationFeed.StoreItemId).Name}",
@@ -317,24 +310,7 @@ namespace NikeFarms.v2._0.Controllers
             }
 
 
-            var flock = _flockService.FindById(dailyActivity.FlockId);
-            if (flock != null)
-            {
-                FlockDTO flockD = new FlockDTO
-                {
-                    UserId = userId,
-                    Id = flock.Id,
-                    TotalNo = flock.TotalNo,
-                    AverageWeight = flock.AverageWeight,
-                    Age = flock.Age,
-                    AvailableBird = flock.AvailableBirds + dailyActivity.Mortality,
-                    AmountPurchased = flock.AmountPurchased,
-                    FlockTypeId = flock.FlockTypeId,
-                    IsApproved = true,
-                };
-                _flockService.Update(flockD);
-            };
-
+           
             _dailyService.Delete(id);
             return RedirectToAction("ListAllDailyActivities");
         }

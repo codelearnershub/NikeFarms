@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
@@ -12,17 +13,19 @@ using System.Threading.Tasks;
 
 namespace NikeFarms.v2._0.Controllers
 {
+    
     public class FlockController : Controller
     {
         private readonly IUserService _userService;
         private readonly IFlockService _flockService;
         private readonly IWeeklyReportService _weeklyReportService;
         private readonly IFlockTypeService _flockTypeService;
+        private readonly ISalesItemService _salesItemService;
         private readonly IUserRoleService _userRoleService;
         private readonly IRoleService _roleService;
         private readonly INotificationService _notificationService;
 
-        public FlockController(IUserService userService, IFlockService flockService, IFlockTypeService flockTypeService, IUserRoleService userRoleService, INotificationService notificationService, IRoleService roleService, IWeeklyReportService weeklyReportService)
+        public FlockController(IUserService userService, IFlockService flockService, IFlockTypeService flockTypeService, IUserRoleService userRoleService, INotificationService notificationService, IRoleService roleService, IWeeklyReportService weeklyReportService, ISalesItemService salesItemService)
         {
             _userService = userService;
             _flockService = flockService;
@@ -31,8 +34,10 @@ namespace NikeFarms.v2._0.Controllers
             _notificationService = notificationService;
             _roleService = roleService;
             _weeklyReportService = weeklyReportService;
+            _salesItemService = salesItemService;
         }
 
+        [Authorize(Roles = "Super Admin, Store Manager")]
         public IActionResult Index()
         {
             var flocks = _flockService.GetAllFlocks();
@@ -65,6 +70,7 @@ namespace NikeFarms.v2._0.Controllers
             return View(ListFlock);
         }
 
+        [Authorize(Roles = "Super Admin, Store Manager")]
         public IActionResult AddFlock()
         {
             AddFlockVM flockVM = new AddFlockVM
@@ -105,7 +111,7 @@ namespace NikeFarms.v2._0.Controllers
             return RedirectToAction("Index");
         }
 
-
+        [Authorize(Roles = "Super Admin, Store Manager")]
         public IActionResult UpdateFlock(int id)
         {
             var flock = _flockService.FindById(id);
@@ -163,7 +169,7 @@ namespace NikeFarms.v2._0.Controllers
         }
 
 
-
+        [Authorize(Roles = "Super Admin, Store Manager")]
         public IActionResult Delete(int id)
         {
             var flock = _flockService.FindById(id);
@@ -175,7 +181,7 @@ namespace NikeFarms.v2._0.Controllers
             return RedirectToAction("Index");
         }
 
-
+        [Authorize(Roles = "Super Admin, Admin")]
         public IActionResult ListApprovedFlock()
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -197,7 +203,12 @@ namespace NikeFarms.v2._0.Controllers
                     InitialAverageWeight = flock.AverageWeight,
                     CurrentAverageWeight = _flockService.GetCurrentAverageWeight(flock.Id),
                     IsApproved = flock.IsApproved,
+                    Mortality = _flockService.Mortality(flock.Id),
                     CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
+                    PriceSpentOnFeed = _flockService.GetAmountSpentOnFlockFeed(flock.Id),
+                    PriceSpentOnMed = _flockService.GetAmountSpentOnFlockMed(flock.Id),
+                    NoOfBirdsSold = _salesItemService.TotalNoOfBirdSoldPerFlock(flock.Id),
+                    AmountPurchased = _salesItemService.AmountOfSalesPerFlock(flock.Id),
                 };
 
                 ListFlock.Add(listFlockVM);
@@ -209,6 +220,7 @@ namespace NikeFarms.v2._0.Controllers
             return View(ListFlock);
         }
 
+        [Authorize(Roles = "Super Admin, Admin")]
         public IActionResult Details(int id)
         {
             int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
@@ -231,6 +243,12 @@ namespace NikeFarms.v2._0.Controllers
                 IsApproved = flock.IsApproved,
                 CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
                 CreatedAt = flock.CreatedAt,
+                Mortality = _flockService.Mortality(flock.Id),
+                PriceSpentOnFeed = _flockService.GetAmountSpentOnFlockFeed(flock.Id),
+                PriceSpentOnMed = _flockService.GetAmountSpentOnFlockMed(flock.Id),
+                TotalKgOfFeedConsumed = _flockService.GetTotalWeightOfFlockFeed(flock.Id),
+                NoOfBirdsSold = _salesItemService.TotalNoOfBirdSoldPerFlock(flock.Id),
+                AmountPurchased = _salesItemService.AmountOfSalesPerFlock(flock.Id),
             };
 
             return View(listFlockVM);

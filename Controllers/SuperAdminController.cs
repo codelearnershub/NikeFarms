@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace NikeFarms.v2._0.Controllers
 {
+    [Authorize(Roles = "Super Admin, Admin")]
     public class SuperAdminController : Controller
     {
         private readonly IUserService _userService;
@@ -27,12 +29,7 @@ namespace NikeFarms.v2._0.Controllers
             _customerService = customerService;
         }
 
-        public IActionResult Index()
-        {
-
-            return View();
-        }
-
+        
         [HttpGet]
         public IActionResult RegisterUser()
         {

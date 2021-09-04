@@ -25,6 +25,8 @@ namespace NikeFarms.v2._0.Interface
 
         public IEnumerable<Stock> GetStocksByManagerEmail(string managerEmail);
 
+        public IEnumerable<Stock> GetAllStocksByFlockId(int flockId);
+
         public void Delete(int id);
     }
 }

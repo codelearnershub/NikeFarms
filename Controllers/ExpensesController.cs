@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
 using NikeFarms.v2._0.Models.DTO;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace NikeFarms.v2._0.Controllers
 {
+    
     public class ExpensesController : Controller
     {
         private readonly IExpensesService _expensesService;
@@ -24,6 +26,7 @@ namespace NikeFarms.v2._0.Controllers
             _userRoleService = userRoleService;
         }
 
+        [Authorize(Roles = "Super Admin, Admin, Store Manager")]
         public IActionResult Index()
         {
             var expenses = _expensesService.GetAllExpenses();
@@ -57,6 +60,7 @@ namespace NikeFarms.v2._0.Controllers
 
         }
 
+        [Authorize(Roles = "Super Admin, Store Manager")]
         public IActionResult AddExpenses()
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -83,7 +87,7 @@ namespace NikeFarms.v2._0.Controllers
             return RedirectToAction("Index");
         }
 
-
+        [Authorize(Roles = "Super Admin, Store Manager")]
         public IActionResult UpdateExpenses(int id)
         {
             var expense = _expensesService.FindById(id);
@@ -125,7 +129,7 @@ namespace NikeFarms.v2._0.Controllers
         }
 
 
-
+        [Authorize(Roles = "Super Admin, Store Manager")]
         public IActionResult Delete(int id)
         {
             var expense = _expensesService.FindById(id);

@@ -19,8 +19,15 @@ namespace NikeFarms.v2._0.Interface
 
         public IEnumerable<SalesItem> GetSalesItemBySalesId(int salesId);
 
+        public IEnumerable<SalesItem> GetSalesItemByStockId(int stockId);
+
         public void Delete(int id);
 
         public decimal TotalPriceOfSales(int salesId);
+
+        public decimal AmountOfSalesPerFlock(int flockId);
+
+
+        public int TotalNoOfBirdSoldPerFlock(int flockId);
     }
 }

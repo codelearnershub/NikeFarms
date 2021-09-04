@@ -47,7 +47,7 @@ namespace NikeFarms.v2._0.Repositories
 
         public List<Customer> GetAllCustomers()
         {
-            return _dbContext.Customers.ToList();
+            return _dbContext.Customers.OrderBy(r => r.LastName).ToList();
         }
 
         public Customer Update(Customer customer)

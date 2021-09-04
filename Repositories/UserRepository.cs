@@ -42,7 +42,7 @@ namespace NikeFarms.v2._0.Repositories
 
         public List<User> GetAllUser(int userId)
         {
-            return _dbContext.Users.Where(u=> u.Id != 1 && u.Id != userId).ToList();
+            return _dbContext.Users.Where(u=> u.Id != 1 && u.Id != userId).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public User FindByEmail(string userEmail)

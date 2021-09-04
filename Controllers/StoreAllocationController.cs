@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
@@ -12,11 +13,12 @@ using System.Threading.Tasks;
 
 namespace NikeFarms.v2._0.Controllers
 {
+    [Authorize(Roles = "Super Admin, Store Manager")]
     public class StoreAllocationController : Controller
     {
         private readonly IUserService _userService;
-        private readonly IStoreAllocationService _storeAllocationService;
         private readonly IUserRoleService _userRoleService;
+        private readonly IStoreAllocationService _storeAllocationService;
         private readonly IStoreItemService _storeItemService;
         private readonly IRoleService _roleService;
 

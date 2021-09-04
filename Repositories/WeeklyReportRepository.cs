@@ -38,7 +38,7 @@ namespace NikeFarms.v2._0.Repositories
 
         public List<WeeklyReport> GetWeeklyReport()
         {
-            return _dbContext.WeeklyReports.ToList();
+            return _dbContext.WeeklyReports.OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public WeeklyReport GetWeeklyReportFlockId(int flockId)
@@ -64,7 +64,7 @@ namespace NikeFarms.v2._0.Repositories
         {
             return _dbContext.WeeklyReports
                 .Include(w => w.Flock)
-                .Where(w => w.Flock.Id == flockId).ToList();
+                .Where(w => w.Flock.Id == flockId).OrderByDescending(r => r.CreatedAt).ToList();
         }
     }
 }

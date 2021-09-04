@@ -62,7 +62,7 @@
                                 }
                                 else
                                 {
-                                    @year <span class="font-weight-bolder">Year(s)</span> @rmonth <span class="font-weight-bolder">Month(s)</span> @rday <span class="font-weight-bolder">Day(s)</span>
+                                    <span style="font-size:13px">@year <span class="font-weight-bolder">Year(s)</span> @rmonth <span class="font-weight-bolder">Month(s)</span> @rday <span class="font-weight-bolder">Day(s)</span></span>
                                 }
 
                             }
@@ -81,8 +81,12 @@
                 }
 
                 <span class="font-weight-bolder"><span style="color:darkred">*</span>Mortality: <span style="font-weight: lighter" class="comma">@flock.Mortality</span> Death(s)</span><br />
+                <span class="font-weight-bolder"><span style="color:darkred">*</span>No Sold: <span style="font-weight: lighter" class="comma">@flock.NoOfBirdsSold</span> Bird(s)</span><br />
                 <span class="font-weight-bolder"><span style="color:darkred">*</span>Average Weight(Initial): <span style="font-weight: lighter" class="comma">@flock.InitialAverageWeight</span> Kg</span><br />
-                <span class="font-weight-bolder"><span style="color:darkred">*</span>Average Weight(Now): <span style="font-weight: lighter" class="comma">@flock.CurrentAverageWeight</span> Kg</span><br /><br />
+                <span class="font-weight-bolder"><span style="color:darkred">*</span>Average Weight(Now): <span style="font-weight: lighter" class="comma">@flock.CurrentAverageWeight</span> Kg</span><br />
+                <span class="font-weight-bolder"><span style="color:darkred">*</span>Expenses(Feed): &#8358 <span style="font-weight: lighter" class="comma">@flock.PriceSpentOnFeed</span></span><br />
+                <span class="font-weight-bolder"><span style="color:darkred">*</span>Expenses(Med): &#8358 <span style="font-weight: lighter" class="comma">@flock.PriceSpentOnMed</span> </span><br />
+                <span class="font-weight-bolder"><span style="color:darkred">*</span>Amount(Sales): &#8358 <span style="font-weight: lighter" class="comma">@flock.AmountPurchased</span> </span><br /><br />
                 <div id="dailyAct">
 
                     <a class="font-weight-bolder" asp-controller="DailyActivity" asp-action="ListDailyActivity" style="margin-left:50%; color:darkred" asp-route-id="@flock.Id">Daily Activity</a>

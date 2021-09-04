@@ -29,7 +29,7 @@ namespace NikeFarms.v2._0.Interface
 
         public double GetCurrentAverageWeight(int flockId);
 
-        public decimal EstimatedPriceOfFlockPerKg(int flockId);
+        public decimal EstimatedPriceOfFlockPerBird(int flockId);
 
         public double TotalNoOfStockedBird(int flockId);
 
@@ -41,5 +41,12 @@ namespace NikeFarms.v2._0.Interface
         public List<Stock> OperationStock();
 
         public void CheckFlockFinish(int flockId);
+
+        public decimal GetAmountSpentOnFlockFeed(int flockId);
+
+        public decimal GetAmountSpentOnFlockMed(int flockId);
+
+
+        public double GetTotalWeightOfFlockFeed(int flockId);
     }
 }

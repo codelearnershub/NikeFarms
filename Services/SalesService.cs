@@ -103,5 +103,10 @@ namespace NikeFarms.v2._0.Services
         {
             return _salesRepository.FindByVoucher(voucher);
         }
+
+        public IEnumerable<Sales> FindSalesByCustomerId(int customerId)
+        {
+            return _salesRepository.FindSalesByCustomerId(customerId);
+        }
     }
 }

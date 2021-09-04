@@ -38,12 +38,12 @@ namespace NikeFarms.v2._0.Repositories
         public List<Mortality> GetAllMortality()
         {
             
-            return _dbContext.Mortalities.ToList();
+            return _dbContext.Mortalities.OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public List<Mortality> GetMortalityPerFlock(int flockId)
         {
-            return _dbContext.Mortalities.Where(m=> m.FlockId == flockId).ToList();
+            return _dbContext.Mortalities.Where(m=> m.FlockId == flockId).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public Mortality FindById(int mortalityId)

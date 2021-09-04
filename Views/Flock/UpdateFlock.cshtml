@@ -31,7 +31,7 @@
         <div class="form-row">
             <div class="form-group col-md-5">
                 <label asp-for="AverageWeight" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Enter Average Weight of Incoming Flock (Kg)</label>
-                <input asp-for="AverageWeight" class="form-control" placeholder="Average Weight (Kg)" type="number" min="1"/>
+                <input asp-for="AverageWeight" class="form-control" placeholder="Average Weight (Kg)" type="number" min="0.01"/>
                 <span asp-validation-for="AverageWeight" style="color:darkred"></span>
             </div>
             <div class="form-group col-md-2">

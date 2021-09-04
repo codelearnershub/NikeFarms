@@ -42,7 +42,12 @@ namespace NikeFarms.v2._0.Repositories
 
         public List<Expenses> GetAllExpenses()
         {
-            return _dbContext.Expenses.ToList();
+            return _dbContext.Expenses.OrderByDescending(r => r.CreatedAt).ToList();
+        }
+
+        public List<Expenses> GetApprovedExpenses()
+        {
+            return _dbContext.Expenses.Where(r=> r.IsApproved == true).ToList();
         }
 
         public Expenses FindByBatchNo(string batchNo)

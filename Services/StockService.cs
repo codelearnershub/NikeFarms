@@ -107,6 +107,9 @@ namespace NikeFarms.v2._0.Services
             return _stockRepository.GetBirdStocks();
         }
 
-       
+        public IEnumerable<Stock> GetAllStocksByFlockId(int flockId)
+        {
+            return _stockRepository.GetAllStocksByFlockId(flockId);
+        }
     }
 }

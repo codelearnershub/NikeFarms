@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
@@ -12,6 +13,8 @@ using System.Threading.Tasks;
 
 namespace NikeFarms.v2._0.Controllers
 {
+    
+    [Authorize(Roles = "Store Manager, Admin, Super Admin, Sales Manager")]
     public class StockController : Controller
     {
         private readonly IUserService _userService;
@@ -29,6 +32,7 @@ namespace NikeFarms.v2._0.Controllers
             _userRoleService = userRoleService;
         }
 
+       
         public IActionResult Index()
         {
             var stocks = _stockService.GetAllStocks();
@@ -48,10 +52,10 @@ namespace NikeFarms.v2._0.Controllers
                     Item = stock.ItemType,
                     NoOfItem = stock.NoOfItem,
                     PricePerCrate = stock.PricePerCrate,
-                    PricePerKg = stock.PricePerKg,
+                    PricePerBird = stock.PricePerKg,
                     FlockBatchNo = $"{_flockTypeService.FindById(_flockService.FindById(stock.FlockId).FlockTypeId).Name} ({_flockService.FindById(stock.FlockId).BatchNo})",
                     AvailableItem = stock.AvailableItem,
-                    EstimatedPricePerKg = _flockService.EstimatedPriceOfFlockPerKg(stock.FlockId),
+                    EstimatedPricePerBird = _flockService.EstimatedPriceOfFlockPerBird(stock.FlockId),
                     CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
                     CreatedAt = stock.CreatedAt.ToShortDateString(),
                     UpdatedAt = stock.UpdatedAt,
@@ -66,6 +70,7 @@ namespace NikeFarms.v2._0.Controllers
             return View(ListStocks);
         }
 
+        [Authorize(Roles = "Super Admin, Store Manager")]
         public IActionResult AddStock()
         {
             AddStockVM stockVM = new AddStockVM
@@ -95,7 +100,7 @@ namespace NikeFarms.v2._0.Controllers
                 NoOfItem = addStock.NoOfItem,
                 ItemType = addStock.ItemType,
                 PricePerCrate = addStock.PricePerCrate,
-                PricePerKg = addStock.PricePerKg,
+                PricePerKg = addStock.PricePerBird,
                 FlockId = addStock.FlockId,
                 AvailableItem = addStock.NoOfItem,
             };
@@ -111,7 +116,7 @@ namespace NikeFarms.v2._0.Controllers
                     noOfStock += stock.NoOfItem;
                 };
 
-                if (flock.AvailableBirds - noOfStock < addStock.NoOfItem)
+                if (flock.AvailableBirds - noOfStock < addStock.NoOfItem && addStock.ItemType == "Birds")
                 {
                     isGreaterThanFlock = true;
                 }
@@ -132,7 +137,7 @@ namespace NikeFarms.v2._0.Controllers
                 };
                 return View(stockVM);
             }
-            else if (flock.AvailableBirds < addStock.NoOfItem)
+            else if (flock.AvailableBirds < addStock.NoOfItem && addStock.ItemType == "Birds")
             {
                 ViewBag.Message = "errorBirds";
                 AddStockVM stockVM = new AddStockVM
@@ -147,7 +152,7 @@ namespace NikeFarms.v2._0.Controllers
             }
             else if (addStock.ItemType == "Eggs")
             {
-                if (addStock.PricePerCrate == null || addStock.PricePerKg != null)
+                if (addStock.PricePerCrate == null || addStock.PricePerBird != null)
                 {
                     ViewBag.Message = "errorCrate";
                     AddStockVM stockVM = new AddStockVM
@@ -163,7 +168,7 @@ namespace NikeFarms.v2._0.Controllers
             }
             else if (addStock.ItemType == "Birds")
             {
-                if (addStock.PricePerKg == null || addStock.PricePerCrate != null)
+                if (addStock.PricePerBird == null || addStock.PricePerCrate != null)
                 {
                     ViewBag.Message = "errorKg";
                     AddStockVM stockVM = new AddStockVM
@@ -181,7 +186,7 @@ namespace NikeFarms.v2._0.Controllers
             return RedirectToAction("Index");
         }
 
-
+        [Authorize(Roles = "Super Admin, Store Manager")]
         public IActionResult UpdateStock(int id)
         {
             var stock = _stockService.FindById(id);
@@ -201,7 +206,7 @@ namespace NikeFarms.v2._0.Controllers
                     NoOfItem = stock.NoOfItem,
                     ItemType = stock.ItemType,
                     PricePerCrate = stock.PricePerCrate,
-                    PricePerKg = stock.PricePerKg,
+                    PricePerBird = stock.PricePerKg,
                     FlockId = stock.FlockId,
                     FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
                     {
@@ -226,7 +231,7 @@ namespace NikeFarms.v2._0.Controllers
                 ItemType = updateStock.ItemType,
                 UserId = userId,
                 PricePerCrate = updateStock.PricePerCrate,
-                PricePerKg = updateStock.PricePerKg,
+                PricePerKg = updateStock.PricePerBird,
                 FlockId = updateStock.FlockId,
             };
 
@@ -241,7 +246,7 @@ namespace NikeFarms.v2._0.Controllers
                     noOfStock += stockL.NoOfItem;
                 };
 
-                if (flock.AvailableBirds - noOfStock < updateStock.NoOfItem)
+                if (flock.AvailableBirds - noOfStock < updateStock.NoOfItem && updateStock.ItemType == "Birds")
                 {
                     isGreaterThanFlock = true;
                 }
@@ -258,7 +263,7 @@ namespace NikeFarms.v2._0.Controllers
                     ItemType = stock.ItemType,
                     NoOfItem = stock.NoOfItem,
                     PricePerCrate = stock.PricePerCrate,
-                    PricePerKg = stock.PricePerKg,
+                    PricePerBird = stock.PricePerKg,
                     FlockId = stock.FlockId,
                     FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
                     {
@@ -269,7 +274,7 @@ namespace NikeFarms.v2._0.Controllers
                 return View(updateStockD);
             }
 
-            else if (flock.AvailableBirds < updateStock.NoOfItem)
+            else if (flock.AvailableBirds < updateStock.NoOfItem && updateStock.ItemType == "Birds")
             {
                 ViewBag.Message = "errorBirds";
                 UpdateStockVM updateStockD = new UpdateStockVM
@@ -278,7 +283,7 @@ namespace NikeFarms.v2._0.Controllers
                     ItemType = stock.ItemType,
                     NoOfItem = stock.NoOfItem,
                     PricePerCrate = stock.PricePerCrate,
-                    PricePerKg = stock.PricePerKg,
+                    PricePerBird = stock.PricePerKg,
                     FlockId = stock.FlockId,
                     FlockList = _flockService.GetAllFlocks().Select(m => new SelectListItem
                     {
@@ -290,7 +295,7 @@ namespace NikeFarms.v2._0.Controllers
             }
             else if (updateStock.ItemType == "Eggs")
             {
-                if (updateStock.PricePerCrate == null || updateStock.PricePerKg != null)
+                if (updateStock.PricePerCrate == null || updateStock.PricePerBird != null)
                 {
                     ViewBag.Message = "errorCrate";
                     UpdateStockVM updateStockD = new UpdateStockVM
@@ -299,7 +304,7 @@ namespace NikeFarms.v2._0.Controllers
                         ItemType = stock.ItemType,
                         NoOfItem = stock.NoOfItem,
                         PricePerCrate = stock.PricePerCrate,
-                        PricePerKg = stock.PricePerKg,
+                        PricePerBird = stock.PricePerKg,
                         FlockId = stock.FlockId,
                         FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
                         {
@@ -313,7 +318,7 @@ namespace NikeFarms.v2._0.Controllers
             }
             else if (updateStock.ItemType == "Birds")
             {
-                if (updateStock.PricePerKg == null || updateStock.PricePerCrate != null)
+                if (updateStock.PricePerBird == null || updateStock.PricePerCrate != null)
                 {
                     ViewBag.Message = "errorKg";
                     UpdateStockVM updateStockD = new UpdateStockVM
@@ -322,7 +327,7 @@ namespace NikeFarms.v2._0.Controllers
                         ItemType = stock.ItemType,
                         NoOfItem = stock.NoOfItem,
                         PricePerCrate = stock.PricePerCrate,
-                        PricePerKg = stock.PricePerKg,
+                        PricePerBird = stock.PricePerKg,
                         FlockId = stock.FlockId,
                         FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
                         {
@@ -340,16 +345,16 @@ namespace NikeFarms.v2._0.Controllers
         }
 
 
-
-        public IActionResult Delete(int id)
-        {
-            var stock = _stockService.FindById(id);
-            if (stock == null)
-            {
-                return NotFound();
-            }
-            _stockService.Delete(id);
-            return RedirectToAction("Index");
-        }
+        //[Authorize(Roles = "Super Admin, Store Manager")]
+        //public IActionResult Delete(int id)
+        //{
+        //    var stock = _stockService.FindById(id);
+        //    if (stock == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    _stockService.Delete(id);
+        //    return RedirectToAction("Index");
+        //}
     }
 }

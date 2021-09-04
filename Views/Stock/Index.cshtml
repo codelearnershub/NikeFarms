@@ -96,7 +96,7 @@ else
 
                                 @if (stock.Item == "Birds")
                                 {
-                                    <td><span class="comma">@stock.PricePerKg</span> (Per Kg) <br /><span class="font-weight-bolder" style="color:darkgoldenrod; border-color: red; font-size: 12px; margin-left:40%">&#8358 <span class="comma">@stock.EstimatedPricePerKg</span></span></td>
+                                    <td><span class="comma">@stock.PricePerBird</span> (Per Bird) <br /><span class="font-weight-bolder" style="color:darkgoldenrod; border-color: red; font-size: 12px; margin-left:40%">&#8358 <span class="comma">@stock.EstimatedPricePerBird</span></span></td>
                                 }
 
                                 else
@@ -123,7 +123,7 @@ else
                                             <a class="btn font-weight-bold" asp-action="UpdateStock" asp-route-id="@stock.Id" style="background-color:greenyellow; color:white">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <a class="btn font-weight-bold" style="background-color:red; color:white" data-toggle="modal" data-target=@modalIdHash>
+                                            @*<a class="btn font-weight-bold" style="background-color:red; color:white" data-toggle="modal" data-target=@modalIdHash>
                                                 <i class="fas fa-trash-alt"></i>
                                             </a>
 
@@ -146,7 +146,7 @@ else
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>*@
                                         </td>
                                     }
 

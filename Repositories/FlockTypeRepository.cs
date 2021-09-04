@@ -41,7 +41,7 @@ namespace NikeFarms.v2._0.Repositories
 
         public List<FlockType> GetAllFlockTypes()
         {
-            return _dbContext.FlockTypes.ToList();
+            return _dbContext.FlockTypes.OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public FlockType Update(FlockType flockType)

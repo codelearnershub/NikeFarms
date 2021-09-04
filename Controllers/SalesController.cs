@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace NikeFarms.v2._0.Controllers
 {
+  
     public class SalesController : Controller
     {
         private readonly IUserService _userService;
@@ -33,6 +35,7 @@ namespace NikeFarms.v2._0.Controllers
             _flockTypeService = flockTypeService;
         }
 
+        [Authorize(Roles = "Super Admin, Sales Manager")]
         public IActionResult Index()
         {
             var sales = _salesService.GetUnSoldSales();
@@ -63,7 +66,7 @@ namespace NikeFarms.v2._0.Controllers
             return View(ListSale);
         }
 
-
+        [Authorize(Roles = "Super Admin, Admin")]
         public IActionResult ListSold()
         {
             var sales = _salesService.GetSoldSales();
@@ -95,6 +98,39 @@ namespace NikeFarms.v2._0.Controllers
         }
 
 
+        [Authorize(Roles = "Super Admin, Admin")]
+        public IActionResult SalesPerCustomer(int id)
+        {
+            var sales = _salesService.FindSalesByCustomerId(id);
+            List<ListSalesVM> ListSale = new List<ListSalesVM>();
+            foreach (var sale in sales)
+            {
+                var Created = _userService.FindByEmail(sale.CreatedBy);
+                var customer = _customerService.FindById(sale.CustomerId);
+
+                ListSalesVM listSalesVM = new ListSalesVM
+                {
+                    Id = sale.Id,
+                    Item = sale.Item,
+                    TotalPrice = sale.TotalPrice,
+                    CustomerFullName = $"{customer.FirstName} .{customer.LastName[0]}",
+                    CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
+                    CreatedAt = sale.CreatedAt,
+                    Voucher = sale.Voucher,
+                };
+
+                ListSale.Add(listSalesVM);
+            }
+
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            User userlogin = _userService.FindById(userId);
+            ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
+
+            return View(ListSale);
+        }
+
+
+        [Authorize(Roles = "Super Admin, Sales Manager")]
         public IActionResult AddSales()
         {
             AddSalesVM salesVM = new AddSalesVM
@@ -135,7 +171,7 @@ namespace NikeFarms.v2._0.Controllers
 
         }
 
-
+        [Authorize(Roles = "Super Admin, Sales Manager")]
         public IActionResult UpdateSales(int id)
         {
             var sale = _salesService.FindById(id);
@@ -181,7 +217,7 @@ namespace NikeFarms.v2._0.Controllers
             return RedirectToAction("Index");
         }
 
-
+        [Authorize(Roles = "Super Admin, Store Manager")]
         public IActionResult IsSold()
         {
             int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
@@ -192,6 +228,7 @@ namespace NikeFarms.v2._0.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Super Admin, Store Manager")]
         public IActionResult IsSold(CheckSoldVM check)
         {
             int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
@@ -215,6 +252,7 @@ namespace NikeFarms.v2._0.Controllers
 
         }
 
+        [Authorize(Roles = "Super Admin, Store Manager")]
         public IActionResult ViewSalesStock(int id)
         {
             int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
@@ -256,6 +294,57 @@ namespace NikeFarms.v2._0.Controllers
             return View(ListSalesStock);
         }
 
+        [Authorize(Roles = "Super Admin, Sales Manager")]
+        public IActionResult Receipt(int id)
+        {
+            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            User userlogin = _userService.FindById(userId);
+            var sales = _salesService.FindById(id);
+            var customer = _customerService.FindById(sales.CustomerId);
+            ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
+            ViewBag.Customer = $"{customer.LastName} {customer.FirstName}";
+            ViewBag.TotalPrice = sales.TotalPrice;
+            ViewBag.Voucher = sales.Voucher;
+
+            List<ReceiptVM> Receipts = new List<ReceiptVM>();
+            var salesItems = _salesItemService.GetSalesItemBySalesId(id);
+            foreach (var salesItem in salesItems)
+            {
+                var stock = _stockService.FindById(salesItem.StockId);
+                var flock = _flockService.FindById(stock.FlockId);
+
+                ViewBag.SalesId = id;
+                if (stock.ItemType == "Eggs")
+                {
+                    ReceiptVM receipt = new ReceiptVM
+                    {
+                        SaleDescription = $"{salesItem.Item}",
+                        Qty = $"{salesItem.NoOfItem} Crate(s)",
+                        PricePerItem = salesItem.PricePerItem,
+                        TotalPricePerSales = salesItem.NoOfItem*salesItem.PricePerItem,
+                    };
+
+                    Receipts.Add(receipt);
+                }
+                else if (stock.ItemType == "Birds")
+                {
+                    ReceiptVM receipt = new ReceiptVM
+                    {
+                        SaleDescription = $"{salesItem.Item} ({_flockService.GetCurrentAverageWeight(flock.Id)} Kg)",
+                        Qty = $"{salesItem.NoOfItem} Bird(s)",
+                        PricePerItem = salesItem.PricePerItem,
+                        TotalPricePerSales = salesItem.NoOfItem * salesItem.PricePerItem,
+                    };
+
+                    Receipts.Add(receipt);
+                }
+
+            }
+
+            return View(Receipts);
+        }
+
+        [Authorize(Roles = "Super Admin, Store Manager")]
         public IActionResult ConfirmSales(int id)
         {
             var sales = _salesService.FindById(id);
@@ -274,6 +363,7 @@ namespace NikeFarms.v2._0.Controllers
             return RedirectToAction("IsSold");
         }
 
+        [Authorize(Roles = "Super Admin, Sales Manager")]
         public IActionResult Delete(int id)
         {
             var sale = _salesService.FindById(id);

@@ -51,13 +51,13 @@ namespace NikeFarms.v2._0.Repositories
         public List<Role> GetAllRoles()
         {
             
-            return _dbContext.Roles.Where(r => r.Name != "Super Admin").ToList();
+            return _dbContext.Roles.Where(r => r.Name != "Super Admin").OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public List<Role> GetRolesWithoutAdmin()
         {
 
-            return _dbContext.Roles.Where(r=> r.Name != "Admin" && r.Name != "Super Admin").ToList();
+            return _dbContext.Roles.Where(r=> r.Name != "Admin" && r.Name != "Super Admin").OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public Role Update(Role role)

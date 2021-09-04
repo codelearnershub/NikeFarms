@@ -28,7 +28,7 @@ namespace NikeFarms.v2._0.Models.ViewModels
         public decimal? PricePerCrate { get; set; }
 
 
-        public decimal? PricePerKg { get; set; }
+        public decimal? PricePerBird { get; set; }
 
 
         [Required(ErrorMessage = "Choose Flock!")]
@@ -55,9 +55,9 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
         public decimal? PricePerCrate { get; set; }
 
-        public decimal? PricePerKg { get; set; }
+        public decimal? PricePerBird { get; set; }
 
-        public decimal EstimatedPricePerKg { get; set; }
+        public decimal EstimatedPricePerBird { get; set; }
 
         public string FlockBatchNo { get; set; }
 

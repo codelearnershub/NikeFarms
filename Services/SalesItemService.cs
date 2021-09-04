@@ -28,7 +28,7 @@ namespace NikeFarms.v2._0.Services
         public SalesItem Add(SalesItemDTO salesItemDTO)
         {
             decimal? pricePerItem = 0;
-            if(_stockService.FindById(salesItemDTO.StockId).PricePerKg == null)
+            if (_stockService.FindById(salesItemDTO.StockId).PricePerKg == null)
             {
                 pricePerItem = _stockService.FindById(salesItemDTO.StockId).PricePerCrate;
             }
@@ -97,12 +97,12 @@ namespace NikeFarms.v2._0.Services
             decimal? pricePerItem = 0;
             if (salesItem != null)
             {
-                foreach(var sale in salesItem)
+                foreach (var sale in salesItem)
                 {
                     if (_stockService.FindById(sale.StockId).PricePerKg == null)
                     {
                         pricePerItem = _stockService.FindById(sale.StockId).PricePerCrate;
-                        totalPrice = (decimal)pricePerItem  * sale.NoOfItem;
+                        totalPrice = (decimal)pricePerItem * sale.NoOfItem;
                     }
                     else
                     {
@@ -116,5 +116,61 @@ namespace NikeFarms.v2._0.Services
 
             return overallPrice;
         }
+
+
+        public IEnumerable<SalesItem> GetSalesItemByStockId(int stockId)
+        {
+            return _salesItemRepository.GetSalesItemByStockId(stockId);
+        }
+
+        public decimal AmountOfSalesPerFlock(int flockId)
+        {
+            var stocks = _stockService.GetAllStocksByFlockId(flockId);
+            decimal totalAmount = 0;
+            foreach (var stock in stocks)
+            {
+
+                var salesItem = _salesItemRepository.GetSalesItemByStockId(stock.Id);
+
+                foreach (var s in salesItem)
+                {
+                    var sales = _salesService.FindById(s.SalesId);
+                    if (sales.IsSold == true)
+                    {
+                        totalAmount += (s.PricePerItem * s.NoOfItem);
+                    }
+
+                }
+            }
+
+            return totalAmount;
+        }
+
+        public int TotalNoOfBirdSoldPerFlock(int flockId)
+        {
+            var stocks = _stockService.GetAllStocksByFlockId(flockId);
+            int totalAmount = 0;
+            foreach (var stock in stocks)
+            {
+                if (stock.ItemType == "Birds")
+                {
+                    var salesItem = _salesItemRepository.GetSalesItemByStockId(stock.Id);
+                    foreach (var s in salesItem)
+                    {
+                        var sales = _salesService.FindById(s.SalesId);
+                        if (sales.IsSold == true)
+                        {
+                            totalAmount += s.NoOfItem;
+                        }
+
+                    }
+                }
+
+            }
+
+            return totalAmount;
+        }
+
+
     }
 }

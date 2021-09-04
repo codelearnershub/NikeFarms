@@ -28,5 +28,7 @@ namespace NikeFarms.v2._0.Interface
         public IEnumerable<Sales> GetUnSoldSales();
 
         public Sales UpdateMore(SalesDTO salesDTO);
+
+        public IEnumerable<Sales> FindSalesByCustomerId(int customerId);
     }
 }

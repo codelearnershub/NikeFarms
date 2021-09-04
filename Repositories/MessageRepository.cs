@@ -42,12 +42,12 @@ namespace NikeFarms.v2._0.Repositories
 
         public List<Message> GetOutbox(string senderEmail)
         {
-            return _dbContext.Messages.Where(m=> m.CreatedBy == senderEmail).ToList();
+            return _dbContext.Messages.Where(m=> m.CreatedBy == senderEmail).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public List<Message> GetMessages(int recieverId)
         {
-            return _dbContext.Messages.Where(m => m.RecieverId == recieverId).ToList();
+            return _dbContext.Messages.Where(m => m.RecieverId == recieverId).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public Message Update(Message message)

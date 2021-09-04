@@ -20,6 +20,7 @@ namespace NikeFarms.v2._0.Interface
         public Customer Update(CustomerDTO customerDTO);
 
         public void Delete(int id);
-        
+
+        public decimal TotalPriceSpent(int customerId);
     }
 }

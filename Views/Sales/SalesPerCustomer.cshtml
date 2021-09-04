@@ -22,14 +22,13 @@
                             <th> Description </th>
                             <th> Total Price (&#8358 ) </th>
                             <th>Sold By</th>
-                            <th>Customer</th>
                             <th>Date <span style="color:red">&</span> Time</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var sale in Model)
                         {
-                           
+
                             <tr>
 
 
@@ -54,9 +53,9 @@
                                 {
                                     <td>@sale.CreatedBy (Sales)</td>
                                 }
-                                <td>@sale.CustomerFullName</td>
+                                
                                 <td class="font-weight-bold">@sale.CreatedAt</td>
-                               
+
                             </tr>
                         }
                     </tbody>
@@ -66,7 +65,7 @@
         else
         {
             <br /><br />
-            <h4 class="text-center font-weight-bolder" style="color:darkred">No Goods Have Been Sold! </h4>
+            <h4 class="text-center font-weight-bolder" style="color:darkred"> This Customer has not Purchased any goods from this Farm! </h4>
         }
     </div>
 </div>

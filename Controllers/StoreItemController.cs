@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
 using NikeFarms.v2._0.Models.DTO;
@@ -11,6 +12,8 @@ using System.Threading.Tasks;
 
 namespace NikeFarms.v2._0.Controllers
 {
+   
+    [Authorize(Roles = "Super Admin, Store Manager, Admin")]
     public class StoreItemController : Controller
     {
         private readonly IStoreItemService _storeItemService;
@@ -24,6 +27,7 @@ namespace NikeFarms.v2._0.Controllers
             _userRoleService = userRoleService;
         }
 
+        
         public IActionResult Index()
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -61,6 +65,7 @@ namespace NikeFarms.v2._0.Controllers
             return View(ListStoreItem);
         }
 
+        [Authorize(Roles = "Super Admin, Store Manager")]
         public IActionResult AddStoreItem()
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -92,7 +97,7 @@ namespace NikeFarms.v2._0.Controllers
             return RedirectToAction("Index");
         }
 
-
+        [Authorize(Roles = "Super Admin, Store Manager")]
         public IActionResult UpdateStoreItem(int id)
         {
             var storeItem = _storeItemService.FindById(id);
@@ -144,7 +149,7 @@ namespace NikeFarms.v2._0.Controllers
         }
 
 
-
+        [Authorize(Roles = "Super Admin, Store Manager")]
         public IActionResult Delete(int id)
         {
             var storeItem = _storeItemService.FindById(id);

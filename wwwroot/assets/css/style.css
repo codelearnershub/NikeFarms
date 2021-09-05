@@ -10680,9 +10680,9 @@ table.footable-paging-center > tfoot > tr.footable-paging > td {
     background-color: #EC4A89; }
 
 .fb-card .card-header {
-  background-color: #4c70b9; }
+  background-color: darkred; }
   .fb-card .card-header i {
-    background-color: #3B5997; }
+    background-color: red; }
 
 .twitter-card .card-header {
   background-color: #74d1fc; }

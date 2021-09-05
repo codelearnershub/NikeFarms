@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
 using NikeFarms.v2._0.Models.DTO;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace NikeFarms.v2._0.Controllers
 {
+    
     public class CustomerController : Controller
     {
         private readonly IUserService _userService;
@@ -22,6 +24,7 @@ namespace NikeFarms.v2._0.Controllers
             _customerService = flockService;
         }
 
+        [Authorize(Roles = "Super Admin, Sales Manager")]
         public IActionResult Index()
         {
             var customers = _customerService.GetAllCustomers();
@@ -52,6 +55,7 @@ namespace NikeFarms.v2._0.Controllers
             return View(ListCustomer);
         }
 
+        [Authorize(Roles = "Super Admin, Sales Manager")]
         public IActionResult AddCustomer()
         {
 
@@ -89,7 +93,7 @@ namespace NikeFarms.v2._0.Controllers
             return RedirectToAction("Index");
         }
 
-
+        [Authorize(Roles = "Super Admin, Sales Manager")]
         public IActionResult UpdateCustomer(int id)
         {
             var customer = _customerService.FindById(id);
@@ -146,6 +150,38 @@ namespace NikeFarms.v2._0.Controllers
         }
 
 
+
+        public IActionResult CustomerList()
+        {
+            var customers = _customerService.GetAllCustomers();
+            List<ListCustomerVM> ListCustomer = new List<ListCustomerVM>();
+
+
+            foreach (var customer in customers)
+            {
+                var Created = _userService.FindByEmail(customer.CreatedBy);
+                ListCustomerVM listCustomerVM = new ListCustomerVM
+                {
+                    Id = customer.Id,
+                    FullName = $"{customer.LastName} {customer.FirstName}",
+                    Email = customer.Email,
+                    PhoneNo = customer.PhoneNo,
+                    Address = customer.Address,
+                    Gender = customer.Gender,
+                    CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
+                    CreatedAt = customer.CreatedAt.ToShortDateString(),
+                    AmountSpent = _customerService.TotalPriceSpent(customer.Id),
+                };
+
+                ListCustomer.Add(listCustomerVM);
+            }
+
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            User userlogin = _userService.FindById(userId);
+            ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
+
+            return View(ListCustomer);
+        }
 
         //public IActionResult Delete(int id)
         //{

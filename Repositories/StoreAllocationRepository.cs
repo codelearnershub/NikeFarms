@@ -53,12 +53,12 @@ namespace NikeFarms.v2._0.Repositories
 
         public List<StoreAllocation> FeedAllocation(int userId)
         {
-            return _dbContext.StoreAllocations.Where(s=> s.ItemType == "Feed" && s.ManagerId == userId && s.IsApproved == true && s.ItemRemaining >0).ToList();
+            return _dbContext.StoreAllocations.Where(s=> s.ItemType == "Feed" && s.ManagerId == userId && s.IsApproved == true && s.ItemRemaining >0).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public List<StoreAllocation> MedAllocation(int userId)
         {
-            return _dbContext.StoreAllocations.Where(s => s.ItemType == "Medication" && s.ManagerId == userId && s.IsApproved == true && s.ItemRemaining > 0).ToList();
+            return _dbContext.StoreAllocations.Where(s => s.ItemType == "Medication" && s.ManagerId == userId && s.IsApproved == true && s.ItemRemaining > 0).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public StoreAllocation Update(StoreAllocation storeAllocation)
@@ -70,17 +70,17 @@ namespace NikeFarms.v2._0.Repositories
 
         public List<StoreAllocation> GetAllStoreAllocations()
         {
-            return _dbContext.StoreAllocations.Where(s=> s.ItemRemaining > 0).ToList();
+            return _dbContext.StoreAllocations.Where(s=> s.ItemRemaining > 0).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public List<StoreAllocation> GetStoreAllocationsByManagerEmail(string managerEmail)
         {
-            return _dbContext.StoreAllocations.Where(s => s.CreatedBy == managerEmail).ToList();
+            return _dbContext.StoreAllocations.Where(s => s.CreatedBy == managerEmail).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public List<StoreAllocation> GetStoreAllocationsByRecieverId(int receiverId)
         {
-            return _dbContext.StoreAllocations.Where(s => s.ManagerId == receiverId).ToList();
+            return _dbContext.StoreAllocations.Where(s => s.ManagerId == receiverId).OrderByDescending(r => r.CreatedAt).ToList();
         }
     }
 }

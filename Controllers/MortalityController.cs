@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace NikeFarms.v2._0.Controllers
 {
+    [Authorize(Roles = "Super Admin, Farm Manager")]
     public class MortalityController : Controller
     {
 

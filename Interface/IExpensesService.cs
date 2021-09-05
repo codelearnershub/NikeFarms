@@ -18,6 +18,8 @@ namespace NikeFarms.v2._0.Interface
 
         public IEnumerable<Expenses> GetAllExpenses();
 
+        public IEnumerable<Expenses> GetApprovedExpenses();
+
         public void Delete(int id);
 
         public Expenses FindByBatchNo(string batchNo);

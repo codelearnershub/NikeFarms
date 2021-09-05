@@ -101,5 +101,10 @@ namespace NikeFarms.v2._0.Services
         {
             return _expensesRepository.FindByBatchNo(batchNo);
         }
+
+        public IEnumerable<Expenses> GetApprovedExpenses()
+        {
+            return _expensesRepository.GetApprovedExpenses();
+        }
     }
 }

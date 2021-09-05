@@ -42,15 +42,20 @@ namespace NikeFarms.v2._0.Repositories
 
         public List<SalesItem> GetAllSalesItem()
         {
-            return _dbContext.SalesItems.ToList();
+            return _dbContext.SalesItems.OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public List<SalesItem> GetSalesItemBySalesId(int salesId)
         {
-            return _dbContext.SalesItems.Where(s => s.SalesId == salesId).ToList();
+            return _dbContext.SalesItems.Where(s => s.SalesId == salesId).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
-        
+        public List<SalesItem> GetSalesItemByStockId(int stockId)
+        {
+            return _dbContext.SalesItems.Where(s => s.StockId == stockId).OrderByDescending(r => r.CreatedAt).ToList();
+        }
+
+
         public SalesItem Update(SalesItem salesItem)
         {
             _dbContext.SalesItems.Update(salesItem);

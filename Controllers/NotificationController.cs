@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
 using NikeFarms.v2._0.Models.DTO;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace NikeFarms.v2._0.Controllers
 {
+    [Authorize(Roles = "Super Admin, Admin, Farm Manager")]
     public class NotificationController : Controller
     {
         private readonly INotificationService _notificationService;
@@ -36,6 +38,7 @@ namespace NikeFarms.v2._0.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Super Admin, Admin")]
         public IActionResult ListAdminNotifications()
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -63,6 +66,7 @@ namespace NikeFarms.v2._0.Controllers
             return View(ListNotifications);
         }
 
+        [Authorize(Roles = "Super Admin, Farm Manager")]
         public IActionResult ListManagerNotifications()
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -91,6 +95,7 @@ namespace NikeFarms.v2._0.Controllers
             return View(ListNotifications);
         }
 
+        [Authorize(Roles = "Super Admin, Farm Manager")]
         public IActionResult InsufficientStoreItem()
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -99,7 +104,7 @@ namespace NikeFarms.v2._0.Controllers
             return View();
         }
 
-
+        
         public IActionResult Approve(int id)
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));

@@ -20,8 +20,11 @@ namespace NikeFarms.v2._0.Services
         private readonly INotificationRepository _notificationRepository;
         private readonly IWeeklyReportService _weeklyReportService;
         private readonly IStockService _stockService;
+        private readonly IStoreAllocationService _storeAllocationService;
+        private readonly IStoreItemService _storeItemService;
 
-        public FlockService(IFlockRepository flockRepository, IUserService userService, INotificationRepository notificationRepository, IUserRoleService userRoleService, IRoleService roleService, IFlockTypeService flockTypeService, IDailyActivityService dailyActivityService, IMortalityService mortalityService, IWeeklyReportService weeklyReportService, IStockService stockService)
+
+        public FlockService(IFlockRepository flockRepository, IUserService userService, INotificationRepository notificationRepository, IUserRoleService userRoleService, IRoleService roleService, IFlockTypeService flockTypeService, IDailyActivityService dailyActivityService, IMortalityService mortalityService, IWeeklyReportService weeklyReportService, IStockService stockService, IStoreAllocationService storeAllocationService, IStoreItemService storeItemService)
         {
             _flockRepository = flockRepository;
             _userService = userService;
@@ -33,6 +36,8 @@ namespace NikeFarms.v2._0.Services
             _mortalityService = mortalityService;
             _weeklyReportService = weeklyReportService;
             _stockService = stockService;
+            _storeAllocationService = storeAllocationService;
+            _storeItemService = storeItemService;
         }
 
         public Flock Add(FlockDTO flockDTO)
@@ -205,7 +210,7 @@ namespace NikeFarms.v2._0.Services
         {
             var mortality = _mortalityService.GetMortalityPerFlock(flockId);
             int deaths = 0;
-            if(mortality != null)
+            if (mortality != null)
             {
                 foreach (var m in mortality)
                 {
@@ -232,7 +237,7 @@ namespace NikeFarms.v2._0.Services
             return Math.Round(result, 2);
         }
 
-        public decimal EstimatedPriceOfFlockPerKg(int flockId)
+        public decimal EstimatedPriceOfFlockPerBird(int flockId)
         {
             var flock = _flockRepository.FindById(flockId);
             double currentWeight = GetCurrentAverageWeight(flockId);
@@ -240,8 +245,8 @@ namespace NikeFarms.v2._0.Services
             decimal estimatedPrice = 0;
             if (flock != null)
             {
-                pricePerKg = flock.AmountPurchased/flock.TotalNo ;
-                estimatedPrice =  (decimal)currentWeight*pricePerKg;
+                pricePerKg = flock.AmountPurchased / flock.TotalNo;
+                estimatedPrice = ((decimal)currentWeight * pricePerKg)/(decimal)flock.AverageWeight;
             };
             return Math.Round(estimatedPrice, 2);
         }
@@ -265,9 +270,9 @@ namespace NikeFarms.v2._0.Services
         public void CheckFlockFinish(int flockId)
         {
             var flock = _flockRepository.FindById(flockId);
-            if(flock.AvailableBirds == 0)
+            if (flock.AvailableBirds == 0)
             {
-                
+
                 var role = _roleService.FindByName("Admin");
                 Notification notify = new Notification
                 {
@@ -282,5 +287,66 @@ namespace NikeFarms.v2._0.Services
                 _notificationRepository.Add(notify);
             }
         }
+
+        public decimal GetAmountSpentOnFlockFeed(int flockId)
+        {
+            var daily = _dailyActivityService.GetDailyActivitiesPerFlockId(flockId);
+
+            StoreAllocation feedAllo;
+            StoreItem storeItem;
+            decimal pricePerFeed = 0;
+            decimal amountSpent = 0;
+
+            foreach (var d in daily)
+            {
+                feedAllo = _storeAllocationService.FindById(d.StoreAllocationFeedId);
+                storeItem = _storeItemService.FindById(feedAllo.StoreItemId);
+                pricePerFeed = storeItem.TotalPricePurchased / (decimal)storeItem.NoOfItem;
+                amountSpent += (pricePerFeed * (decimal)d.NoOfFeedUsed);
+            }
+
+            return Math.Round(amountSpent, 2);
+        }
+
+        public double GetTotalWeightOfFlockFeed(int flockId)
+        {
+            var daily = _dailyActivityService.GetDailyActivitiesPerFlockId(flockId);
+
+            StoreAllocation feedAllo;
+            StoreItem storeItem;
+            double totalWeight = 0;
+
+            foreach (var d in daily)
+            {
+                feedAllo = _storeAllocationService.FindById(d.StoreAllocationFeedId);
+                storeItem = _storeItemService.FindById(feedAllo.StoreItemId);
+                totalWeight += d.NoOfFeedUsed*(double)storeItem.ItemPerKg;
+            }
+
+            return Math.Round(totalWeight, 2);
+        }
+
+        public decimal GetAmountSpentOnFlockMed(int flockId)
+        {
+            var daily = _dailyActivityService.GetDailyActivitiesPerFlockId(flockId);
+
+            StoreAllocation MedAllo;
+            StoreItem storeItem;
+            decimal pricePerMed = 0;
+            decimal amountSpent = 0;
+
+            foreach (var d in daily)
+            {
+                MedAllo = _storeAllocationService.FindMedById(d.StoreAllocationMedId);
+                storeItem = _storeItemService.FindById(MedAllo.StoreItemId);
+                pricePerMed = storeItem.TotalPricePurchased / (decimal)storeItem.NoOfItem;
+                amountSpent += (pricePerMed * (decimal)d.NoOfMedUsed);
+            }
+
+            return Math.Round(amountSpent, 2);
+        }
+
+        
     }
 }
+

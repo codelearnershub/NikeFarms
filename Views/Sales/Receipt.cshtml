@@ -1,0 +1,52 @@
+﻿@model List<NikeFarms.v2._0.Models.ViewModels.ReceiptVM>
+
+@{ ViewBag.Title = "Receipt"; }
+@{
+    Layout = "_SalesManagerDashboard";
+}
+
+<div class="container">
+    <div class="card " style="background-color: white; border: solid 3px darkred; width: 40%; height: auto; margin-left: 30%">
+        <div class="container">
+            <br />
+            <div>
+                <img class="nikesmall" src="~/Images/Nikesmall.jpg" />  <span class="font-weight-bolder" style="font-family:'Times New Roman'; color: darkred; font-size:30px; margin-left: 10px">Receipt</span><a class="btn" onclick="window.print()"><i class="fas fa-print"></i></a>
+            </div>
+            <br />
+            <div>
+                <span class="font-weight-bolder" style=" font-family:'Times New Roman'">Description</span><span style="color:white">.  .  .  .  .  .  .  .  .  .   .  .  .  .  .  .  .  .  .  .  .  .</span>  <span class="font-weight-bolder" style="font-family: 'Times New Roman'">Quantity</span>
+            </div>
+            @foreach (var salesItem in Model)
+            {
+                <span class="font-weight-bolder" style="color:darkred">*  </span><span style="font-family:'Times New Roman'" class="font-weight-bold"> @salesItem.SaleDescription</span><span style="color:white">.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .</span> <span class="font-weight-bolder" style=" font-family: 'Times New Roman'">@salesItem.Qty</span><br />
+                <span class="font-weight-bolder" style="font-size:10px">Unit Price: &#8358 <span class="comma font-weight-light">@salesItem.PricePerItem</span></span><br />
+                <span class="font-weight-bolder" style="font-size: 10px;">Total Price: &#8358 <span class="comma font-weight-light">@salesItem.TotalPricePerSales</span></span>
+                <br /> <span class="font-weight-bolder " style="color:darkred">---  --------------------------------------------------------- ---</span>
+                <div class="font-weight-bolder " style="color:darkred; margin-top: -2%; position:static">---  --------------------------------------------------------- ---</div><br />
+
+            }
+            <span class="font-weight-bolder">Customer Name: @ViewBag.Customer</span><br /><span class="font-weight-bolder">Overall Price:  &#8358 <span class="comma">@ViewBag.TotalPrice</span></span><br /><br /><br />
+            <span style="color:white">.  .  .  .  .  .  .   .  .  .  .  .</span> <span style="color:darkred;" class="font-weight-bolder">Voucher: @ViewBag.Voucher</span><br /><br />
+        </div>
+    </div>
+    
+</div>
+
+<script>
+
+    function numberWithCommas(x) {
+        let newNumber = x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        return newNumber
+    }
+
+
+    let comma = document.getElementsByClassName("comma");
+
+
+    for (var i = 0; i < comma.length; i++) {
+        let result = numberWithCommas(comma[i].innerHTML);
+        document.getElementsByClassName("comma")[i].innerHTML = result;
+    }
+
+
+</script>

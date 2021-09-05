@@ -38,12 +38,12 @@ namespace NikeFarms.v2._0.Repositories
 
         public List<Flock> GetAllFlocks()
         {
-            return _dbContext.Flocks.Where(f=> f.AvailableBirds > 0).ToList();
+            return _dbContext.Flocks.Where(f=> f.AvailableBirds > 0).OrderByDescending(r=> r.CreatedAt).ToList();
         }
 
         public List<Flock> GetApprovedFlocks()
         {
-            return _dbContext.Flocks.Where(f=> f.IsApproved == true && f.AvailableBirds > 0).ToList();
+            return _dbContext.Flocks.Where(f=> f.IsApproved == true && f.AvailableBirds > 0).OrderBy(r => r.CreatedAt).ToList();
         }
 
         public Flock FindById(int flockId)

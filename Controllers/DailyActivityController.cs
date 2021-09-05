@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace NikeFarms.v2._0.Controllers
 {
+   
     public class DailyActivityController : Controller
     {
         private readonly IUserService _userService;
@@ -41,6 +43,7 @@ namespace NikeFarms.v2._0.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Super Admin, Farm Manager")]
         public IActionResult AddDailyActivity()
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -166,29 +169,12 @@ namespace NikeFarms.v2._0.Controllers
                 _storeAllocationService.Update(medStoreAllocation);
             };
 
-            var flock = _flockService.FindById(addDailyActivity.FlockId);
-            if (flock != null)
-            {
-                FlockDTO flockD = new FlockDTO
-                {
-                    UserId = userId,
-                    Id = flock.Id,
-                    TotalNo = flock.TotalNo,
-                    AverageWeight = flock.AverageWeight,
-                    Age = flock.Age,
-                    AmountPurchased = flock.AmountPurchased,
-                    FlockTypeId = flock.FlockTypeId,
-                    IsApproved = true,
-                };
-                _flockService.Update(flockD);
-            };
-
-
+        
             _dailyService.Add(dailyActivityDTO);
             return RedirectToAction("ListAllDailyActivities");
         }
 
-
+        [Authorize(Roles = "Super Admin, Admin")]
         public IActionResult ListDailyActivity(int id)
         {
             var dailyActs = _dailyService.GetDailyActivitiesPerFlockId(id);
@@ -228,7 +214,7 @@ namespace NikeFarms.v2._0.Controllers
             return View(ListDailyActivity);
         }
 
-
+        [Authorize(Roles = "Super Admin, Farm Manager")]
         public IActionResult ListAllDailyActivities()
         {
             var dailyActs = _dailyService.GetAllDailyActivities();
@@ -269,7 +255,7 @@ namespace NikeFarms.v2._0.Controllers
             return View(ListDailyActivity);
         }
 
-
+        [Authorize(Roles = "Super Admin, Farm Manager")]
         public IActionResult Delete(int id)
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));

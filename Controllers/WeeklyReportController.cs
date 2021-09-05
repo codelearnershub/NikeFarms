@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace NikeFarms.v2._0.Controllers
 {
+    [Authorize(Roles = "Super Admin, Farm Manager")]
     public class WeeklyReportController : Controller
     {
         private readonly IUserService _userService;
@@ -26,6 +28,7 @@ namespace NikeFarms.v2._0.Controllers
             _flockService = flockService;
             _flockTypeService = flockTypeService;
         }
+
 
         public IActionResult Index()
         {
@@ -61,7 +64,7 @@ namespace NikeFarms.v2._0.Controllers
             
             AddWeeklyReportVM weeklyReportVM = new AddWeeklyReportVM
             {
-                FlockList = _flockService.GetAllFlocks().Select(m => new SelectListItem
+                FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
                 {
                     Text = $"{_flockTypeService.FindById(m.FlockTypeId).Name} Batch No: {m.BatchNo}",
                     Value = m.Id.ToString()

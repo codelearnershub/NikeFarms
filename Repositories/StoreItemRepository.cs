@@ -41,17 +41,17 @@ namespace NikeFarms.v2._0.Repositories
 
         public List<StoreItem> GetApprovedStoreItems()
         {
-            return _dbContext.StoreItems.Where(s=> s.IsApproved == true && s.ItemRemaining > 0).ToList();
+            return _dbContext.StoreItems.Where(s=> s.IsApproved == true && s.ItemRemaining > 0).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public List<StoreItem> GetAllStoreItems()
         {
-            return _dbContext.StoreItems.Where(s=> s.ItemRemaining > 0).ToList();
+            return _dbContext.StoreItems.Where(s=> s.ItemRemaining > 0).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public List<StoreItem> GetStoreItemsByManagerEmail(string managerEmail)
         {
-            return _dbContext.StoreItems.Where(s => s.CreatedBy == managerEmail).ToList();
+            return _dbContext.StoreItems.Where(s => s.CreatedBy == managerEmail).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public StoreItem Update(StoreItem storeItem)

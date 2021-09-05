@@ -15,11 +15,11 @@
                 </div>
                 @if (ViewBag.Message == "errorCrate")
                 {
-                    <p style="color:red; " class="text-center font-weight-bolder  mb-2">*Input the Price of Eggs Per Crate/ Erase Price Per Kg</p>
+                    <p style="color:red; " class="text-center font-weight-bolder  mb-2">*Input the Price of Eggs Per Crate/ Erase Price Per Birds</p>
                 }
                 else if (ViewBag.Message == "errorKg")
                 {
-                    <p style="color:red; " class="text-center font-weight-bolder  mb-2">*Input Price of Birds per Kg/ Erase Price Per Crate</p>
+                    <p style="color:red; " class="text-center font-weight-bolder  mb-2">*Input Price per Birds/ Erase Price Per Crate</p>
                 }
                 else if (ViewBag.Message == "errorBirds")
                 {
@@ -68,9 +68,9 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-5">
-                                <label asp-for="PricePerKg" class="form-check-label font-weight-bold"><span style="color: darkred"></span> Price Per Kg(*Bird) </label>
-                                <input asp-for="PricePerKg" class="form-control" placeholder="Price of Stock Per Kg " type="number" min="1" />
-                                <span asp-validation-for="PricePerKg" style="color:darkred"></span>
+                                <label asp-for="PricePerBird" class="form-check-label font-weight-bold"><span style="color: darkred"></span> Price Per Bird(*Bird) </label>
+                                <input asp-for="PricePerBird" class="form-control" placeholder="Price of Stock Per Bird " type="number" min="1" />
+                                <span asp-validation-for="PricePerBird" style="color:darkred"></span>
                             </div>
 
                         </div>

@@ -47,7 +47,7 @@ namespace NikeFarms.v2._0.Repositories
 
         public List<Notification> GetNotifications(int recieverId)
         {
-            return _dbContext.Notifications.Where(m => m.RecieverId == recieverId).ToList();
+            return _dbContext.Notifications.Where(m => m.RecieverId == recieverId).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
 

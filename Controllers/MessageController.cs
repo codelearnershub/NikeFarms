@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace NikeFarms.v2._0.Controllers
 {
+    [Authorize]
     public class MessageController : Controller
     {
         private readonly IUserService _userService;
@@ -86,6 +88,7 @@ namespace NikeFarms.v2._0.Controllers
                 {
                     Id = message.Id,
                     Title = message.Title,
+                    Content = message.Content,
                     RecievedBy = $"{receiver.LastName} {receiver.FirstName} ({_userRoleService.FindRole(receiver.Id)})",
                     CreatedAt = message.CreatedAt,
                 };
@@ -166,6 +169,7 @@ namespace NikeFarms.v2._0.Controllers
                         Text = $"{m.LastName} {m.FirstName} ({_userRoleService.FindRole(m.Id)})",
                         Value = m.Id.ToString(),
                     }),
+                    Role = _userRoleService.FindRole(userId),
                 };
 
                 return View(messageFlock);

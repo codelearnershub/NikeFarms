@@ -18,6 +18,8 @@ namespace NikeFarms.v2._0.Interface
 
         public List<SalesItem> GetSalesItemBySalesId(int salesId);
 
+        public List<SalesItem> GetSalesItemByStockId(int stockId);
+
         public void Delete(int salesItemId);
     }
 }

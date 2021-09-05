@@ -12,11 +12,13 @@ namespace NikeFarms.v2._0.Services
     {
         private readonly ICustomerRepository _customerRepository;
         private readonly IUserService _userService;
+        private readonly ISalesService _salesService;
 
-        public CustomerService(ICustomerRepository customerRepository, IUserService userService)
+        public CustomerService(ICustomerRepository customerRepository, IUserService userService, ISalesService salesService)
         {
             _customerRepository = customerRepository;
             _userService = userService;
+            _salesService = salesService;
         }
 
         public Customer Add(CustomerDTO customerDTO)
@@ -74,6 +76,18 @@ namespace NikeFarms.v2._0.Services
         public Customer FindByEmail(string customerEmail)
         {
             return _customerRepository.FindByEmail(customerEmail);
+        }
+
+        public decimal TotalPriceSpent(int customerId)
+        {
+            var sales = _salesService.FindSalesByCustomerId(customerId);
+            decimal total = 0;
+            foreach(var sale in sales)
+            {
+                total += (decimal)sale.TotalPrice;
+            }
+
+            return total;
         }
     }
 }

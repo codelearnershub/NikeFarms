@@ -70,5 +70,15 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
         public DateTime CreatedAt { get; set; }
 
+        public decimal PriceSpentOnFeed { get; set; }
+
+        public decimal PriceSpentOnMed { get; set; }
+
+        public double TotalKgOfFeedConsumed { get; set; }
+
+        public decimal TotalSalesPrice { get; set; }
+
+        public decimal NoOfBirdsSold { get; set; }
+
     }
 }

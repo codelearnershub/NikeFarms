@@ -42,22 +42,27 @@ namespace NikeFarms.v2._0.Repositories
 
         public List<Stock> GetAllStocks()
         {
-            return _dbContext.Stocks.Where(s=> s.AvailableItem > 0).ToList();
+            return _dbContext.Stocks.Where(s=> s.AvailableItem > 0).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public List<Stock> GetBirdStocks()
         {
-            return _dbContext.Stocks.Where(s=> s.ItemType == "Birds" && s.AvailableItem > 0).ToList();
+            return _dbContext.Stocks.Where(s=> s.ItemType == "Birds" && s.AvailableItem > 0).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public List<Stock> GetStocksByFlockId(int flockId)
         {
-            return _dbContext.Stocks.Where(s=> s.FlockId == flockId && s.ItemType == "Birds").ToList();
+            return _dbContext.Stocks.Where(s=> s.FlockId == flockId && s.ItemType == "Birds").OrderByDescending(r => r.CreatedAt).ToList();
+        }
+
+        public List<Stock> GetAllStocksByFlockId(int flockId)
+        {
+            return _dbContext.Stocks.Where(s => s.FlockId == flockId).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public List<Stock> GetStocksByManagerEmail(string managerEmail)
         {
-            return _dbContext.Stocks.Where(s => s.CreatedBy == managerEmail).ToList();
+            return _dbContext.Stocks.Where(s => s.CreatedBy == managerEmail).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public Stock Update(Stock stock)

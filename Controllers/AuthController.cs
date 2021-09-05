@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace NikeFarms.v2._0.Controllers
 {
+    
     public class AuthController : Controller
     {
         private readonly IUserService _userService;
@@ -37,6 +39,20 @@ namespace NikeFarms.v2._0.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            //if(HttpContext.User.Identity.IsAuthenticated )
+            //{
+            //   var routeName = ControllerContext.ActionDescriptor.AttributeRouteInfo.Name;
+            //    return RedirectToAction(routeName);
+            //}
+
+            //return View();
+
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                var routeName = HttpContext.Request.Path;
+                return RedirectToAction(routeName);
+            }
+
             return View();
         }
 
@@ -187,11 +203,14 @@ namespace NikeFarms.v2._0.Controllers
 
         }
 
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
+
+            
             await HttpContext.SignOutAsync();
             return RedirectToAction("Login");
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
 using NikeFarms.v2._0.Models.DTO;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace NikeFarms.v2._0.Controllers
 {
+    [Authorize(Roles = "Super Admin, Store Manager")]
     public class FlockTypeController : Controller
     {
         private readonly IUserService _userService;

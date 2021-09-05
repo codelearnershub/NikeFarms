@@ -59,10 +59,21 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
     public class ListSalesStockVM
     {
-        public int SalesId { get; set; }
-
+       
         public string StockDescription { get; set; }
 
         public string Qty { get; set; }
+    }
+
+    public class ReceiptVM
+    {
+        public string SaleDescription { get; set; }
+
+        public string Qty { get; set; }
+
+        public decimal PricePerItem { get; set; }
+
+        public decimal TotalPricePerSales { get; set; }
+
     }
 }

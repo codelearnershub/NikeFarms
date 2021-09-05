@@ -47,22 +47,22 @@ namespace NikeFarms.v2._0.Repositories
 
         public List<Sales> GetAllSales()
         {
-            return _dbContext.Sales.ToList();
+            return _dbContext.Sales.OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public List<Sales> GetSoldSales()
         {
-            return _dbContext.Sales.Where(s=> s.IsSold == true).ToList();
+            return _dbContext.Sales.Where(s=> s.IsSold == true).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public List<Sales> GetUnSoldSales()
         {
-            return _dbContext.Sales.Where(s => s.IsSold != true).ToList();
+            return _dbContext.Sales.Where(s => s.IsSold != true).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public List<Sales> GetSalesByManagerEmail(string managerEmail)
         {
-            return _dbContext.Sales.Where(s=>s.CreatedBy == managerEmail).ToList();
+            return _dbContext.Sales.Where(s=>s.CreatedBy == managerEmail).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
 
@@ -71,6 +71,11 @@ namespace NikeFarms.v2._0.Repositories
             _dbContext.Sales.Update(sales);
             _dbContext.SaveChanges();
             return sales;
+        }
+
+        public List<Sales> FindSalesByCustomerId(int customerId)
+        {
+            return _dbContext.Sales.Where(s => s.CustomerId == customerId && s.IsSold == true).OrderBy(s => s.TotalPrice).ToList();
         }
     }
 }

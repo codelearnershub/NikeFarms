@@ -107,6 +107,8 @@ namespace NikeFarms.v2._0
 
             services.AddScoped<IWeeklyReportService, WeeklyReportService>();
 
+            services.AddScoped<IAdminDashboardService, AdminDashboardService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

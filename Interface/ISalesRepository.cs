@@ -25,5 +25,7 @@ namespace NikeFarms.v2._0.Interface
         public List<Sales> GetSoldSales();
 
         public List<Sales> GetUnSoldSales();
+
+        public List<Sales> FindSalesByCustomerId(int customerId);
     }
 }

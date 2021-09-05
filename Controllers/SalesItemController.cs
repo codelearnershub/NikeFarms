@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
@@ -12,6 +13,8 @@ using System.Threading.Tasks;
 
 namespace NikeFarms.v2._0.Controllers
 {
+    
+    [Authorize(Roles = "Super Admin, Sales Manager, Admin")]
     public class SalesItemController : Controller
     {
         private readonly IUserService _userService;
@@ -35,6 +38,7 @@ namespace NikeFarms.v2._0.Controllers
             _salesService = salesService;
         }
 
+       
         public IActionResult Index(int id)
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -67,6 +71,7 @@ namespace NikeFarms.v2._0.Controllers
             return View(ListFlock);
         }
 
+        [Authorize(Roles = "Super Admin, Sales Manager")]
         public IActionResult AddSalesItem(int id)
         {
 
@@ -113,7 +118,7 @@ namespace NikeFarms.v2._0.Controllers
                     {
                         StockList = _stockService.GetAllStocks().Select(s => new SelectListItem
                         {
-                            Text = $"{_flockTypeService.FindById(_flockService.FindById(s.FlockId).FlockTypeId).Name}, Batch No: ({_flockService.FindById(s.FlockId).BatchNo}) Stock: {s.AvailableItem} ({s.ItemType})",
+                            Text = $"{_flockTypeService.FindById(_flockService.FindById(s.FlockId).FlockTypeId).Name}, Batch No: ({_flockService.FindById(s.FlockId).BatchNo}) Stock: {s.AvailableItem} ({s.ItemType} Weight: {_flockService.GetCurrentAverageWeight(s.FlockId)} Kg)",
                             Value = s.Id.ToString()
                         }),
 
@@ -199,7 +204,7 @@ namespace NikeFarms.v2._0.Controllers
             return RedirectToAction("Index", "Sales");
         }
 
-
+        [Authorize(Roles = "Super Admin, Sales Manager")]
         public IActionResult Delete(int id)
         {
             var salesItem = _salesItemService.FindById(id);

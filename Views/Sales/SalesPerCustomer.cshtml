@@ -1,4 +1,4 @@
-﻿@model List<NikeFarms.v2._0.Models.ViewModels.ListSalesVM>
+﻿@model PaginatedList<NikeFarms.v2._0.Models.ViewModels.ListSalesVM>
 @{ ViewBag.Title = "Sales"; }
 @{
 
@@ -53,7 +53,7 @@
                                 {
                                     <td>@sale.CreatedBy (Sales)</td>
                                 }
-                                
+
                                 <td class="font-weight-bold">@sale.CreatedAt</td>
 
                             </tr>
@@ -89,3 +89,19 @@
 
 </script>
 
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="SalesPerCustomer"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="SalesPerCustomer"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

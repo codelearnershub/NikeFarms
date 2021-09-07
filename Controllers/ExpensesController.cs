@@ -27,9 +27,11 @@ namespace NikeFarms.v2._0.Controllers
         }
 
         [Authorize(Roles = "Super Admin, Admin, Store Manager")]
-        public IActionResult Index()
+        public IActionResult Index(string sortOrder, int? pageNumber)
         {
             var expenses = _expensesService.GetAllExpenses();
+            ViewData["CurrentSort"] = sortOrder;
+            
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             ViewBag.Role = $"{_userRoleService.FindRole(userId)}";
             List<ListExpensesVM> ListExpenses = new List<ListExpensesVM>();
@@ -55,9 +57,8 @@ namespace NikeFarms.v2._0.Controllers
             
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
-
-            return View(ListExpenses);
-
+            int pageSize = 5;
+            return View(PaginatedList<ListExpensesVM>.CreateAsync(ListExpenses.AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
         [Authorize(Roles = "Super Admin, Store Manager")]

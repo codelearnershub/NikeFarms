@@ -1,4 +1,4 @@
-﻿@model List<NikeFarms.v2._0.Models.ViewModels.ListStoreItemVM>
+﻿@model PaginatedList<NikeFarms.v2._0.Models.ViewModels.ListStoreItemVM>
 @{ ViewBag.Title = "Store"; }
 @if (ViewBag.Role == "Admin")
 {
@@ -11,11 +11,18 @@ else
 
 
 <br />
-<h1 class="text-center"><i class="fas fa-shopping-cart"></i>  Store Items</h1>
+<h1 class="text-center" style="color:darkred"><i class="fas fa-shopping-cart"></i>  Store Items</h1>
 
 <div class="card">
     <div>
         <br />
+        <form asp-action="Index" method="get" style="margin-left:70%">
+
+            <input class="form-control col-md-10" style="margin-bottom:5%" type="search" placeholder="Search (Name)..." name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-outline-secondary" /> |
+            <a style="color:darkred" asp-action="Index">Back to Full List</a>
+
+        </form>
         @if (ViewBag.Role != "Admin")
         {
             <a class="btn font-weight-bold ml-4" asp-controller="StoreItem" asp-action="AddStoreItem" style="background-color:darkgoldenrod"><i class="fas fa-plus"></i> Add Store Item</a>
@@ -29,10 +36,10 @@ else
                         <tr>
 
                             <th> Name</th>
-                            <th>Item Per Kg</th>
-                            <th> Total No. Purchased </th>
+                            <th> Per Kg</th>
+                            <th> No. Purchased </th>
                             <th> Item Remaining </th>
-                            <th> Price Purchased (&#8358 )</th>
+                            <th> Purchased (&#8358 )</th>
                             <th> Bought By</th>
                             @if (ViewBag.Role != "Admin")
                             {
@@ -177,3 +184,19 @@ else
 
 
 </script>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

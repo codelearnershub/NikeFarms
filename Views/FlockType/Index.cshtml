@@ -1,4 +1,4 @@
-﻿@model List<NikeFarms.v2._0.Models.ViewModels.ListFlockTypeVM>
+﻿@model PaginatedList<NikeFarms.v2._0.Models.ViewModels.ListFlockTypeVM>
 @{ ViewBag.Title = "Flock Types"; }
 @{
     Layout = "_StoreManagerDashboard";
@@ -29,43 +29,29 @@
                         {
                             string modalId = $"exampleModalCenter{flockType.Id}";
                             string modalIdHash = $"#exampleModalCenter{flockType.Id}";
-                        <tr>
+                            <tr>
 
-                            <td class="font-weight-bolder"><span style="color:darkred">*</span> @flockType.Name</td>
-                            <td >@flockType.Description</td>
-                            <td >@flockType.CreatedBy</td>
-                            <td>
-                                <a class="btn font-weight-bold" asp-action="UpdateFlockType" asp-route-id="@flockType.Id" style="background-color:greenyellow; color:white">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <a class="btn font-weight-bold" style="background-color:red; color:white" data-toggle="modal" data-target=@modalIdHash>
-                                    <i class="fas fa-trash-alt"></i>
-                                </a>
+                                <td class="font-weight-bolder"><span style="color:darkred">*</span> @flockType.Name</td>
+                                <td>@flockType.Description</td>
+                                @if (flockType.CreatedBy == ViewBag.UserName)
+                                {
+                                    <td class="font-weight-bold" style="color:darkred">You</td>
+                                }
+                                else
+                                {
+                                    <td>@flockType.CreatedBy</td>
+                                }
 
+                                <td>
+                                    @if (flockType.CreatedBy == ViewBag.UserName)
+                                    {
+                                        <a class="btn font-weight-bold" asp-action="UpdateFlockType" asp-route-id="@flockType.Id" style="background-color:greenyellow; color:white">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    }
+                                </td>
 
-                                <div class="modal fade" id=@modalId tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title font-weight-bolder" style="color:red" id="exampleModalLongTitle">Delete Flock Type <i class="fas fa-trash-alt"></i> </h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <br /> <span class="font-weight-bolder text-center">Are you Sure you want to delete Flock Type: <span style="color:darkred">@flockType.Name ??</span></span>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <a class="btn font-weight-bold" style="background-color:red; color:white" asp-action="Delete" asp-route-id="@flockType.Id">Yes</a>
-                                                <a class="btn font-weight-bold" style="background-color:greenyellow; color:white" data-dismiss="modal">No</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-
-
-                        </tr>
+                            </tr>
                         }
                     </tbody>
                 </table>
@@ -74,7 +60,23 @@
         else
         {
             <br /><br />
-            <h4 class="text-center font-weight-bolder" style="color:red">No Flock Type has been Added! </h4>
+            <h4 class="text-center font-weight-bolder" style="color:red">No Flock Type Found! </h4>
         }
     </div>
 </div>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

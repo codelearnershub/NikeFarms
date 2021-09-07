@@ -30,7 +30,7 @@ namespace NikeFarms.v2._0.Controllers
         }
 
 
-        public IActionResult Index()
+        public IActionResult Index(string sortOrder, string searchString, int? pageNumber)
         {
 
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -39,6 +39,13 @@ namespace NikeFarms.v2._0.Controllers
 
 
             var weekly = _weeklyReportService.GetWeeklyReport();
+
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["CurrentFilter"] = searchString;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                weekly = weekly.Where(s => s.Flock.BatchNo.Contains(searchString));
+            }
             List<ListWeeklyReportVM> ListWeeklyReport = new List<ListWeeklyReportVM>();
             foreach (var week in weekly)
             {
@@ -55,8 +62,8 @@ namespace NikeFarms.v2._0.Controllers
 
                 ListWeeklyReport.Add(listWeeklyReportVM);
             }
-
-            return View(ListWeeklyReport);
+            int pageSize = 5;
+            return View(PaginatedList<ListWeeklyReportVM>.CreateAsync(ListWeeklyReport.AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
         public IActionResult AddWeeklyReport()
@@ -98,12 +105,12 @@ namespace NikeFarms.v2._0.Controllers
                 {
                     FlockList = _flockService.GetAllFlocks().Select(m => new SelectListItem
                     {
-                        Text = $"{_flockTypeService.FindById(m.FlockTypeId).Name} Batch No: {m.BatchNo}",
+                        Text = $"{m.FlockType.Name} Batch No: {m.BatchNo}",
                         Value = m.Id.ToString()
                     })
                 };
 
-               
+
                 User userlogin = _userService.FindById(userId);
                 ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
 

@@ -31,10 +31,17 @@ namespace NikeFarms.v2._0.Controllers
             _roleService = roleService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string sortOrder, string searchString, int? pageNumber)
         {
 
             var StoreAllocations = _storeAllocationService.GetAllStoreAllocations();
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["CurrentFilter"] = searchString;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                StoreAllocations = StoreAllocations.Where(s => s.StoreItem.Name.Contains(searchString));
+            }
+
             List<ListStoreAllocationVM> ListStoreAllocations = new List<ListStoreAllocationVM>();
 
             foreach (var storeAllocation in StoreAllocations)
@@ -62,8 +69,8 @@ namespace NikeFarms.v2._0.Controllers
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
-
-            return View(ListStoreAllocations);
+            int pageSize = 5;
+            return View(PaginatedList<ListStoreAllocationVM>.CreateAsync(ListStoreAllocations.AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
         [HttpGet]
@@ -75,7 +82,8 @@ namespace NikeFarms.v2._0.Controllers
                 StoreItemList = _storeItemService.GetApprovedStoreItems().Select(m => new SelectListItem
                 {
                     Text = $"{m.Name} ({m.ItemRemaining})",
-                    Value = m.Id.ToString()
+                    Value = m.Id.ToString(),
+                    
                 }),
 
 
@@ -166,16 +174,13 @@ namespace NikeFarms.v2._0.Controllers
                     ItemType = storeAllocation.ItemType,
                     StoreItemId = storeAllocation.StoreItemId,
                     ManagerId = storeAllocation.ManagerId,
+                    SelectedManager = $"{_userService.FindById(storeAllocation.ManagerId).LastName} {_userService.FindById(storeAllocation.ManagerId).FirstName} (Farm Manager)",
                     StoreItemList = _storeItemService.GetAllStoreItems().Select(m => new SelectListItem
                     {
                         Text = $"{m.Name} ({m.ItemRemaining})",
                         Value = m.Id.ToString()
                     }),
-                    ManagerList = _userRoleService.FindUsersWithParticularRole(role.Id).Select(m => new SelectListItem
-                    {
-                        Text = $"{_userService.FindById(m.UserId).LastName} {_userService.FindById(m.UserId).FirstName} (Farm Manager)",
-                        Value = m.UserId.ToString()
-                    }),
+                   
                 };
 
                 return View(updateStoreAllocation);

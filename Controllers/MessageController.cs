@@ -219,6 +219,9 @@ namespace NikeFarms.v2._0.Controllers
         public IActionResult SeeMore(int id)
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            User userlogin = _userService.FindById(userId);
+            ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
+
             string userRole = _userRoleService.FindRole(userId);
             if (userRole == "Admin")
             {

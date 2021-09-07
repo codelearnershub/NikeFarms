@@ -10,6 +10,10 @@
     margin: 4px 2px;
 }
 
+.my-shared a:hover{
+    text-decoration: none;
+}
+
 .btn-round {
     border-radius: 20px;
 }

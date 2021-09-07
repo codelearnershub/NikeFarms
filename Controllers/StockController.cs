@@ -33,12 +33,16 @@ namespace NikeFarms.v2._0.Controllers
         }
 
        
-        public IActionResult Index()
+        public IActionResult Index(string sortOrder, string searchString, int? pageNumber)
         {
             var stocks = _stockService.GetAllStocks();
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["CurrentFilter"] = searchString;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                stocks = stocks.Where(s => s.ItemType.Contains(searchString));
+            }
             List<ListStockVM> ListStocks = new List<ListStockVM>();
-
-
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             ViewBag.Role = $"{_userRoleService.FindRole(userId)}";
             foreach (var stock in stocks)
@@ -66,8 +70,8 @@ namespace NikeFarms.v2._0.Controllers
 
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
-
-            return View(ListStocks);
+            int pageSize = 5;
+            return View(PaginatedList<ListStockVM>.CreateAsync(ListStocks.AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
         [Authorize(Roles = "Super Admin, Store Manager")]

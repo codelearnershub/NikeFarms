@@ -1,4 +1,4 @@
-﻿@model List<NikeFarms.v2._0.Models.ViewModels.ListDailyActivityVM>
+﻿@model PaginatedList<NikeFarms.v2._0.Models.ViewModels.ListDailyActivityVM>
 @{ ViewBag.Title = "Daily Activity"; }
 
 @{
@@ -30,32 +30,32 @@
                     <tbody>
                         @foreach (var daily in Model)
                         {
-                        <tr>
+                            <tr>
 
-                            <td class="font-weight-bolder"><span style="color:darkred">*</span> @daily.FeedUsed</td>
-                            <td><span class="comma">@daily.NoOfFeedUsed</span> Bag(s)</td>
-                            @if (daily.MedUsed == "null")
-                            {
-                                <td class="font-weight-bold" style="color:red">Null</td>
-                            }
-                            else
-                            {
-                                <td class="font-weight-bolder"><span style="color:darkred">*</span> @daily.MedUsed </td>
-                            }
-                            @if (daily.NoOfMedUsed <= 0)
-                            {
-                                <td class="font-weight-bold" style="color:red">Null</td>
-                            }
-                            else
-                            {
-                                <td><span class="comma">@daily.NoOfMedUsed</span> Unit(s) </td>
-                            }
+                                <td class="font-weight-bolder"><span style="color:darkred">*</span> @daily.FeedUsed</td>
+                                <td><span class="comma">@daily.NoOfFeedUsed</span> Bag(s)</td>
+                                @if (daily.MedUsed == "null")
+                                {
+                                    <td class="font-weight-bold" style="color:red">Null</td>
+                                }
+                                else
+                                {
+                                    <td class="font-weight-bolder"><span style="color:darkred">*</span> @daily.MedUsed </td>
+                                }
+                                @if (daily.NoOfMedUsed <= 0)
+                                {
+                                    <td class="font-weight-bold" style="color:red">Null</td>
+                                }
+                                else
+                                {
+                                    <td><span class="comma">@daily.NoOfMedUsed</span> Unit(s) </td>
+                                }
 
-                            <td class="font-weight-bolder">@daily.CreatedAt</td>
-                            <td>@daily.CreatedBy (Farm Manager)</td>
+                                <td class="font-weight-bolder">@daily.CreatedAt</td>
+                                <td>@daily.CreatedBy (Farm Manager)</td>
 
 
-                        </tr>
+                            </tr>
                         }
                     </tbody>
                 </table>
@@ -88,3 +88,19 @@
 
 
 </script>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="ListDailyActivity"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="ListDailyActivity"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

@@ -15,6 +15,8 @@ namespace NikeFarms.v2._0.Interface
 
         public IEnumerable<FlockType> GetAllFlockTypes();
 
+        public FlockType FindByName(string name);
+
         public FlockType Update(FlockTypeDTO flockTypeDTO);
 
 

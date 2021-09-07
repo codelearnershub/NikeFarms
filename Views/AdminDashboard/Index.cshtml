@@ -41,7 +41,7 @@
                                     <div class="card-block-small">
                                         <i class="icofont icofont-layers  bg-c-pink card1-icon"></i>
                                         <span class="text-c-pink f-w-600">Revenue</span>
-                                        <h4 style="color:grey">&#8358 <span class="comma" >@Model.Revenue</span></h4>
+                                        <h4 style="color:grey; font-family:'Times New Roman'">&#8358 <span class="comma">@Model.Revenue</span></h4>
                                         <div>
                                             <span class="f-left m-t-10 text-muted">
                                                 <i class="text-c-pink f-16 icofont icofont-calendar m-r-10"></i>Total Revenue
@@ -56,7 +56,7 @@
                                     <div class="card-block-small">
                                         <i class="icofont icofont-bill bg-c-blue card1-icon"></i>
                                         <span class="text-c-blue f-w-600">Expenses</span>
-                                        <h4 style="color:grey">&#8358 <span class="comma">@Model.Expenses</span></h4>
+                                        <h4 style="color: grey; font-family: 'Times New Roman'">&#8358 <span class="comma">@Model.Expenses</span></h4>
                                         <div>
                                             <span class="f-left m-t-10 text-muted">
                                                 <i class="text-c-blue f-16 icofont icofont-warning m-r-10"></i>Feeds , Meds, Others..
@@ -71,7 +71,15 @@
                                     <div class="card-block-small">
                                         <i class="icofont icofont-money-bag bg-c-green card1-icon"></i>
                                         <span class="text-c-green f-w-600">Profit</span>
-                                        <h4 style="color:grey">&#8358 <span class="comma">@Model.Profit</span></h4>
+                                        @if (Model.Profit < 0)
+                                        {
+                                            <h4 style="color: red; font-family: 'Times New Roman'">&#8358 <span class="comma">@Model.Profit</span>!!</h4>
+                                        }
+                                        else
+                                        {
+                                            <h4 style="color: grey; font-family: 'Times New Roman'">&#8358 <span class="comma">@Model.Profit</span></h4>
+                                        }
+
                                         <div>
                                             <span class="f-left m-t-10 text-muted">
                                                 <i class="text-c-green f-16 icofont icofont-tag m-r-10"></i>So Far..
@@ -85,7 +93,7 @@
                                     <div class="card-block-small">
                                         <i class="icofont icofont-sale-discount bg-c-yellow card1-icon"></i>
                                         <span class="text-c-yellow f-w-600">Sales</span>
-                                        <h4 style="color:grey">+<span class="comma">@Model.SalesCount</span></h4>
+                                        <h4 style="color: grey; font-family: 'Times New Roman'">+<span class="comma">@Model.SalesCount</span></h4>
                                         <div>
                                             <span class="f-left m-t-10 text-muted">
                                                 <i class="text-c-yellow f-16 icofont icofont-refresh m-r-10"></i>Just
@@ -131,11 +139,11 @@
                                     <div class="card-block text-center">
                                         <div class="row">
                                             <div class="col-6 b-r-default">
-                                                <h2 style="color:grey"><span class="comma">@Model.ActiveMortality</span></h2>
+                                                <h2 style="color: grey; font-family: 'Times New Roman'"><span class="comma">@Model.ActiveMortality</span></h2>
                                                 <p class="text-muted">Active</p>
                                             </div>
                                             <div class="col-6">
-                                                <h2 style="color:grey">+<span class="comma">@Model.AllMortality</span></h2>
+                                                <h2 style="color: grey; font-family: 'Times New Roman'">+<span class="comma">@Model.AllMortality</span></h2>
                                                 <p class="text-muted">All</p>
                                             </div>
                                         </div>
@@ -152,11 +160,11 @@
                                     <div class="card-block text-center">
                                         <div class="row">
                                             <div class="col-6 b-r-default">
-                                                <h2 style="color:grey"><span class="comma">@Model.ActiveFeed</span></h2>
+                                                <h2 style="color: grey; font-family: 'Times New Roman'"><span class="comma">@Model.ActiveFeed</span></h2>
                                                 <p class="text-muted">Active</p>
                                             </div>
                                             <div class="col-6">
-                                                <h2 style="color:grey"><span class="comma">@Model.AllFeed</span>+</h2>
+                                                <h2 style="color: grey; font-family: 'Times New Roman'"><span class="comma">@Model.AllFeed</span>+</h2>
                                                 <p class="text-muted">All</p>
                                             </div>
                                         </div>
@@ -173,11 +181,11 @@
                                     <div class="card-block text-center">
                                         <div class="row">
                                             <div class="col-6 b-r-default">
-                                                <h2 style="color:grey"><span class="comma">@Model.ActiveMed</span></h2>
+                                                <h2 style="color: grey; font-family: 'Times New Roman'"><span class="comma">@Model.ActiveMed</span></h2>
                                                 <p class="text-muted">Active</p>
                                             </div>
                                             <div class="col-6">
-                                                <h2 style="color:grey"><span class="comma">@Model.AllMed</span>+</h2>
+                                                <h2 style="color: grey; font-family: 'Times New Roman'"><span class="comma">@Model.AllMed</span>+</h2>
                                                 <p class="text-muted">All</p>
                                             </div>
                                         </div>

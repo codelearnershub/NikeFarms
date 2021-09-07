@@ -36,9 +36,9 @@ namespace NikeFarms.v2._0.Repositories
             }
         }
 
-        public List<Flock> GetAllFlocks()
+        public IQueryable<Flock> GetAllFlocks()
         {
-            return _dbContext.Flocks.Where(f=> f.AvailableBirds > 0).OrderByDescending(r=> r.CreatedAt).ToList();
+            return _dbContext.Flocks.Include(f=>f.FlockType).Where(f=> f.AvailableBirds > 0).OrderByDescending(r=> r.CreatedAt);
         }
 
         public List<Flock> GetApprovedFlocks()

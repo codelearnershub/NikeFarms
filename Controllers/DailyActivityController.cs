@@ -33,14 +33,51 @@ namespace NikeFarms.v2._0.Controllers
             _storeItemService = storeItemService;
         }
 
-        public IActionResult Index()
+        [Authorize(Roles = "Super Admin, Farm Manager")]
+        public IActionResult Index(string sortOrder, string searchString, int? pageNumber)
         {
+            var dailyActs = _dailyService.GetAllDailyActivities();
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["CurrentFilter"] = searchString;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                dailyActs = dailyActs.Where(s => s.Flock.BatchNo.Contains(searchString));
+            }
+
+            List<ListDailyActivityVM> ListDailyActivity = new List<ListDailyActivityVM>();
+            foreach (var dailyAct in dailyActs)
+            {
+                var Created = _userService.FindByEmail(dailyAct.CreatedBy);
+                var Flock = _flockService.FindById(dailyAct.FlockId);
+                var storeAllocationMed = _storeAllocationService.FindMedById(dailyAct.StoreAllocationMedId);
+                var storeAllocationFeed = _storeAllocationService.FindById(dailyAct.StoreAllocationFeedId);
+
+                string MedName = "null";
+                if (storeAllocationMed != null)
+                {
+                    MedName = _storeItemService.FindById(storeAllocationMed.StoreItemId).Name;
+                };
+
+                ListDailyActivityVM listDailyActivityVM = new ListDailyActivityVM
+                {
+                    Id = dailyAct.Id,
+                    FlockDescription = $"{_flockTypeService.FindById(Flock.FlockTypeId).Name}  Batch No: {Flock.BatchNo}",
+                    MedUsed = MedName,
+                    NoOfMedUsed = dailyAct.NoOfMedUsed,
+                    FeedUsed = $"{_storeItemService.FindById(storeAllocationFeed.StoreItemId).Name}",
+                    NoOfFeedUsed = dailyAct.NoOfFeedUsed,
+                    CreatedAt = dailyAct.Date,
+                    CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
+                };
+
+                ListDailyActivity.Add(listDailyActivityVM);
+            }
+
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
-
-
-            return View();
+            int pageSize = 5;
+            return View(PaginatedList<ListDailyActivityVM>.CreateAsync(ListDailyActivity.AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
         [Authorize(Roles = "Super Admin, Farm Manager")]
@@ -171,13 +208,14 @@ namespace NikeFarms.v2._0.Controllers
 
         
             _dailyService.Add(dailyActivityDTO);
-            return RedirectToAction("ListAllDailyActivities");
+            return RedirectToAction("Index");
         }
 
         [Authorize(Roles = "Super Admin, Admin")]
-        public IActionResult ListDailyActivity(int id)
+        public IActionResult ListDailyActivity(int id, string sortOrder, int? pageNumber)
         {
             var dailyActs = _dailyService.GetDailyActivitiesPerFlockId(id);
+            ViewData["CurrentSort"] = sortOrder;
             var flock = _flockService.FindById(id);
             ViewBag.FlockD = $"{_flockTypeService.FindById(flock.FlockTypeId).Name}  Batch No: {flock.BatchNo}";
 
@@ -210,51 +248,12 @@ namespace NikeFarms.v2._0.Controllers
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
-
-            return View(ListDailyActivity);
+            int pageSize = 5;
+            return View(PaginatedList<ListDailyActivityVM>.CreateAsync(ListDailyActivity.AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
-        [Authorize(Roles = "Super Admin, Farm Manager")]
-        public IActionResult ListAllDailyActivities()
-        {
-            var dailyActs = _dailyService.GetAllDailyActivities();
-
-            List<ListDailyActivityVM> ListDailyActivity = new List<ListDailyActivityVM>();
-            foreach (var dailyAct in dailyActs)
-            {
-                var Created = _userService.FindByEmail(dailyAct.CreatedBy);
-                var Flock = _flockService.FindById(dailyAct.FlockId);
-                var storeAllocationMed = _storeAllocationService.FindMedById(dailyAct.StoreAllocationMedId);
-                var storeAllocationFeed = _storeAllocationService.FindById(dailyAct.StoreAllocationFeedId);
-
-                string MedName = "null";
-                if (storeAllocationMed != null)
-                {
-                    MedName = _storeItemService.FindById(storeAllocationMed.StoreItemId).Name;
-                };
-
-                ListDailyActivityVM listDailyActivityVM = new ListDailyActivityVM
-                {
-                    Id = dailyAct.Id,
-                    FlockDescription = $"{_flockTypeService.FindById(Flock.FlockTypeId).Name}  Batch No: {Flock.BatchNo}",
-                    MedUsed = MedName,
-                    NoOfMedUsed = dailyAct.NoOfMedUsed,
-                    FeedUsed = $"{_storeItemService.FindById(storeAllocationFeed.StoreItemId).Name}",
-                    NoOfFeedUsed = dailyAct.NoOfFeedUsed,
-                    CreatedAt = dailyAct.Date,
-                    CreatedBy = $"{Created.FirstName} .{Created.LastName[0]}",
-                };
-
-                ListDailyActivity.Add(listDailyActivityVM);
-            }
-
-            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            User userlogin = _userService.FindById(userId);
-            ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
-
-            return View(ListDailyActivity);
-        }
-
+       
+        
         [Authorize(Roles = "Super Admin, Farm Manager")]
         public IActionResult Delete(int id)
         {
@@ -298,7 +297,7 @@ namespace NikeFarms.v2._0.Controllers
 
            
             _dailyService.Delete(id);
-            return RedirectToAction("ListAllDailyActivities");
+            return RedirectToAction("Index");
         }
     }
 }

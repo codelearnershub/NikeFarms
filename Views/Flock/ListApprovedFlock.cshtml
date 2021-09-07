@@ -1,4 +1,4 @@
-﻿@model List<NikeFarms.v2._0.Models.ViewModels.ListFlockVM>
+﻿@model PaginatedList<NikeFarms.v2._0.Models.ViewModels.ListFlockVM>
 @{ ViewBag.Title = "Flocks"; }
 
 @{
@@ -20,79 +20,79 @@
         <div class="">
             @foreach (var flock in Model)
             {
-            <div class=" cardW  column " style="display:inline; margin-right: 70px; margin-bottom:70px">
-                <span class="font-weight-bolder">Batch No: <span style="color:darkred">@flock.BatchNo</span></span><br /><br />
+                <div class=" cardW  column " style="display:inline; margin-right: 70px; margin-bottom:70px">
+                    <span class="font-weight-bolder">Batch No: <span style="color:darkred">@flock.BatchNo</span></span><br /><br />
 
-                <span class="font-weight-bolder"><span style="color:darkred">*</span>Flock Type: <span style="font-weight: lighter">@flock.FlockType</span></span><br />
-                <span class="font-weight-bolder">
-                    <span style="color:darkred;">*</span>Age: <span style="font-weight: lighter">
+                    <span class="font-weight-bolder"><span style="color:darkred">*</span>Flock Type: <span style="font-weight: lighter">@flock.FlockType</span></span><br />
+                    <span class="font-weight-bolder">
+                        <span style="color:darkred;">*</span>Age: <span style="font-weight: lighter">
 
-                        @if (flock.currentAge < 31)
-                        {
-                            @flock.currentAge <span class="font-weight-bolder">Day(s)</span>
-                        }
-                        else if (flock.currentAge > 30 && flock.currentAge < 356)
-                        {
-                            int remainder = flock.currentAge % 31;
-                            int month = flock.currentAge / 31;
-                            if (remainder == 0)
+                            @if (flock.currentAge < 31)
                             {
-                                @month <span class="font-weight-bolder">Month(s)</span>
+                                @flock.currentAge <span class="font-weight-bolder">Day(s)</span>
                             }
-                            else
+                            else if (flock.currentAge > 30 && flock.currentAge < 356)
                             {
-                                @month <span class="font-weight-bolder">Month(s)</span> @remainder <span class="font-weight-bolder">Day(s)</span>
-                            }
-
-                        }
-                        else
-                        {
-                            if (flock.currentAge >= 365)
-                            {
-                                int rmonth = (flock.currentAge % 365) / 31;
-                                int year = flock.currentAge / 365;
-                                int rday = (flock.currentAge % 365) % 31;
-                                if (rmonth == 0)
+                                int remainder = flock.currentAge % 31;
+                                int month = flock.currentAge / 31;
+                                if (remainder == 0)
                                 {
-                                    @year <span class="font-weight-bolder">Year(s)</span>
-                                }
-                                else if (rday == 0)
-                                {
-                                    @year <span class="font-weight-bolder">Year(s)</span> @rmonth <span class="font-weight-bolder">Month(s)</span>
+                                    @month <span class="font-weight-bolder">Month(s)</span>
                                 }
                                 else
                                 {
-                                    <span style="font-size:13px">@year <span class="font-weight-bolder">Year(s)</span> @rmonth <span class="font-weight-bolder">Month(s)</span> @rday <span class="font-weight-bolder">Day(s)</span></span>
+                                    @month <span class="font-weight-bolder">Month(s)</span> @remainder <span class="font-weight-bolder">Day(s)</span>
                                 }
 
                             }
+                            else
+                            {
+                                if (flock.currentAge >= 365)
+                                {
+                                    int rmonth = (flock.currentAge % 365) / 31;
+                                    int year = flock.currentAge / 365;
+                                    int rday = (flock.currentAge % 365) % 31;
+                                    if (rmonth == 0)
+                                    {
+                                        @year <span class="font-weight-bolder">Year(s)</span>
+                                    }
+                                    else if (rday == 0)
+                                    {
+                                        @year <span class="font-weight-bolder">Year(s)</span> @rmonth <span class="font-weight-bolder">Month(s)</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="font-size:13px">@year <span class="font-weight-bolder">Year(s)</span> @rmonth <span class="font-weight-bolder">Month(s)</span> @rday <span class="font-weight-bolder">Day(s)</span></span>
+                                    }
 
-                        }
-                    </span>
-                </span><br />
-                <span class="font-weight-bolder"><span style="color:darkred">*</span>Initially Stocked: <span style="font-weight: lighter" class="comma">@flock.TotalNo</span> Bird(s)</span><br />
-                @if (flock.AvailableBirds <= 10)
-                {
-                    <span class="font-weight-bolder" style="color:red"><span style="color:darkred">*</span>Available Birds: <span class="comma">@flock.AvailableBirds</span> Bird(s)!!</span><br />
-                }
-                else
-                {
-                    <span class="font-weight-bolder"><span style="color:darkred">*</span>Available Birds: <span style="font-weight: lighter" class="comma">@flock.AvailableBirds</span> Bird(s)</span><br />
-                }
+                                }
 
-                <span class="font-weight-bolder"><span style="color:darkred">*</span>Mortality: <span style="font-weight: lighter" class="comma">@flock.Mortality</span> Death(s)</span><br />
-                <span class="font-weight-bolder"><span style="color:darkred">*</span>No Sold: <span style="font-weight: lighter" class="comma">@flock.NoOfBirdsSold</span> Bird(s)</span><br />
-                <span class="font-weight-bolder"><span style="color:darkred">*</span>Average Weight(Initial): <span style="font-weight: lighter" class="comma">@flock.InitialAverageWeight</span> Kg</span><br />
-                <span class="font-weight-bolder"><span style="color:darkred">*</span>Average Weight(Now): <span style="font-weight: lighter" class="comma">@flock.CurrentAverageWeight</span> Kg</span><br />
-                <span class="font-weight-bolder"><span style="color:darkred">*</span>Expenses(Feed): &#8358 <span style="font-weight: lighter" class="comma">@flock.PriceSpentOnFeed</span></span><br />
-                <span class="font-weight-bolder"><span style="color:darkred">*</span>Expenses(Med): &#8358 <span style="font-weight: lighter" class="comma">@flock.PriceSpentOnMed</span> </span><br />
-                <span class="font-weight-bolder"><span style="color:darkred">*</span>Amount(Sales): &#8358 <span style="font-weight: lighter" class="comma">@flock.AmountPurchased</span> </span><br /><br />
-                <div id="dailyAct">
+                            }
+                        </span>
+                    </span><br />
+                    <span class="font-weight-bolder"><span style="color:darkred">*</span>Initially Stocked: <span style="font-weight: lighter" class="comma">@flock.TotalNo</span> Bird(s)</span><br />
+                    @if (flock.AvailableBirds <= 10)
+                    {
+                        <span class="font-weight-bolder" style="color:red"><span style="color:darkred">*</span>Available Birds: <span class="comma">@flock.AvailableBirds</span> Bird(s)!!</span><br />
+                    }
+                    else
+                    {
+                        <span class="font-weight-bolder"><span style="color:darkred">*</span>Available Birds: <span style="font-weight: lighter" class="comma">@flock.AvailableBirds</span> Bird(s)</span><br />
+                    }
 
-                    <a class="font-weight-bolder" asp-controller="DailyActivity" asp-action="ListDailyActivity" style="margin-left:50%; color:darkred" asp-route-id="@flock.Id">Daily Activity</a>
+                    <span class="font-weight-bolder"><span style="color:darkred">*</span>Mortality: <span style="font-weight: lighter" class="comma">@flock.Mortality</span> Death(s)</span><br />
+                    <span class="font-weight-bolder"><span style="color:darkred">*</span>No Sold: <span style="font-weight: lighter" class="comma">@flock.NoOfBirdsSold</span> Bird(s)</span><br />
+                    <span class="font-weight-bolder"><span style="color:darkred">*</span>Average Weight(Initial): <span style="font-weight: lighter" class="comma">@flock.InitialAverageWeight</span> Kg</span><br />
+                    <span class="font-weight-bolder"><span style="color:darkred">*</span>Average Weight(Now): <span style="font-weight: lighter" class="comma">@flock.CurrentAverageWeight</span> Kg</span><br />
+                    <span class="font-weight-bolder"><span style="color:darkred">*</span>Expenses(Feed): &#8358 <span style="font-weight: lighter" class="comma">@flock.PriceSpentOnFeed</span></span><br />
+                    <span class="font-weight-bolder"><span style="color:darkred">*</span>Expenses(Med): &#8358 <span style="font-weight: lighter" class="comma">@flock.PriceSpentOnMed</span> </span><br />
+                    <span class="font-weight-bolder"><span style="color:darkred">*</span>Amount(Sales): &#8358 <span style="font-weight: lighter" class="comma">@flock.AmountPurchased</span> </span><br /><br />
+                    <div id="dailyAct">
 
+                        <a class="font-weight-bolder" asp-controller="DailyActivity" asp-action="ListDailyActivity" style="margin-left:50%; color:darkred" asp-route-id="@flock.Id">Daily Activity</a>
+
+                    </div>
                 </div>
-            </div>
 
             }
         </div>
@@ -123,3 +123,19 @@
 
 
 </script>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="ListApprovedFlock"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="ListApprovedFlock"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

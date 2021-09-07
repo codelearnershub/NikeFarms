@@ -21,7 +21,7 @@ namespace NikeFarms.v2._0.Interface
 
         public void Delete(int id);
 
-        public List<DailyActivity> GetAllDailyActivities();
+        public IEnumerable<DailyActivity> GetAllDailyActivities();
 
         public DailyActivity GetDailyActivitiesFlockId(int flockId);
 

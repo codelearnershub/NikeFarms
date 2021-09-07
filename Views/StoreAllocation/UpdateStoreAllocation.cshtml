@@ -40,8 +40,8 @@
                         <div class="form-row">
                             <div class="form-group col-md-5">
                                 <label class="form-check-label font-weight-bold" asp-for="ManagerId"><span style="color: darkred">*</span> Allocate To:</label>
-                                <select asp-for="ManagerId" asp-items="@Model.ManagerList" class="form-control">
-                                    <option disabled selected>--Choose Farm Manager--</option>
+                                <select  class="form-control">
+                                    <option disabled selected>@Model.SelectedManager</option>
                                 </select>
                                 <span asp-validation-for="ManagerId" style="color:darkred"></span><br>
                             </div>

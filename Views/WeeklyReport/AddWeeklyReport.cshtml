@@ -15,7 +15,7 @@
                 </div>
                 @if (ViewBag.Message == "Error")
                 {
-                    <p style="color:red; " class="text-center font-weight-bolder  mb-2">*You have already Added Weekly Report for This Flock this Week!</p>
+                    <p style="color:red; " class="text-center font-weight-bolder  mb-2">*Weekly Report has been added for This Flock this Week, Come back Next Week!</p>
                 }
                 <form method="post">
                     <div class="">
@@ -32,7 +32,7 @@
                             </div>
                             <div class="form-group col-md-5">
                                 <label asp-for="AverageWeight" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> AverageWeight </label>
-                                <input asp-for="AverageWeight" class="form-control" placeholder="Input Average Weight" type="number" min="0" />
+                                <input asp-for="AverageWeight" class="form-control" placeholder="Input Average Weight" type="number" min="0.01" />
                                 <span asp-validation-for="AverageWeight" style="color:darkred"></span>
                             </div>
                         </div>

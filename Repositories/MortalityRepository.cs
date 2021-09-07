@@ -1,4 +1,5 @@
-﻿using NikeFarms.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using NikeFarms.Context;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
 using System;
@@ -38,7 +39,7 @@ namespace NikeFarms.v2._0.Repositories
         public List<Mortality> GetAllMortality()
         {
             
-            return _dbContext.Mortalities.OrderByDescending(r => r.CreatedAt).ToList();
+            return _dbContext.Mortalities.Include(f => f.Flock).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public List<Mortality> GetMortalityPerFlock(int flockId)

@@ -38,11 +38,17 @@ namespace NikeFarms.v2._0.Controllers
         }
 
         [Authorize(Roles = "Super Admin, Store Manager")]
-        public IActionResult Index()
+        public IActionResult Index(string sortOrder, string searchString, int? pageNumber)
         {
             var flocks = _flockService.GetAllFlocks();
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["CurrentFilter"] = searchString;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                flocks = flocks.Where(s => s.BatchNo.Contains(searchString)|| s.FlockType.Name.Contains(searchString));
+            }
             List<ListFlockVM> ListFlock = new List<ListFlockVM>();
-            foreach (var flock in flocks)
+            foreach (var flock in flocks.ToList())
             {
                 var Created = _userService.FindByEmail(flock.CreatedBy);
 
@@ -66,8 +72,8 @@ namespace NikeFarms.v2._0.Controllers
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
-
-            return View(ListFlock);
+            int pageSize = 5;
+            return View(PaginatedList<ListFlockVM>.CreateAsync(ListFlock.AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
         [Authorize(Roles = "Super Admin, Store Manager")]
@@ -182,11 +188,12 @@ namespace NikeFarms.v2._0.Controllers
         }
 
         [Authorize(Roles = "Super Admin, Admin")]
-        public IActionResult ListApprovedFlock()
+        public IActionResult ListApprovedFlock(string sortOrder, int? pageNumber)
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             var flocks = _flockService.GetApprovedFlocks();
+            ViewData["CurrentSort"] = sortOrder; 
             List<ListFlockVM> ListFlock = new List<ListFlockVM>();
             foreach (var flock in flocks)
             {
@@ -216,8 +223,8 @@ namespace NikeFarms.v2._0.Controllers
 
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
-
-            return View(ListFlock);
+            int pageSize = 3;
+            return View(PaginatedList<ListFlockVM>.CreateAsync(ListFlock.AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
         [Authorize(Roles = "Super Admin, Admin")]
@@ -238,6 +245,7 @@ namespace NikeFarms.v2._0.Controllers
                 currentAge = (int)((DateTime.Now - flock.CreatedAt).TotalDays) + flock.Age,
                 TotalNo = flock.TotalNo,
                 AvailableBirds = flock.AvailableBirds,
+                AmountPurchased = flock.AmountPurchased,
                 InitialAverageWeight = flock.AverageWeight,
                 CurrentAverageWeight = _flockService.GetCurrentAverageWeight(flock.Id),
                 IsApproved = flock.IsApproved,
@@ -248,7 +256,7 @@ namespace NikeFarms.v2._0.Controllers
                 PriceSpentOnMed = _flockService.GetAmountSpentOnFlockMed(flock.Id),
                 TotalKgOfFeedConsumed = _flockService.GetTotalWeightOfFlockFeed(flock.Id),
                 NoOfBirdsSold = _salesItemService.TotalNoOfBirdSoldPerFlock(flock.Id),
-                AmountPurchased = _salesItemService.AmountOfSalesPerFlock(flock.Id),
+                TotalSalesPrice = _salesItemService.AmountOfSalesPerFlock(flock.Id),
             };
 
             return View(listFlockVM);

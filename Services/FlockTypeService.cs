@@ -62,5 +62,9 @@ namespace NikeFarms.v2._0.Services
             _flockTypeRepository.Delete(id);
         }
 
+        public FlockType FindByName(string name)
+        {
+            return _flockTypeRepository.FindByName(name);
+        }
     }
 }

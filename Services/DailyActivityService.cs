@@ -72,7 +72,7 @@ namespace NikeFarms.v2._0.Services
             return _dailyActivityRepository.GetDailyActivitiesPerFlockId(flockId);
         }
 
-        public List<DailyActivity> GetAllDailyActivities()
+        public IEnumerable<DailyActivity> GetAllDailyActivities()
         {
             return _dailyActivityRepository.GetAllDailyActivities();
         }

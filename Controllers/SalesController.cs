@@ -36,9 +36,10 @@ namespace NikeFarms.v2._0.Controllers
         }
 
         [Authorize(Roles = "Super Admin, Sales Manager")]
-        public IActionResult Index()
+        public IActionResult Index(string sortOrder, int? pageNumber)
         {
             var sales = _salesService.GetUnSoldSales();
+            ViewData["CurrentSort"] = sortOrder;
             List<ListSalesVM> ListSale = new List<ListSalesVM>();
             foreach (var sale in sales)
             {
@@ -63,13 +64,15 @@ namespace NikeFarms.v2._0.Controllers
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
 
-            return View(ListSale);
+            int pageSize = 5;
+            return View(PaginatedList<ListSalesVM>.CreateAsync(ListSale.AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
         [Authorize(Roles = "Super Admin, Admin")]
-        public IActionResult ListSold()
+        public IActionResult ListSold(string sortOrder, int? pageNumber)
         {
             var sales = _salesService.GetSoldSales();
+            ViewData["CurrentSort"] = sortOrder;
             List<ListSalesVM> ListSale = new List<ListSalesVM>();
             foreach (var sale in sales)
             {
@@ -94,14 +97,16 @@ namespace NikeFarms.v2._0.Controllers
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
 
-            return View(ListSale);
+            int pageSize = 5;
+            return View(PaginatedList<ListSalesVM>.CreateAsync(ListSale.AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
 
         [Authorize(Roles = "Super Admin, Admin")]
-        public IActionResult SalesPerCustomer(int id)
+        public IActionResult SalesPerCustomer(int id, string sortOrder,string searchString, int? pageNumber)
         {
             var sales = _salesService.FindSalesByCustomerId(id);
+            ViewData["CurrentSort"] = sortOrder;
             List<ListSalesVM> ListSale = new List<ListSalesVM>();
             foreach (var sale in sales)
             {
@@ -125,8 +130,8 @@ namespace NikeFarms.v2._0.Controllers
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
-
-            return View(ListSale);
+            int pageSize = 5;
+            return View(PaginatedList<ListSalesVM>.CreateAsync(ListSale.AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
 

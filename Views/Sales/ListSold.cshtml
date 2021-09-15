@@ -1,4 +1,4 @@
-﻿@model List<NikeFarms.v2._0.Models.ViewModels.ListSalesVM>
+﻿@model PaginatedList<NikeFarms.v2._0.Models.ViewModels.ListSalesVM>
 @{ ViewBag.Title = "Sales"; }
 @{
 
@@ -29,7 +29,7 @@
                     <tbody>
                         @foreach (var sale in Model)
                         {
-                           
+
                             <tr>
 
 
@@ -56,7 +56,7 @@
                                 }
                                 <td>@sale.CustomerFullName</td>
                                 <td class="font-weight-bold">@sale.CreatedAt</td>
-                               
+
                             </tr>
                         }
                     </tbody>
@@ -90,3 +90,18 @@
 
 </script>
 
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="ListSold"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="ListSold"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

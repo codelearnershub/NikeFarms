@@ -17,7 +17,7 @@ namespace NikeFarms.v2._0.Interface
 
         public List<Flock> GetApprovedFlocks();
 
-        public List<Flock> GetAllFlocks();
+        public IQueryable<Flock> GetAllFlocks();
 
         public Flock Update(Flock flock);
 

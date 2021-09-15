@@ -1,4 +1,4 @@
-﻿@model List<NikeFarms.v2._0.Models.ViewModels.ListMortalityVM>
+﻿@model PaginatedList<NikeFarms.v2._0.Models.ViewModels.ListMortalityVM>
 @{ ViewBag.Title = "Mortality"; }
 @{
     Layout = "_FarmManagerDashboard";
@@ -11,6 +11,13 @@
 <div class="card">
     <div>
         <br />
+        <form asp-action="Index" method="get" style="margin-left:70%">
+
+            <input class="form-control col-md-10" style="margin-bottom:5%" type="search" placeholder="Search (Batch No)..." name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-outline-secondary" /> |
+            <a style="color:darkred" asp-action="Index">Back to Full List</a>
+
+        </form>
         <a class="btn font-weight-bold ml-4" asp-controller="Mortality" asp-action="AddMortality" style="background-color:darkgoldenrod"><i class="fas fa-plus"></i> Add Mortaliy</a>
         @if (Model.Count() > 0)
         {
@@ -32,9 +39,9 @@
                             string modalId = $"exampleModalCenter{mortality.Id}";
                             string modalIdHash = $"#exampleModalCenter{mortality.Id}";
                             <tr>
-                                
-                                    <td class="font-weight-bolder"><span style="color:darkred">*</span>@mortality.FlockDescription</td>
-                                
+
+                                <td class="font-weight-bolder"><span style="color:darkred">*</span>@mortality.FlockDescription</td>
+
                                 <td><span class="comma">@mortality.NoOfDeaths</span> Death(s)</td>
                                 <td class="font-weight-bold">@mortality.CreatedAt</td>
                                 @if (mortality.CreatedBy == ViewBag.UserName)
@@ -92,7 +99,7 @@
         else
         {
             <br /><br />
-            <h4 class="text-center font-weight-bolder" style="color:darkred">No Mortality Record has Been Added Today! </h4>
+            <h4 class="text-center font-weight-bolder" style="color:darkred">No Mortality Record Found! </h4>
         }
     </div>
 </div>
@@ -115,4 +122,21 @@
 
 
 </script>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+
 

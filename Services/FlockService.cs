@@ -74,7 +74,7 @@ namespace NikeFarms.v2._0.Services
             return flock;
         }
 
-        public IEnumerable<Flock> GetAllFlocks()
+        public IQueryable<Flock> GetAllFlocks()
         {
             return _flockRepository.GetAllFlocks();
         }
@@ -337,10 +337,20 @@ namespace NikeFarms.v2._0.Services
 
             foreach (var d in daily)
             {
-                MedAllo = _storeAllocationService.FindMedById(d.StoreAllocationMedId);
-                storeItem = _storeItemService.FindById(MedAllo.StoreItemId);
-                pricePerMed = storeItem.TotalPricePurchased / (decimal)storeItem.NoOfItem;
-                amountSpent += (pricePerMed * (decimal)d.NoOfMedUsed);
+               
+                if (_storeAllocationService.FindMedById(d.StoreAllocationMedId) != null)
+                {
+                    MedAllo = _storeAllocationService.FindMedById(d.StoreAllocationMedId);
+                    storeItem = _storeItemService.FindById(MedAllo.StoreItemId);
+                    pricePerMed = storeItem.TotalPricePurchased / (decimal)storeItem.NoOfItem;
+                    amountSpent += (pricePerMed * (decimal)d.NoOfMedUsed);
+                }
+                else
+                {
+                    amountSpent += 0;
+                }
+                
+                
             }
 
             return Math.Round(amountSpent, 2);

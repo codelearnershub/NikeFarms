@@ -43,12 +43,12 @@ namespace NikeFarms.v2._0.Repositories
 
         public List<DailyActivity> GetDailyActivitiesPerFlockId(int flockId)
         {
-            return _dbContext.DailyActivities.Where(d=> d.FlockId == flockId).OrderByDescending(r => r.CreatedAt).ToList();
+            return _dbContext.DailyActivities.Include(f => f.Flock).Where(d=> d.FlockId == flockId).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public List<DailyActivity> GetAllDailyActivities()
         {
-            return _dbContext.DailyActivities.ToList();
+            return _dbContext.DailyActivities.Include(f => f.Flock).ToList();
         }
 
         public DailyActivity GetDailyActivitiesFlockId(int flockId)

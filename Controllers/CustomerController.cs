@@ -25,9 +25,17 @@ namespace NikeFarms.v2._0.Controllers
         }
 
         [Authorize(Roles = "Super Admin, Sales Manager")]
-        public IActionResult Index()
+        public IActionResult Index(string sortOrder, string searchString, int? pageNumber)
         {
             var customers = _customerService.GetAllCustomers();
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["CurrentFilter"] = searchString;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                customers = customers.Where(s => s.LastName.Contains(searchString) || s.FirstName.Contains(searchString) 
+                || s.Email.Contains(searchString));
+            }
+
             List<ListCustomerVM> ListCustomer = new List<ListCustomerVM>();
 
             
@@ -51,8 +59,8 @@ namespace NikeFarms.v2._0.Controllers
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
-
-            return View(ListCustomer);
+            int pageSize = 5;
+            return View(PaginatedList<ListCustomerVM>.CreateAsync(ListCustomer.AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
         [Authorize(Roles = "Super Admin, Sales Manager")]
@@ -139,7 +147,7 @@ namespace NikeFarms.v2._0.Controllers
             };
 
             var customerC = _customerService.FindByEmail(updateCustomer.Email);
-            if (customerC != null)
+            if (customerC != null && updateCustomer.Id != customerC.Id)
             {
                 ViewBag.Message = "error";
                 return View(updateCustomer);
@@ -150,10 +158,17 @@ namespace NikeFarms.v2._0.Controllers
         }
 
 
-
-        public IActionResult CustomerList()
+        [Authorize(Roles = "Super Admin, Admin")]
+        public IActionResult CustomerList(string sortOrder, string searchString, int? pageNumber)
         {
             var customers = _customerService.GetAllCustomers();
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["CurrentFilter"] = searchString;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                customers = customers.Where(s => s.LastName.Contains(searchString) || s.FirstName.Contains(searchString)
+                || s.Email.Contains(searchString));
+            }
             List<ListCustomerVM> ListCustomer = new List<ListCustomerVM>();
 
 
@@ -180,7 +195,8 @@ namespace NikeFarms.v2._0.Controllers
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
 
-            return View(ListCustomer);
+            int pageSize = 5;
+            return View(PaginatedList<ListCustomerVM>.CreateAsync(ListCustomer.AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
         //public IActionResult Delete(int id)

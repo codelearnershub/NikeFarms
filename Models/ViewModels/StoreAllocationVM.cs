@@ -44,6 +44,7 @@ namespace NikeFarms.v2._0.Models.ViewModels
 
     public class UpdateStoreAllocationVM : AddStoreAllocationVM
     {
+        public string SelectedManager { get; set; }
     }
 
     public class ListStoreAllocationVM

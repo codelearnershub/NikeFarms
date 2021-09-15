@@ -1,15 +1,15 @@
-﻿@model List<NikeFarms.v2._0.Models.ViewModels.ListStockVM>
+﻿@model PaginatedList<NikeFarms.v2._0.Models.ViewModels.ListStockVM>
 @{ ViewBag.Title = "Stocks"; }
 @if (ViewBag.Role == "Admin")
 {
     Layout = "_AdminDashboard";
 }
-else if(ViewBag.Role == "Store Manager")
+else if (ViewBag.Role == "Store Manager")
 {
     Layout = "_StoreManagerDashboard";
 }
 else
-    {
+{
     Layout = "_SalesManagerDashboard";
 }
 
@@ -19,6 +19,13 @@ else
 <div class="card">
     <div>
         <br />
+        <form asp-action="Index" method="get" style="margin-left:70%">
+
+            <input class="form-control col-md-10" style="margin-bottom:5%" type="search" placeholder="Search (Item Type)..." name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-outline-secondary" /> |
+            <a style="color:darkred" asp-action="Index">Back to Full List</a>
+
+        </form>
         @if (ViewBag.Role == "Store Manager")
         {
             <a class="btn font-weight-bold ml-4" asp-controller="Stock" asp-action="AddStock" style="background-color:darkgoldenrod"><i class="fas fa-plus"></i> Stock Goods</a>
@@ -124,29 +131,29 @@ else
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             @*<a class="btn font-weight-bold" style="background-color:red; color:white" data-toggle="modal" data-target=@modalIdHash>
-                                                <i class="fas fa-trash-alt"></i>
-                                            </a>
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </a>
 
 
-                                            <div class="modal fade" id=@modalId tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title font-weight-bolder" style="color:red" id="exampleModalLongTitle">Delete Stock <i class="fas fa-trash-alt"></i> </h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <br /> <span class="font-weight-bolder text-center">Are you Sure you want to delete Stock with Batch No: <span style="color:darkred">@stock.FlockBatchNo (@stock.NoOfItem) ??</span></span>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <a class="btn font-weight-bold" style="background-color:red; color:white" asp-action="Delete" asp-route-id="@stock.Id">Yes</a>
-                                                            <a class="btn font-weight-bold" style="background-color:greenyellow; color:white" data-dismiss="modal">No</a>
+                                                <div class="modal fade" id=@modalId tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title font-weight-bolder" style="color:red" id="exampleModalLongTitle">Delete Stock <i class="fas fa-trash-alt"></i> </h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <br /> <span class="font-weight-bolder text-center">Are you Sure you want to delete Stock with Batch No: <span style="color:darkred">@stock.FlockBatchNo (@stock.NoOfItem) ??</span></span>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <a class="btn font-weight-bold" style="background-color:red; color:white" asp-action="Delete" asp-route-id="@stock.Id">Yes</a>
+                                                                <a class="btn font-weight-bold" style="background-color:greenyellow; color:white" data-dismiss="modal">No</a>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>*@
+                                                </div>*@
                                         </td>
                                     }
 
@@ -200,3 +207,19 @@ else
 
 
 </script>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

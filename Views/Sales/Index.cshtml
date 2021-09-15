@@ -1,4 +1,4 @@
-﻿@model List<NikeFarms.v2._0.Models.ViewModels.ListSalesVM>
+﻿@model PaginatedList<NikeFarms.v2._0.Models.ViewModels.ListSalesVM>
 @{ ViewBag.Title = "Sales"; }
 @{
 
@@ -67,7 +67,7 @@
                                         <a class="btn font-weight-bold" asp-controller="SalesItem" asp-action="AddSalesItem" asp-route-id="@sale.Id" style="background-color:grey; color:white">
                                             <i class="fas fa-plus"></i>
                                         </a>
-                                        <a class="btn font-weight-bold"  asp-action="Receipt" asp-route-id="@sale.Id" style="background-color:skyblue; color:white">
+                                        <a class="btn font-weight-bold" asp-action="Receipt" asp-route-id="@sale.Id" style="background-color:skyblue; color:white">
                                             <i class="fas fa-receipt"></i>
                                         </a>
                                         <a class="btn font-weight-bold" asp-action="UpdateSales" asp-route-id="@sale.Id" style="background-color:greenyellow; color:white">
@@ -136,4 +136,20 @@
 
 
 </script>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
 

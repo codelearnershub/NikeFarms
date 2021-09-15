@@ -1,4 +1,5 @@
-﻿using NikeFarms.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using NikeFarms.Context;
 using NikeFarms.v2._0.Interface;
 using NikeFarms.v2._0.Models;
 using System;
@@ -70,7 +71,7 @@ namespace NikeFarms.v2._0.Repositories
 
         public List<StoreAllocation> GetAllStoreAllocations()
         {
-            return _dbContext.StoreAllocations.Where(s=> s.ItemRemaining > 0).OrderByDescending(r => r.CreatedAt).ToList();
+            return _dbContext.StoreAllocations.Include(s=> s.StoreItem).Where(s=> s.ItemRemaining > 0).OrderByDescending(r => r.CreatedAt).ToList();
         }
 
         public List<StoreAllocation> GetStoreAllocationsByManagerEmail(string managerEmail)

@@ -18,7 +18,7 @@
             </div>
             @foreach (var salesItem in Model)
             {
-                <span class="font-weight-bolder" style="color:darkred">*  </span><span style="font-family:'Times New Roman'" class="font-weight-bold"> @salesItem.SaleDescription</span><span style="color:white">.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .</span> <span class="font-weight-bolder" style=" font-family: 'Times New Roman'">@salesItem.Qty</span><br />
+                <span class="font-weight-bolder" style="color:darkred">*  </span><span style="font-family:'Times New Roman'" class="font-weight-bold"> @salesItem.SaleDescription</span><span style="color:white">.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .</span> <span class="font-weight-bolder" style=" font-family: 'Times New Roman'">@salesItem.Qty</span><br />
                 <span class="font-weight-bolder" style="font-size:10px">Unit Price: &#8358 <span class="comma font-weight-light">@salesItem.PricePerItem</span></span><br />
                 <span class="font-weight-bolder" style="font-size: 10px;">Total Price: &#8358 <span class="comma font-weight-light">@salesItem.TotalPricePerSales</span></span>
                 <br /> <span class="font-weight-bolder " style="color:darkred">---  --------------------------------------------------------- ---</span>

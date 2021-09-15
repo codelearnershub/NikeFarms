@@ -73,7 +73,7 @@ namespace NikeFarms.v2._0.Services
             storeAllocation.NoOfItem = storeAllocationDTO.NoOfItem;
             storeAllocation.ItemRemaining = storeAllocationDTO.ItemRemaining;
             storeAllocation.IsApproved = storeAllocationDTO.IsApproved;
-            storeAllocation.ManagerId = storeAllocationDTO.ManagerId;
+            storeAllocation.ManagerId = storeAllocation.ManagerId;
             storeAllocation.UpdatedAt = DateTime.Now;
 
 

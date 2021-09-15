@@ -24,9 +24,11 @@ namespace NikeFarms.v2._0.Controllers
             _flockTypeService = flockTypeService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string sortOrder, int? pageNumber)
         {
             var flockTypes = _flockTypeService.GetAllFlockTypes();
+            ViewData["CurrentSort"] = sortOrder;
+
             List<ListFlockTypeVM> ListFlockType = new List<ListFlockTypeVM>();
             foreach (var flockType in flockTypes)
 
@@ -47,8 +49,10 @@ namespace NikeFarms.v2._0.Controllers
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
+            int pageSize = 5;
 
-            return View(ListFlockType);
+            return View(PaginatedList<ListFlockTypeVM>.CreateAsync(ListFlockType.AsQueryable(), pageNumber ?? 1, pageSize));
+
         }
 
         public IActionResult AddFlockType()
@@ -71,6 +75,13 @@ namespace NikeFarms.v2._0.Controllers
                 Name = addFlockType.Name,
                 Description = addFlockType.Description,
             };
+
+            var flockType = _flockTypeService.FindByName(addFlockType.Name);
+            if(flockType != null)
+            {
+                ViewBag.Message = "error";
+                return View(addFlockType);
+            }
 
             _flockTypeService.Add(flockTypeDTO);
             return RedirectToAction("Index");
@@ -111,21 +122,25 @@ namespace NikeFarms.v2._0.Controllers
                 Name = updateFlockType.Name,
                 Description = updateFlockType.Description,
             };
+
+            var flockTypeC = _flockTypeService.FindByName(updateFlockType.Name);
+            if (flockTypeC != null && updateFlockType.Id != flockTypeC.Id)
+            {
+                ViewBag.Message = "error";
+                UpdateFlockTypeVM updateFlockTypeV = new UpdateFlockTypeVM
+                {
+                    Id = flockType.Id,
+                    Name = flockType.Name,
+                    Description = flockType.Description,
+                };
+
+                return View(updateFlockTypeV);
+            }
+
             _flockTypeService.Update(flockType);
             return RedirectToAction("Index");
         }
 
 
-
-        public IActionResult Delete(int id)
-        {
-            var flockType = _flockTypeService.FindById(id);
-            if (flockType == null)
-            {
-                return NotFound();
-            }
-            _flockTypeService.Delete(id);
-            return RedirectToAction("Index");
-        }
     }
 }

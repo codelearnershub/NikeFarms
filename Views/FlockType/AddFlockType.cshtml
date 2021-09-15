@@ -18,6 +18,10 @@
                         <div class="form-group col-md-5">
                             <label asp-for="Name" class="form-check-label font-weight-bold"><span style="color: darkred">*</span> Flock Type</label>
                             <input style="margin-right: 20px" asp-for="Name" class="form-control " placeholder="Enter Flock Type" />
+                            @if (ViewBag.Message == "error")
+                            {
+                                <p style="color:red; " class="font-weight-bolder mb-2">*A Flock Type with this Name already Exist!!</p>
+                            }
                             <span asp-validation-for="Name" style="color:darkred"></span>
                         </div>
                         <div class="form-group col-md-2">

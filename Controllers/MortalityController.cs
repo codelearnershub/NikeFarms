@@ -36,9 +36,15 @@ namespace NikeFarms.v2._0.Controllers
             _flockTypeService = flockTypeService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string sortOrder, string searchString, int? pageNumber)
         {
             var mortalities = _mortalityService.GetAllMortality();
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["CurrentFilter"] = searchString;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                mortalities = mortalities.Where(s => s.Flock.BatchNo.Contains(searchString));
+            }
             List<ListMortalityVM> ListMortality = new List<ListMortalityVM>();
 
             foreach (var mortality in mortalities)
@@ -71,8 +77,8 @@ namespace NikeFarms.v2._0.Controllers
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             User userlogin = _userService.FindById(userId);
             ViewBag.UserName = $"{userlogin.FirstName} .{userlogin.LastName[0]}";
-
-            return View(ListMortality);
+            int pageSize = 5;
+            return View(PaginatedList<ListMortalityVM>.CreateAsync(ListMortality.AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
         public IActionResult AddMortality()

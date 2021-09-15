@@ -17,7 +17,7 @@ namespace NikeFarms.v2._0.Interface
 
         public Flock FindByBatchNo(string batchNo);
 
-        public IEnumerable<Flock> GetAllFlocks();
+        public IQueryable<Flock> GetAllFlocks();
 
         public Flock Update(FlockDTO flockDTO);
 

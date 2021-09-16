@@ -116,7 +116,7 @@ namespace NikeFarms.v2._0.Controllers
                 ViewBag.Message = "AtLeastOne";
                 AddMortalityVM mortalityVM = new AddMortalityVM
                 {
-                    FlockList = _flockService.GetApprovedFlocks().Select(f => new SelectListItem
+                    FlockList = _flockService.OperationFlock().Select(f => new SelectListItem
                     {
                         Text = $"{_flockTypeService.FindById(f.FlockTypeId).Name} Batch No: ({_flockService.FindById(f.Id).BatchNo}) Not Stocked: {_flockService.FindById(f.Id).AvailableBirds - _flockService.TotalNoOfStockedBird(f.Id)} Bird(s)",
                         Value = f.Id.ToString()
@@ -135,7 +135,7 @@ namespace NikeFarms.v2._0.Controllers
                 ViewBag.Message = "AtMostOne";
                 AddMortalityVM mortalityVM = new AddMortalityVM
                 {
-                    FlockList = _flockService.GetApprovedFlocks().Select(f => new SelectListItem
+                    FlockList = _flockService.OperationFlock().Select(f => new SelectListItem
                     {
                         Text = $"{_flockTypeService.FindById(f.FlockTypeId).Name} Batch No: ({_flockService.FindById(f.Id).BatchNo}) Not Stocked: {_flockService.FindById(f.Id).AvailableBirds - _flockService.TotalNoOfStockedBird(f.Id)} Bird(s)",
                     }),
@@ -157,7 +157,7 @@ namespace NikeFarms.v2._0.Controllers
                     ViewBag.Message = "errorStock";
                     AddMortalityVM mortalityVM = new AddMortalityVM
                     {
-                        FlockList = _flockService.GetApprovedFlocks().Select(f => new SelectListItem
+                        FlockList = _flockService.OperationFlock().Select(f => new SelectListItem
                         {
                             Text = $"{_flockTypeService.FindById(f.FlockTypeId).Name} Batch No: ({_flockService.FindById(f.Id).BatchNo}) Not Stocked: {_flockService.FindById(f.Id).AvailableBirds - _flockService.TotalNoOfStockedBird(f.Id)} Bird(s)",
                             Value = f.Id.ToString()
@@ -217,7 +217,7 @@ namespace NikeFarms.v2._0.Controllers
                     ViewBag.Message = "errorFlock";
                     AddMortalityVM mortalityVM = new AddMortalityVM
                     {
-                        FlockList = _flockService.GetApprovedFlocks().Select(f => new SelectListItem
+                        FlockList = _flockService.OperationFlock().Select(f => new SelectListItem
                         {
                             Text = $"{_flockTypeService.FindById(f.FlockTypeId).Name} Batch No: ({_flockService.FindById(f.Id).BatchNo}) Not Stocked: {_flockService.FindById(f.Id).AvailableBirds - _flockService.TotalNoOfStockedBird(f.Id)} Bird(s)",
                             Value = f.Id.ToString()

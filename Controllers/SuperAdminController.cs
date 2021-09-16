@@ -36,7 +36,12 @@ namespace NikeFarms.v2._0.Controllers
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             ViewBag.Role = $"{_userRoleService.FindRole(userId)}";
             var role = _roleService.FindByName("Admin");
-            var checkUser = _userRoleService.FindUserWithParticularRole(role.Id);
+            UserRole checkUser = null;
+            if (role != null)
+            {
+               checkUser = _userRoleService.FindUserWithParticularRole(role.Id);
+            }
+           
 
             if(checkUser == null)
             {

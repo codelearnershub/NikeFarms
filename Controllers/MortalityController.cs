@@ -413,6 +413,7 @@ namespace NikeFarms.v2._0.Controllers
                 };
                 _stockService.UpdateMore(stockD);
 
+
             }
             if (mortality.FlockId != null)
             {
@@ -432,7 +433,6 @@ namespace NikeFarms.v2._0.Controllers
                 _flockService.UpdateFlockOnly(flockD);
             }
             
-
             _mortalityService.Delete(id);
             return RedirectToAction("Index");
         }

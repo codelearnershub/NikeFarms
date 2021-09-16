@@ -126,8 +126,20 @@ namespace NikeFarms.v2._0.Controllers
                 }
             };
 
-
-            if (isGreaterThanFlock == true && addStock.ItemType == "Birds")
+             if (flock.AvailableBirds < addStock.NoOfItem && addStock.ItemType == "Birds")
+            {
+                ViewBag.Message = "errorBirds";
+                AddStockVM stockVM = new AddStockVM
+                {
+                    FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
+                    {
+                        Text = $"{m.FlockType.Name} Batch No: {m.BatchNo}, Available Birds: {m.AvailableBirds}",
+                        Value = m.Id.ToString()
+                    })
+                };
+                return View(stockVM);
+            }
+            else if (isGreaterThanFlock == true && addStock.ItemType == "Birds")
             {
                 ViewBag.Message = "errorStock";
                 ViewBag.ErrorMss = $"{noOfStock} Birds of Flock with Batch No: {flock.BatchNo} has already been Stocked, the highest you can stock now is {flock.AvailableBirds - noOfStock}";
@@ -135,20 +147,7 @@ namespace NikeFarms.v2._0.Controllers
                 {
                     FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
                     {
-                        Text = $"{_flockTypeService.FindById(m.FlockTypeId).Name} Batch No: {m.BatchNo}, Available Birds: {m.AvailableBirds}",
-                        Value = m.Id.ToString()
-                    })
-                };
-                return View(stockVM);
-            }
-            else if (flock.AvailableBirds < addStock.NoOfItem && addStock.ItemType == "Birds")
-            {
-                ViewBag.Message = "errorBirds";
-                AddStockVM stockVM = new AddStockVM
-                {
-                    FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
-                    {
-                        Text = $"{_flockTypeService.FindById(m.FlockTypeId).Name} Batch No: {m.BatchNo}, Available Birds: {m.AvailableBirds}",
+                        Text = $"{m.FlockType.Name} Batch No: {m.BatchNo}, Available Birds: {m.AvailableBirds}",
                         Value = m.Id.ToString()
                     })
                 };
@@ -161,9 +160,9 @@ namespace NikeFarms.v2._0.Controllers
                     ViewBag.Message = "errorCrate";
                     AddStockVM stockVM = new AddStockVM
                     {
-                        FlockList = _flockService.GetAllFlocks().Select(m => new SelectListItem
+                        FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
                         {
-                            Text = $"{_flockTypeService.FindById(m.FlockTypeId).Name} Batch No: {m.BatchNo}, Available Birds: {m.AvailableBirds}",
+                            Text = $"{m.FlockType.Name} Batch No: {m.BatchNo}, Available Birds: {m.AvailableBirds}",
                             Value = m.Id.ToString()
                         })
                     };
@@ -179,7 +178,7 @@ namespace NikeFarms.v2._0.Controllers
                     {
                         FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
                         {
-                            Text = $"{_flockTypeService.FindById(m.FlockTypeId).Name} Batch No: {m.BatchNo}, Available Birds: {m.AvailableBirds}",
+                            Text = $"{m.FlockType.Name} Batch No: {m.BatchNo}, Available Birds: {m.AvailableBirds}",
                             Value = m.Id.ToString()
                         })
                     };
@@ -214,7 +213,7 @@ namespace NikeFarms.v2._0.Controllers
                     FlockId = stock.FlockId,
                     FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
                     {
-                        Text = $"{_flockTypeService.FindById(m.FlockTypeId).Name} Batch No: {m.BatchNo}, Available Birds: {m.AvailableBirds}",
+                        Text = $"{m.FlockType.Name} Batch No: {m.BatchNo}, Available Birds: {m.AvailableBirds}",
                         Value = m.Id.ToString(),
                     }),
                 };
@@ -271,7 +270,7 @@ namespace NikeFarms.v2._0.Controllers
                     FlockId = stock.FlockId,
                     FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
                     {
-                        Text = $"{_flockTypeService.FindById(m.FlockTypeId).Name} Batch No: {m.BatchNo}, {m.AvailableBirds}(Birds)",
+                        Text = $"{m.FlockType.Name} Batch No: {m.BatchNo}, {m.AvailableBirds}(Birds)",
                         Value = m.Id.ToString(),
                     }),
                 };
@@ -289,9 +288,9 @@ namespace NikeFarms.v2._0.Controllers
                     PricePerCrate = stock.PricePerCrate,
                     PricePerBird = stock.PricePerKg,
                     FlockId = stock.FlockId,
-                    FlockList = _flockService.GetAllFlocks().Select(m => new SelectListItem
+                    FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
                     {
-                        Text = $"{_flockTypeService.FindById(m.FlockTypeId).Name} Batch No: {m.BatchNo}, Available Birds: {m.AvailableBirds}",
+                        Text = $"{m.FlockType.Name} Batch No: {m.BatchNo}, Available Birds: {m.AvailableBirds}",
                         Value = m.Id.ToString(),
                     }),
                 };
@@ -312,7 +311,7 @@ namespace NikeFarms.v2._0.Controllers
                         FlockId = stock.FlockId,
                         FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
                         {
-                            Text = $"{_flockTypeService.FindById(m.FlockTypeId).Name} Batch No: {m.BatchNo}, Available Birds: {m.AvailableBirds}",
+                            Text = $"{m.FlockType.Name} Batch No: {m.BatchNo}, Available Birds: {m.AvailableBirds}",
                             Value = m.Id.ToString(),
                         }),
                     };
@@ -335,7 +334,7 @@ namespace NikeFarms.v2._0.Controllers
                         FlockId = stock.FlockId,
                         FlockList = _flockService.GetApprovedFlocks().Select(m => new SelectListItem
                         {
-                            Text = $"{_flockTypeService.FindById(m.FlockTypeId).Name} Batch No: {m.BatchNo}, {m.AvailableBirds}(Birds)",
+                            Text = $"{m.FlockType.Name} Batch No: {m.BatchNo}, {m.AvailableBirds}(Birds)",
                             Value = m.Id.ToString(),
                         }),
                     };

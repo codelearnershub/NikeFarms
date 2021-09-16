@@ -191,7 +191,7 @@ namespace NikeFarms.v2._0.Services
         public List<Stock> OperationStock()
         {
             List<Stock> StockId = new List<Stock>();
-            var stocks = _stockService.GetAllStocks();
+            var stocks = _stockService.GetBirdStocks();
             foreach (var stock in stocks)
             {
                 var stoc = _mortalityService.GetMortalityStockId(stock.Id);

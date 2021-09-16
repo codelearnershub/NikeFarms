@@ -122,7 +122,7 @@ namespace NikeFarms.v2._0.Controllers
                         Value = f.Id.ToString()
                     }),
 
-                    StockList = _stockService.GetBirdStocks().Select(s => new SelectListItem
+                    StockList = _flockService.OperationStock().Select(s => new SelectListItem
                     {
                         Text = $"{_flockTypeService.FindById(_flockService.FindById(s.FlockId).FlockTypeId).Name}, Batch No: ({_flockService.FindById(s.FlockId).BatchNo}) Stock: {s.AvailableItem} Bird(s)",
                         Value = s.Id.ToString()
@@ -140,7 +140,7 @@ namespace NikeFarms.v2._0.Controllers
                         Text = $"{_flockTypeService.FindById(f.FlockTypeId).Name} Batch No: ({_flockService.FindById(f.Id).BatchNo}) Not Stocked: {_flockService.FindById(f.Id).AvailableBirds - _flockService.TotalNoOfStockedBird(f.Id)} Bird(s)",
                     }),
 
-                    StockList = _stockService.GetBirdStocks().Select(s => new SelectListItem
+                    StockList = _flockService.OperationStock().Select(s => new SelectListItem
                     {
                         Text = $"{_flockTypeService.FindById(_flockService.FindById(s.FlockId).FlockTypeId).Name}, Batch No: ({_flockService.FindById(s.FlockId).BatchNo}) Stock: {s.AvailableItem} Bird(s)",
                         Value = s.Id.ToString()
@@ -163,7 +163,7 @@ namespace NikeFarms.v2._0.Controllers
                             Value = f.Id.ToString()
                         }),
 
-                        StockList = _stockService.GetBirdStocks().Select(s => new SelectListItem
+                        StockList = _flockService.OperationStock().Select(s => new SelectListItem
                         {
                             Text = $"{_flockTypeService.FindById(_flockService.FindById(s.FlockId).FlockTypeId).Name}, Batch No: ({_flockService.FindById(s.FlockId).BatchNo}) Stock: {s.AvailableItem} Bird(s)",
                             Value = s.Id.ToString()
@@ -223,7 +223,7 @@ namespace NikeFarms.v2._0.Controllers
                             Value = f.Id.ToString()
                         }),
 
-                        StockList = _stockService.GetBirdStocks().Select(s => new SelectListItem
+                        StockList = _flockService.OperationStock().Select(s => new SelectListItem
                         {
                             Text = $"{_flockTypeService.FindById(_flockService.FindById(s.FlockId).FlockTypeId).Name}, Batch No: ({_flockService.FindById(s.FlockId).BatchNo}) Stock: {s.AvailableItem} Bird(s)",
                             Value = s.Id.ToString()

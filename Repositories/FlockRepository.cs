@@ -43,7 +43,7 @@ namespace NikeFarms.v2._0.Repositories
 
         public List<Flock> GetApprovedFlocks()
         {
-            return _dbContext.Flocks.Where(f=> f.IsApproved == true && f.AvailableBirds > 0).OrderBy(r => r.CreatedAt).ToList();
+            return _dbContext.Flocks.Include(f=> f.FlockType).Where(f=> f.IsApproved == true && f.AvailableBirds > 0).OrderBy(r => r.CreatedAt).ToList();
         }
 
         public Flock FindById(int flockId)

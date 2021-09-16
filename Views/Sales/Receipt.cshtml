@@ -25,7 +25,7 @@
                 <div class="font-weight-bolder " style="color:darkred; margin-top: -2%; position:static">---  --------------------------------------------------------- ---</div><br />
 
             }
-            <span class="font-weight-bolder">Customer Name: @ViewBag.Customer</span><br /><span class="font-weight-bolder">Overall Price:  &#8358 <span class="comma">@ViewBag.TotalPrice</span></span><br /><br /><br />
+            <span class="font-weight-bolder">Customer Name: @ViewBag.Customer</span><br /><span class="font-weight-bolder">Overall Price:  &#8358 <span class="comma">@ViewBag.TotalPrice</span></span><br /><span class="font-italic">Date: @DateTime.Now.ToLongDateString() (@DateTime.Now.ToShortTimeString())</span><br /><br /><br />
             <span style="color:white">.  .  .  .  .  .  .   .  .  .  .  .</span> <span style="color:darkred;" class="font-weight-bolder">Voucher: @ViewBag.Voucher</span><br /><br />
         </div>
     </div>

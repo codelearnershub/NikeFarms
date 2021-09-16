@@ -79,7 +79,7 @@ namespace NikeFarms.Context
                 new Role
                 {
                     Id = 1,
-                    Name = "SuperAdmin",
+                    Name = "Super Admin",
                     CreatedAt = DateTime.Now,
                     CreatedBy = "mazeedahhamzat@gmail.com",
                 }
@@ -109,6 +109,8 @@ namespace NikeFarms.Context
 
             modelBuilder.Entity<Sales>().Property(u => u.Item).IsRequired();
 
+
+            
 
 
 
@@ -153,5 +155,7 @@ namespace NikeFarms.Context
             modelBuilder.Entity<Customer>().Property(u => u.Gender).IsRequired();
 
         }
+
+       
     }
 }
